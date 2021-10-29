@@ -12,9 +12,28 @@ namespace Banks
 {
     public partial class MainForm : Form
     {
+        ServerBank Bank;
+
+        DEBUGGER _DEBUGGER;
         public MainForm()
         {
             InitializeComponent();
+
+            Bank = INIT.INIT_Bank();
+            Bank.Clients = INIT.INIT_Clients();
+
+            _DEBUGGER = new DEBUGGER(Bank: Bank);
+            DebugTimer.Start();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DebugTimer_Tick(object sender, EventArgs e)
+        {
+            _DEBUGGER.DEBUG(ref DebugText);
         }
     }
 }
