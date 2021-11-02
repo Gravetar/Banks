@@ -37,5 +37,7 @@ namespace Banks
         /// Клиенты банка
         /// </summary>
         public List<Client> Clients = new List<Client>();
+
+        public Operator Operator = new Operator();
     }
 }

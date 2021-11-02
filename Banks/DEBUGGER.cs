@@ -14,7 +14,7 @@ namespace Banks
 
         bool _Style, _ClientInfo, _BankInfo, _AtmInfo;
         ServerBank _Bank;
-        public DEBUGGER(ServerBank Bank, bool Style = true, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true)
+        public DEBUGGER(ServerBank Bank, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true)
         {
             _ClientInfo = ClientInfo;
             _BankInfo = BankInfo;
@@ -54,7 +54,10 @@ namespace Banks
                 {
                     result += "<b>Банкомат № </b>: " + i.ToString() + "\n";
                     result += "<b>СТАТУС:</b>: " + _Bank.AtmMachines[i].stateAtm + "\n";
-                    result += "<b>ДЕНЬГИ:</b>: " + _Bank.AtmMachines[i].Cash + "\n";
+                    foreach (KeyValuePair<string, int> keyValue in _Bank.AtmMachines[i].bills)
+                    {
+                        result += string.Format("Д{0} = {1}\n",keyValue.Key, keyValue.Value);
+                    }
                     result += "\n";
                 }
             }

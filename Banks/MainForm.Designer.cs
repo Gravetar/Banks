@@ -32,6 +32,7 @@ namespace Banks
             this.components = new System.ComponentModel.Container();
             this.DebugText = new System.Windows.Forms.RichTextBox();
             this.DebugTimer = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // DebugText
@@ -48,11 +49,22 @@ namespace Banks
             this.DebugTimer.Interval = 1000;
             this.DebugTimer.Tick += new System.EventHandler(this.DebugTimer_Tick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(382, 131);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(970, 618);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.DebugText);
             this.Name = "MainForm";
             this.Text = "Банковская система";
@@ -64,6 +76,7 @@ namespace Banks
         #endregion
         private System.Windows.Forms.Timer DebugTimer;
         public System.Windows.Forms.RichTextBox DebugText;
+        private System.Windows.Forms.Button button1;
     }
 }
 

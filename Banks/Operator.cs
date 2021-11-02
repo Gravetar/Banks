@@ -9,9 +9,9 @@ namespace Banks
     class Operator
     {
 
-        public void AddCash(ref AtmMachine Atm, double value)
+        public void AddCash(AtmMachine Atm, string Nominal, int value)
         {
-            Atm.replenishCash(value);
+            Atm.replenishCash(Nominal, value);
         }
         public void StartAtm(ref AtmMachine Atm)
         {
@@ -21,6 +21,5 @@ namespace Banks
         {
             Atm.stateAtm = StateAtm.off;
         }
-
     }
 }

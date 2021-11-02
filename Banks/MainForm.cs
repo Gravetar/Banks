@@ -37,5 +37,10 @@ namespace Banks
         {
             _DEBUGGER.DEBUG(ref DebugText);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Bank.Operator.AddCash(Bank.AtmMachines[0], "10", 10);
+        }
     }
 }
