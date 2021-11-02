@@ -9,7 +9,7 @@ namespace Banks
     class Operator
     {
 
-        public void AddCash(AtmMachine Atm, string Nominal, int value)
+        public void AddCash(ref AtmMachine Atm, double value)
         {
             Atm.replenishCash(Nominal, value);
         }

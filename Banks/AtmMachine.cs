@@ -29,9 +29,9 @@ namespace Banks
             bills = _bills;
         }
 
-        public void replenishCash(string Nominal, int Value)
+        public void replenishCash(double value)
         {
-            bills[Nominal] += Value;
+            Cash += value;
         }
 
     }
