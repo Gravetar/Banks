@@ -29,6 +29,8 @@ namespace Banks
         public static void INIT_ATM(ServerBank Bank)
         {
             //ВРЕМЕННОЕ РЕШЕНИЕ
+
+            // TODO: При создании динамики, сделать массив словарей
             Dictionary<string, int> temp_bills = new Dictionary<string, int>(8);
             temp_bills.Add("10", 1);
             temp_bills.Add("50", 1);
@@ -38,9 +40,12 @@ namespace Banks
             temp_bills.Add("1000", 1);
             temp_bills.Add("2000", 1);
             temp_bills.Add("5000", 1);
+
+            Dictionary<string, int> temp_bills2 = new Dictionary<string, int>(temp_bills);
+
             AtmMachine[] machines = {
                 new AtmMachine(_bills: temp_bills),
-                new AtmMachine(_bills: temp_bills),
+                new AtmMachine(_bills: temp_bills2),
             };
 
 
