@@ -8,6 +8,7 @@ namespace Banks
 {
     class AtmMachine
     {
+
         /// <summary>
         /// Состояния банкомата
         /// </summary>
@@ -19,6 +20,11 @@ namespace Banks
         /// Транзакции банкомата
         /// </summary>
         public List<Transaction> Transactions = new List<Transaction>();
+
+        public AtmMachine(int _cash)
+        {
+            Cash = _cash;
+        }
 
         public void replenishCash(double value)
         {

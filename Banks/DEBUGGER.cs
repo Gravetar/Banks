@@ -12,12 +12,14 @@ namespace Banks
     {
         _TextsModifier textsModifier = new _TextsModifier();
 
-        bool _Style, _ClientInfo, _BankInfo;
+        bool _Style, _ClientInfo, _BankInfo, _AtmInfo;
         ServerBank _Bank;
-        public DEBUGGER(ServerBank Bank, bool Style=true, bool ClientInfo = true, bool BankInfo = true)
+        public DEBUGGER(ServerBank Bank, bool Style = true, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true)
         {
             _ClientInfo = ClientInfo;
             _BankInfo = BankInfo;
+            _AtmInfo = AtmInfo;
+
             _Bank = Bank;
             _Style = Style;
         }
@@ -43,6 +45,18 @@ namespace Banks
                 result += "<ub>==========БАНК==========</ub>" + "\n";
                 result += "<b>НАЗВАНИЕ</b>: " + _Bank._Name + "\n";
                 result += "<b>АДРЕС</b>: " + _Bank._Adress + "\n";
+                result += "\n";
+            }
+            if (_AtmInfo)
+            {
+                result += "<ub>========БАНКОМАТЫ=======</ub>" + "\n";
+                for (int i = 0; i < _Bank.AtmMachines.Count; i++)
+                {
+                    result += "<b>Банкомат № </b>: " + i.ToString() + "\n";
+                    result += "<b>СТАТУС:</b>: " + _Bank.AtmMachines[i].stateAtm + "\n";
+                    result += "<b>ДЕНЬГИ:</b>: " + _Bank.AtmMachines[i].Cash + "\n";
+                    result += "\n";
+                }
             }
 
             if (_Style)

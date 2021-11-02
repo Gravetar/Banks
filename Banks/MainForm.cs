@@ -22,6 +22,8 @@ namespace Banks
             Bank = INIT.INIT_Bank();
             Bank.Clients = INIT.INIT_Clients();
 
+            INIT.INIT_ATM(Bank);
+
             _DEBUGGER = new DEBUGGER(Bank: Bank);
             DebugTimer.Start();
         }

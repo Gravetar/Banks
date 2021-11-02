@@ -25,5 +25,17 @@ namespace Banks
 
             return Bank;
         }
+
+        public static void INIT_ATM(ServerBank Bank)
+        {
+            AtmMachine[] machines =
+{
+                new AtmMachine(_cash: 100),
+                new AtmMachine(_cash: 500),
+            };
+
+
+            Bank.AtmMachines.AddRange(machines.ToList());
+        }
     }
 }
