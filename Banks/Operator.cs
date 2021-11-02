@@ -8,7 +8,7 @@ namespace Banks
 {
     class Operator
     {
-        public void CheckCash(ref AtmMachine Atm, Dictionary<string, int> _bills, Dictionary<string, int> bills)
+        public Dictionary<string, int> CheckCash(Dictionary<string, int> _bills, Dictionary<string, int> bills)
         {
             Dictionary<string, int> sub_bills = new Dictionary<string, int>
             {
@@ -23,9 +23,12 @@ namespace Banks
             };
             return sub_bills;
         }
-        public void AddCash(ref AtmMachine Atm, int value)
+        public void AddCashNeedded(AtmMachine Atm, Dictionary<string, int> Nedded)
         {
-            Atm.replenishCash(value);
+            foreach (KeyValuePair<string, int> keyValue in Nedded)
+            {
+                Atm.replenishCash(keyValue.Key, keyValue.Value);
+            }
         }
         public void StartAtm(ref AtmMachine Atm)
         {

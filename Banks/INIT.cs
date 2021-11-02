@@ -47,6 +47,20 @@ namespace Banks
             Bank.AtmMachines.AddRange(machines.ToList());
         }
 
+        public static Dictionary<string, int> INIT_MAIN_CASH()
+        {
+            //ВРЕМЕННОЕ РЕШЕНИЕ
+            Dictionary<string, int> temp_bills = new Dictionary<string, int>(8);
+            temp_bills.Add("10", 10);
+            temp_bills.Add("50", 10);
+            temp_bills.Add("100", 10);
+            temp_bills.Add("200", 10);
+            temp_bills.Add("500", 10);
+            temp_bills.Add("1000", 10);
+            temp_bills.Add("2000", 10);
+            temp_bills.Add("5000", 10);
 
+            return temp_bills;
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Banks
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Bank.Operator.AddCash(Bank.AtmMachines[0], "10", 10);
+            Bank.Operator.AddCashNeedded(Bank.AtmMachines[0], Bank.Operator.CheckCash(Bank.AtmMachines[0].bills, INIT.INIT_MAIN_CASH()));
         }
     }
 }
