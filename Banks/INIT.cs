@@ -28,14 +28,25 @@ namespace Banks
 
         public static void INIT_ATM(ServerBank Bank)
         {
-            AtmMachine[] machines =
-{
-                new AtmMachine(_cash: 100),
-                new AtmMachine(_cash: 500),
+            //ВРЕМЕННОЕ РЕШЕНИЕ
+            Dictionary<string, int> temp_bills = new Dictionary<string, int>(8);
+            temp_bills.Add("10", 1);
+            temp_bills.Add("50", 1);
+            temp_bills.Add("100", 1);
+            temp_bills.Add("200", 1);
+            temp_bills.Add("500", 1);
+            temp_bills.Add("1000", 1);
+            temp_bills.Add("2000", 1);
+            temp_bills.Add("5000", 1);
+            AtmMachine[] machines = {
+                new AtmMachine(_bills: temp_bills),
+                new AtmMachine(_bills: temp_bills),
             };
 
 
             Bank.AtmMachines.AddRange(machines.ToList());
         }
+
+
     }
 }

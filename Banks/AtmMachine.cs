@@ -16,14 +16,17 @@ namespace Banks
 
         public double Cash = 0;
 
+        public Dictionary<string, int> bills = new Dictionary<string, int>(8);
+
+
         /// <summary>
         /// Транзакции банкомата
         /// </summary>
         public List<Transaction> Transactions = new List<Transaction>();
 
-        public AtmMachine(int _cash)
+        public AtmMachine(Dictionary<string, int> _bills)
         {
-            Cash = _cash;
+            bills = _bills;
         }
 
         public void replenishCash(double value)
