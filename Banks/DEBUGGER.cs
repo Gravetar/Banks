@@ -8,12 +8,38 @@ using System.Windows.Forms;
 
 namespace Banks
 {
+    /// <summary>
+    /// Текстовый отладчик проекта
+    /// </summary>
     class DEBUGGER
     {
+        /// <summary>
+        /// Модификатор текста
+        /// </summary>
         _TextsModifier textsModifier = new _TextsModifier();
 
-        bool _Style, _ClientInfo, _BankInfo, _AtmInfo;
+        /// <summary>
+        /// Вывод информации
+        /// </summary>
+        bool _ClientInfo, _BankInfo, _AtmInfo;
+        /// <summary>
+        /// Применять стиль к выводу
+        /// </summary>
+        bool _Style;
+
+        /// <summary>
+        /// Главный банк
+        /// </summary>
         ServerBank _Bank;
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="Bank">Главный банк</param>
+        /// <param name="Style">Применять стиль к выводу</param>
+        /// <param name="ClientInfo">Вывод информации о клиентах</param>
+        /// <param name="BankInfo">Вывод информации о банке</param>
+        /// <param name="AtmInfo">Вывод информации о банкоматах</param>
         public DEBUGGER(ServerBank Bank, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true)
         {
             _ClientInfo = ClientInfo;
@@ -24,9 +50,13 @@ namespace Banks
             _Style = Style;
         }
 
+        /// <summary>
+        /// Вывод информации
+        /// </summary>
+        /// <param name="RTB_Result">RichTextBox для вывода</param>
         public void DEBUG(ref RichTextBox RTB_Result)
         {
-            string result = "";
+            string result = ""; // Результирующая строка
             if (_ClientInfo)
             {
                 result += "<ub>==========КЛИЕНТЫ==========</ub>" + "\n";
@@ -39,14 +69,14 @@ namespace Banks
                     result += "----------";
                     result += "\n";
                 }
-            }
+            } // Если надо вывести информацию о клиенте, то
             if (_BankInfo)
             {
                 result += "<ub>==========БАНК==========</ub>" + "\n";
                 result += "<b>НАЗВАНИЕ</b>: " + _Bank._Name + "\n";
                 result += "<b>АДРЕС</b>: " + _Bank._Adress + "\n";
                 result += "\n";
-            }
+            } // Если надо вывести информацию о банке, то
             if (_AtmInfo)
             {
                 result += "<ub>========БАНКОМАТЫ=======</ub>" + "\n";
@@ -60,17 +90,17 @@ namespace Banks
                     }
                     result += "\n";
                 }
-            }
+            } // Если надо вывести информацию о банкоматах, то
 
             if (_Style)
             {
-                textsModifier.ModifyByTag(result, ref RTB_Result);
-            }
+                textsModifier.ModifyByTag(result, ref RTB_Result); // Модифицировать RichTextBox для вывода согласно тегам
+            } // Если надо применить стиль к информации, то
             else
             {
-                RTB_Result.Text = result;
-                textsModifier.ClearAllByText(new string[] {"<b>", "<ub>", "</b>", "</ub>" }.ToList(), ref RTB_Result);
-            }
+                RTB_Result.Text = result; // Применить результат к RichTextBox для вывода
+                textsModifier.ClearAllByText(new string[] {"<b>", "<ub>", "</b>", "</ub>" }.ToList(), ref RTB_Result); // Очистить RichTextBox для вывода от тегов
+            } // Иначе
         }
 
 

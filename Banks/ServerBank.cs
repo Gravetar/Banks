@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 namespace Banks
 {
      /// <summary>
-    /// Банк
+    /// Главный Банк
     /// </summary>
     class ServerBank
     {
+        /// <summary>
+        /// Конструктор банка
+        /// </summary>
+        /// <param name="Name">Название банка</param>
+        /// <param name="Address">Адрес банка</param>
         public ServerBank(string Name, string Address)
         {
             _Name = Name;
@@ -38,6 +43,9 @@ namespace Banks
         /// </summary>
         public List<Client> Clients = new List<Client>();
 
+        /// <summary>
+        /// Оператор банка
+        /// </summary>
         public Operator Operator = new Operator();
     }
 }

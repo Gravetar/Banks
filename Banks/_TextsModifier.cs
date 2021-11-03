@@ -8,8 +8,16 @@ using System.Windows.Forms;
 
 namespace Banks
 {
+    /// <summary>
+    /// Модификатор текста
+    /// </summary>
     class _TextsModifier
     {
+        /// <summary>
+        /// Удалить все заданные строки из RichTextBox
+        /// </summary>
+        /// <param name="deletes">Удаляемые строки</param>
+        /// <param name="RTB_Result">Изменяемый RichTextBox</param>
         public void ClearAllByText(List<string> deletes, ref RichTextBox RTB_Result)
         {
             for (int i = 0; i < deletes.Count; i++)
@@ -17,6 +25,11 @@ namespace Banks
                 RTB_Result.Text = RTB_Result.Text.Replace(deletes[i], "");
             }
         }
+        /// <summary>
+        /// Изменить текст согласно заданным тегам(внутри функции)
+        /// </summary>
+        /// <param name="str">Изменяемая строка</param>
+        /// <param name="RTB_Result">Изменяемый RichTextBox</param>
         public void ModifyByTag(string str, ref RichTextBox RTB_Result)
         {
             // Листы открывающих и закрывающих индексов изменения

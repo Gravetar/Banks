@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Banks
 {
+    /// <summary>
+    /// Транзакции
+    /// </summary>
     class Transaction
     {
         /// <summary>

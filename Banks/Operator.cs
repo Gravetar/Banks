@@ -6,38 +6,65 @@ using System.Threading.Tasks;
 
 namespace Banks
 {
+    /// <summary>
+    /// Оператор банка
+    /// </summary>
     class Operator
     {
-        public Dictionary<string, int> CheckCash(Dictionary<string, int> _bills, Dictionary<string, int> bills)
+        /// <summary>
+        /// Проверка сколько надо добавить денег к банкомату
+        /// </summary>
+        /// <param name="CurrentBills">Текущее количество денег в банкомате</param>
+        /// <param name="NeedBills">Необходимое количество денег в банкомате</param>
+        /// <returns>Словарь необходмого количества добавления денег</returns>
+        public Dictionary<string, int> CheckCash(Dictionary<string, int> CurrentBills, Dictionary<string, int> NeedBills)
         {
-            Dictionary<string, int> sub_bills = new Dictionary<string, int>
+            // Словарь необходмого количества добавления денег
+            // Формируется:
+            // Номинал = НужноеКолВоДенег[Номинал] - ТекущееКолВоДенег[Номинал]
+            Dictionary<string, int> ResultBills = new Dictionary<string, int>
             {
-                ["10"] = bills["10"] - _bills["10"],
-                ["50"] = bills["50"] - _bills["50"],
-                ["100"] = bills["100"] - _bills["100"],
-                ["200"] = bills["200"] - _bills["200"],
-                ["500"] = bills["500"] - _bills["500"],
-                ["1000"] = bills["1000"] - _bills["1000"],
-                ["2000"] = bills["2000"] - _bills["2000"],
-                ["5000"] = bills["5000"] - _bills["5000"]
+                ["10"] = NeedBills["10"] - CurrentBills["10"],
+                ["50"] = NeedBills["50"] - CurrentBills["50"],
+                ["100"] = NeedBills["100"] - CurrentBills["100"],
+                ["200"] = NeedBills["200"] - CurrentBills["200"],
+                ["500"] = NeedBills["500"] - CurrentBills["500"],
+                ["1000"] = NeedBills["1000"] - CurrentBills["1000"],
+                ["2000"] = NeedBills["2000"] - CurrentBills["2000"],
+                ["5000"] = NeedBills["5000"] - CurrentBills["5000"]
             };
-            return sub_bills;
+            // Словарь необходмого количества добавления денег
+            return ResultBills;
         }
+
+        /// <summary>
+        /// Добавить нужное количество денег банкомату
+        /// </summary>
+        /// <param name="Atm">Банкомат</param>
+        /// <param name="Nedded">Словарь, показывающий сколько нужно добавить денег</param>
         public void AddCashNeedded(AtmMachine Atm, Dictionary<string, int> Nedded)
         {
-            foreach (KeyValuePair<string, int> keyValue in Nedded)
+            foreach (KeyValuePair<string, int> keyValue in Nedded) // Пройти по всему словарю Nedded
             {
-                Atm.replenishCash(keyValue.Key, keyValue.Value);
+                Atm.replenishCash(keyValue.Key, keyValue.Value); // Добавить нужное количество денег банкомату
             }
         }
 
+        /// <summary>
+        /// Запустить работу банкомата
+        /// </summary>
+        /// <param name="Atm">Банкомат</param>
         public void StartAtm(ref AtmMachine Atm)
         {
-            Atm.stateAtm = StateAtm.on;
+            Atm.stateAtm = StateAtm.on; // Поменять статус банкомата на "Включен"
         }
+        /// <summary>
+        /// Остановить работу банкомата
+        /// </summary>
+        /// <param name="Atm">Банкомат</param>
         public void StopAtm(ref AtmMachine Atm)
         {
-            Atm.stateAtm = StateAtm.off;
+            Atm.stateAtm = StateAtm.off; // Поменять статус банкомата на "Отключен"
         }
     }
 }

@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace Banks
 {
-    //hello
+    /// <summary>
+    /// Клиент банка
+    /// </summary>
     class Client
     {
+        /// <summary>
+        /// Конструктор клиента
+        /// </summary>
+        /// <param name="FIO">ФИО</param>
+        /// <param name="ID">АЙДИ</param>
+        /// <param name="Adress">Адресс</param>
         public Client(string FIO, int ID, string Adress)
         {
             _FIO = FIO;

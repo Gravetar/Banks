@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace Banks
 {
+    /// <summary>
+    /// Настройки проекта
+    /// </summary>
     class SETTINGS
     {
         /// <summary>
         /// Текущий пользователь приложения
         /// </summary>
         public static User CURRENT_USER = User.Client;
-
+        /// <summary>
+        /// Размер дисплея банкоматов
+        /// </summary>
         public static Size DISPLAY_SIZE = new Size(210, 190);
         /// <summary>
         /// Сообщение приветствия
@@ -28,7 +33,13 @@ namespace Banks
     /// </summary>
     public enum User
     {
+        /// <summary>
+        /// Пользователь-Клиент
+        /// </summary>
         Client,
+        /// <summary>
+        /// Пользователь-Оператор
+        /// </summary>
         Operator
     }
 }

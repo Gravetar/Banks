@@ -41,7 +41,8 @@ namespace Banks
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Bank.Operator.AddCashNeedded(Bank.AtmMachines[0], Bank.Operator.CheckCash(Bank.AtmMachines[0].bills, INIT.INIT_MAIN_CASH()));
+            Bank.Operator.AddCashNeedded(Bank.AtmMachines[0], Bank.Operator.CheckCash(Bank.AtmMachines[0].bills, INIT.INIT_MAIN_CASH()));
+            //MAIN_FUNCTIONS.ChangeDisplay(_VISUALIZER, Controls, Displays.InputPIN);
         }
 
         private void button2_Click(object sender, EventArgs e)
