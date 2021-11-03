@@ -30,6 +30,7 @@ namespace Banks
                 Atm.replenishCash(keyValue.Key, keyValue.Value);
             }
         }
+
         public void StartAtm(ref AtmMachine Atm)
         {
             Atm.stateAtm = StateAtm.on;
