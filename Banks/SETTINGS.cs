@@ -21,6 +21,10 @@ namespace Banks
         /// </summary>
         public static Size DISPLAY_SIZE = new Size(210, 190);
         /// <summary>
+        /// Размер клавиатуры банкоматов
+        /// </summary>
+        public static Size KEYBOARD_SIZE = new Size(210, 190);
+        /// <summary>
         /// Сообщение приветствия
         /// </summary>
         public static string WELCOME_TEXT = "Добро Пожаловать\nВставьте пожалуйста вашу карту";

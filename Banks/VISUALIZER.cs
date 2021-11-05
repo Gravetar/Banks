@@ -102,5 +102,113 @@ namespace Banks
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_Pin;
         }
+
+        /// <summary>
+        /// Клавиатура банкомата
+        /// </summary>
+        /// <param name="EventClick">Событие нажатия кнопки с цифрами</param>
+        public Panel DisplayKeyboard(EventHandler EventClick)
+        {
+            Panel DISPLAY_KEYBOARD = new Panel();
+            DISPLAY_KEYBOARD.Name = "KEYBOARD";
+            DISPLAY_KEYBOARD.Location = new Point(100, 300);
+            DISPLAY_KEYBOARD.Size = SETTINGS.KEYBOARD_SIZE;
+            DISPLAY_KEYBOARD.BorderStyle = BorderStyle.Fixed3D;
+
+            // Панель для элементов клавиатуры 
+            TableLayoutPanel DISPLAY_KEYB_TLP = new TableLayoutPanel();
+            DISPLAY_KEYB_TLP.Name = "DISPLAY_KEYB_TLP";
+            DISPLAY_KEYB_TLP.AutoSize = true;
+            DISPLAY_KEYB_TLP.ColumnCount = 4;
+            DISPLAY_KEYB_TLP.RowCount = 4;
+            DISPLAY_KEYB_TLP.Padding = new Padding(10, 10, 10, 10);
+
+            // Кнопки клавиатуры(цифры 1-9)
+            for (int i = 1; i<=9; i++)
+            {
+                Button BTN_KEYB_NUM = new Button();
+                BTN_KEYB_NUM.Name = "BTN_KEYB_NUM" + i.ToString(); // KEYBOARD_BTN_1 ... KEYBOARD_BTN_9
+                BTN_KEYB_NUM.Size = new Size(30, 30);
+                BTN_KEYB_NUM.Text = i.ToString();
+                BTN_KEYB_NUM.Click += new EventHandler(EventClick);
+                DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NUM);
+            }
+            // Кнопки клавиатуры(0, Пустые)
+            Button BTN_KEYB_NULL = new Button();
+            BTN_KEYB_NULL.Name = "BTN_KEYB_NULL";
+            BTN_KEYB_NULL.Size = new Size(30, 30);
+            BTN_KEYB_NULL.Text = " ";
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL);
+
+            Button BTN_KEYB_0 = new Button();
+            BTN_KEYB_0.Name = "BTN_KEYB_0";
+            BTN_KEYB_0.Size = new Size(30, 30);
+            BTN_KEYB_0.Text = "0";
+            BTN_KEYB_0.Click += new EventHandler(EventClick);
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_0);
+
+            Button BTN_KEYB_NULL2 = new Button();
+            BTN_KEYB_NULL2.Name = "BTN_KEYB_NULL2";
+            BTN_KEYB_NULL2.Size = new Size(30, 30);
+            BTN_KEYB_NULL2.Text = " ";
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL2);
+
+            // Кнопки клавиатуры(CANCEL, CLEAR, ENTER, Пустая)
+            Button BTN_KEYB_CANCEL = new Button();
+            BTN_KEYB_CANCEL.Name = "BTN_KEYB_CANCEL";
+            BTN_KEYB_CANCEL.Size = new Size(60, 30);
+            BTN_KEYB_CANCEL.Text = "CANCEL";
+            BTN_KEYB_CANCEL.Click += new EventHandler(EventClick);
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CANCEL, 3, 0);
+
+            Button BTN_KEYB_CLEAR = new Button();
+            BTN_KEYB_CLEAR.Name = "BTN_KEYB_CLEAR";
+            BTN_KEYB_CLEAR.Size = new Size(60, 30);
+            BTN_KEYB_CLEAR.Text = "CLEAR";
+            BTN_KEYB_CLEAR.Click += new EventHandler(EventClick);
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CLEAR, 3, 1);
+
+            Button BTN_KEYB_ENTER = new Button();
+            BTN_KEYB_ENTER.Name = "BTN_KEYB_ENTER";
+            BTN_KEYB_ENTER.Size = new Size(60, 30);
+            BTN_KEYB_ENTER.Text = "ENTER";
+            BTN_KEYB_ENTER.Click += new EventHandler(EventClick);
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_ENTER, 3, 2);
+
+            Button BTN_KEYB_NULL3 = new Button();
+            BTN_KEYB_NULL3.Name = "BTN_KEYB_NULL3";
+            BTN_KEYB_NULL3.Size = new Size(60, 30);
+            BTN_KEYB_NULL3.Text = " ";
+            DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL3, 3, 3);
+
+            DISPLAY_KEYBOARD.Controls.Add(DISPLAY_KEYB_TLP);
+
+            return DISPLAY_KEYBOARD;
+        }
+
+        /// <summary>
+        /// Дополнительная панель к банкомату
+        /// </summary>
+        /// <param name="EventClickInputCard">Событие нажатия кнопки "Вставить карту"</param>
+        public Panel DisplayAdditional(EventHandler EventClickInputCard)
+        {
+            Panel DISPLAY_ADDITIONAL = new Panel();
+            DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
+            DISPLAY_ADDITIONAL.Location = new Point(320, 300);
+            DISPLAY_ADDITIONAL.Size = new Size(0, 0);
+            DISPLAY_ADDITIONAL.AutoSize = true;
+            DISPLAY_ADDITIONAL.BorderStyle = BorderStyle.Fixed3D;
+
+            Button BTN_ADDITIONAL_INCARD = new Button();
+            BTN_ADDITIONAL_INCARD.Name = "BTN_ADDITIONAL_INCARD";
+            BTN_ADDITIONAL_INCARD.Size = new Size(120, 30);
+            BTN_ADDITIONAL_INCARD.Text = "Вставить карту";
+            BTN_ADDITIONAL_INCARD.Left = 5;
+            BTN_ADDITIONAL_INCARD.Top = 5;
+            BTN_ADDITIONAL_INCARD.Click += new EventHandler(EventClickInputCard);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_INCARD);
+
+            return DISPLAY_ADDITIONAL;
+        }
     }
 }

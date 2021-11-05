@@ -49,5 +49,41 @@ namespace Banks
         {
             MAIN_FUNCTIONS.ChangeDisplay(_VISUALIZER, Controls, Displays.Welcome);
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Controls.Add(_VISUALIZER.DisplayKeyboard(OnKeyboard_Click));
+            Controls.Add(_VISUALIZER.DisplayAdditional(OnInputCard_Click));
+        }
+
+
+        private void OnInputCard_Click(object sender, EventArgs e)
+        {
+            MAIN_FUNCTIONS.ChangeDisplay(_VISUALIZER, Controls, Displays.InputPIN);
+        }
+
+        private void OnKeyboard_Click(object sender, EventArgs e)
+        {
+            Button CallerButton = sender as Button;
+            Panel Display = Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
+            TextBox Pin_InputText = Display.Controls.Find("DISPLAY_Pin_InputText", true).FirstOrDefault() as TextBox;
+
+            if (CallerButton.Text == "CANCEL")
+            {
+
+            }
+            else if (CallerButton.Text == "CLEAR")
+            {
+                Pin_InputText.Text = "";
+            }
+            else if (CallerButton.Text == "ENTER")
+            {
+                if (Pin_InputText.Text.Length == 4) Console.WriteLine("ПИН-КОД ВВЕДЕН!");
+            }
+            else if (CallerButton.Text != " ")
+            {
+                if (Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
+            }
+        }
     }
 }
