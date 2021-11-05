@@ -70,7 +70,7 @@ namespace Banks
 
             if (CallerButton.Text == "CANCEL")
             {
-
+                if (Pin_InputText.Text.Length > 0) Pin_InputText.Text = Pin_InputText.Text.Substring(0, Pin_InputText.Text.Length-1);
             }
             else if (CallerButton.Text == "CLEAR")
             {
