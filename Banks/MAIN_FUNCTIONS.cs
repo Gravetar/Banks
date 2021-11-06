@@ -18,19 +18,21 @@ namespace Banks
         /// <param name="_VISUALIZER">Главный визуализатор проекта</param>
         /// <param name="Controls">Компоненты формы</param>
         /// <param name="Display">На какой дисплей сменить</param>
-        public static void ChangeDisplay(VISUALIZER _VISUALIZER, Control.ControlCollection Controls, Displays Display)
+        public static Displays ChangeDisplay(int Machine, VISUALIZER _VISUALIZER, Control.ControlCollection Controls, Displays Display)
         {
-            RemoveItemByName<Panel>("DISPLAY", Controls);   // Удалить старый дисплей
+            RemoveItemByName<Panel>(Machine, "DISPLAY", Controls);   // Удалить старый дисплей
             Panel DISPLAY = new Panel();    // Новый дисплей
 
             if (Display == Displays.Welcome) // Если тип дисплей, на который надо поменять = Welcome (Дисплей приветствия)
-                _VISUALIZER.DisplayWelcome(ref DISPLAY); // Сменить дисплей на Welcome
+                _VISUALIZER.DisplayWelcome(Machine, ref DISPLAY); // Сменить дисплей на Welcome
             else if(Display == Displays.InputPIN) // Если тип дисплей, на который надо поменять = InputPIN (Дисплей для ввода пин-кода)
-                _VISUALIZER.DisplayInputPIN(ref DISPLAY); // Сменить дисплей на InputPIN
+                _VISUALIZER.DisplayInputPIN(Machine, ref DISPLAY); // Сменить дисплей на InputPIN
             else
                 _VISUALIZER.DisplayClear(ref DISPLAY); // Сменить дисплей на пустой
 
             Controls.Add(DISPLAY); // Добавить дисплей на форму
+
+            return Display;
         }
 
         /// <summary>
@@ -39,27 +41,12 @@ namespace Banks
         /// <typeparam name="T">Тип удаляемого компонента</typeparam>
         /// <param name="name">Имя удаляемого компонента</param>
         /// <param name="Controls">Компоненты формы</param>
-        public static void RemoveItemByName<T>(string name, Control.ControlCollection Controls)
+        public static void RemoveItemByName<T>(int Machine, string name, Control.ControlCollection Controls)
         where T : Control   // Где тип является Control
         {
             foreach (T item in Controls.OfType<T>().ToList().Where( // Пройтись по объектам типа T в (Controls по типу T), где
-             item => item.Name == name))    // Имя объекта = Параметру name
+             item => item.Name == name && item.Tag.ToString() == Machine.ToString()))    // Имя объекта = Параметру name
                 Controls.Remove(item);  // Удалить объект из Controls
         }
-    }
-
-    /// <summary>
-    /// Виды дисплеев
-    /// </summary>
-    public enum Displays
-    {
-        /// <summary>
-        /// Дисплей приветствия
-        /// </summary>
-        Welcome,
-        /// <summary>
-        /// Дисплей для ввода пин-кода
-        /// </summary>
-        InputPIN
     }
 }

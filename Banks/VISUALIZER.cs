@@ -13,6 +13,41 @@ namespace Banks
     /// </summary>
     class VISUALIZER
     {
+        public List<Panel> CreateAllATM(EventHandler EventClick, EventHandler EventClickInputCard)
+        {
+            List<Panel> Machines = new List<Panel>();
+
+
+            for (int i = 0; i < SETTINGS.ATM_COUNT; i++)
+            {
+                Panel Display = new Panel();
+                Panel Keyboard = new Panel();
+                Panel Additional = new Panel();
+
+                DisplayWelcome(i, ref Display);
+                Keyboard = DisplayKeyboard(EventClick);
+                Additional = DisplayAdditional(i, EventClickInputCard);
+                Machines.Add(CreateATM(i, Display, Keyboard, Additional));
+            }
+            Machines[0].Location = new Point(100, 100);
+            Machines[1].Location = new Point(400, 100);
+            return Machines;
+        }
+
+        public Panel CreateATM(int Machine, Panel Display, Panel Keyboard, Panel Additional)
+        {
+            Panel ATM = new Panel();
+            ATM.Name = "ATM";
+            ATM.Location = new Point(100, 100);
+            ATM.AutoSize = true;
+            ATM.BorderStyle = BorderStyle.Fixed3D;
+            // TODO сделать под все банкоматы, сейчас токо первый
+
+            ATM.Controls.AddRange(new Control[] { Display, Keyboard, Additional});
+
+            return ATM;
+        }
+
         /// <summary>
         /// Чистый дисплей
         /// </summary>
@@ -24,6 +59,7 @@ namespace Banks
             DISPLAY_Clear.Location = new Point(100, 100);
             DISPLAY_Clear.Size = SETTINGS.DISPLAY_SIZE;
             DISPLAY_Clear.BorderStyle = BorderStyle.Fixed3D;
+
             Display = DISPLAY_Clear;
         }
 
@@ -31,15 +67,16 @@ namespace Banks
         /// Дисплей приветствия
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
-        public void DisplayWelcome(ref Panel Display)
+        public void DisplayWelcome(int Machine, ref Panel Display)
         {
             // Основной дисплей
             Panel DISPLAY_Welcome = new Panel();
             DISPLAY_Welcome.Name = "DISPLAY";
-            DISPLAY_Welcome.Location = new Point(100, 100);
+            DISPLAY_Welcome.Location = new Point(0, 0);
             DISPLAY_Welcome.Size = SETTINGS.DISPLAY_SIZE;
             DISPLAY_Welcome.BorderStyle = BorderStyle.Fixed3D;
-            
+            DISPLAY_Welcome.Tag = Machine.ToString();
+
             //Текст приветствия на дисплее
             Label DISPLAY_Welcome_MainText = new Label();
             DISPLAY_Welcome_MainText.Name = "DISPLAY_Welcome_MainText";
@@ -59,7 +96,7 @@ namespace Banks
         /// Дисплей для ввода пин-кода
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
-        public void DisplayInputPIN(ref Panel Display)
+        public void DisplayInputPIN(int Machine, ref Panel Display)
         {
             // Основной дисплей
             Panel DISPLAY_Pin = new Panel();
@@ -67,6 +104,7 @@ namespace Banks
             DISPLAY_Pin.Location = new Point(100, 100);
             DISPLAY_Pin.Size = SETTINGS.DISPLAY_SIZE;
             DISPLAY_Pin.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Pin.Tag = Machine.ToString();
 
             // Панель для элементов основного дисплея(для правильного отображения) 
             TableLayoutPanel DISPLAY_Pin_TLP = new TableLayoutPanel();
@@ -109,9 +147,10 @@ namespace Banks
         /// <param name="EventClick">Событие нажатия кнопки с цифрами</param>
         public Panel DisplayKeyboard(EventHandler EventClick)
         {
+            // Основной дисплей
             Panel DISPLAY_KEYBOARD = new Panel();
             DISPLAY_KEYBOARD.Name = "KEYBOARD";
-            DISPLAY_KEYBOARD.Location = new Point(100, 300);
+            DISPLAY_KEYBOARD.Location = new Point(0, 200);
             DISPLAY_KEYBOARD.Size = SETTINGS.KEYBOARD_SIZE;
             DISPLAY_KEYBOARD.BorderStyle = BorderStyle.Fixed3D;
 
@@ -190,11 +229,11 @@ namespace Banks
         /// Дополнительная панель к банкомату
         /// </summary>
         /// <param name="EventClickInputCard">Событие нажатия кнопки "Вставить карту"</param>
-        public Panel DisplayAdditional(EventHandler EventClickInputCard)
+        public Panel DisplayAdditional(int Machine,  EventHandler EventClickInputCard)
         {
             Panel DISPLAY_ADDITIONAL = new Panel();
             DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
-            DISPLAY_ADDITIONAL.Location = new Point(320, 300);
+            DISPLAY_ADDITIONAL.Location = new Point(220, 200);
             DISPLAY_ADDITIONAL.Size = new Size(0, 0);
             DISPLAY_ADDITIONAL.AutoSize = true;
             DISPLAY_ADDITIONAL.BorderStyle = BorderStyle.Fixed3D;
@@ -205,6 +244,7 @@ namespace Banks
             BTN_ADDITIONAL_INCARD.Text = "Вставить карту";
             BTN_ADDITIONAL_INCARD.Left = 5;
             BTN_ADDITIONAL_INCARD.Top = 5;
+            BTN_ADDITIONAL_INCARD.Tag = Machine.ToString();
             BTN_ADDITIONAL_INCARD.Click += new EventHandler(EventClickInputCard);
             DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_INCARD);
 

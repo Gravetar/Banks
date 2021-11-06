@@ -13,6 +13,10 @@ namespace Banks
     class SETTINGS
     {
         /// <summary>
+        /// Количество банкоматов
+        /// </summary>
+        public static int ATM_COUNT = 2;
+        /// <summary>
         /// Текущий пользователь приложения
         /// </summary>
         public static User CURRENT_USER = User.Client;

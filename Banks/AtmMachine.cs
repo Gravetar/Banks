@@ -18,6 +18,11 @@ namespace Banks
         public StateAtm stateAtm = StateAtm.on;
 
         /// <summary>
+        /// Дисплей банкомата
+        /// </summary>
+        public Displays Display = Displays.Welcome;
+
+        /// <summary>
         /// Валюты банкомата
         /// </summary>
         public Dictionary<string, int> bills = new Dictionary<string, int>(8);
@@ -29,10 +34,10 @@ namespace Banks
         /// <summary>
         /// Конструктор банкомата
         /// </summary>
-        /// <param name="_bills">Словарь наминалов(номинал-количество)</param>
-        public AtmMachine(Dictionary<string, int> _bills)
+        /// <param name="Bills">Словарь наминалов(номинал-количество)</param>
+        public AtmMachine(Dictionary<string, int> Bills)
         {
-            bills = _bills;
+            bills = Bills;
         }
 
         /// <summary>
@@ -45,6 +50,21 @@ namespace Banks
             bills[Nominal] += Value;
         }
 
+    }
+
+    /// <summary>
+    /// Виды дисплеев
+    /// </summary>
+    public enum Displays
+    {
+        /// <summary>
+        /// Дисплей приветствия
+        /// </summary>
+        Welcome,
+        /// <summary>
+        /// Дисплей для ввода пин-кода
+        /// </summary>
+        InputPIN
     }
 
     /// <summary>
@@ -61,7 +81,6 @@ namespace Banks
         /// </summary>
         off
     }
-
 
 }
 

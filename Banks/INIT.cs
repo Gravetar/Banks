@@ -46,31 +46,24 @@ namespace Banks
         /// <param name="Bank">Главный банк</param>
         public static void INIT_ATM(ServerBank Bank)
         {
-            #region TODO
-            // TODO: При создании динамики, сделать массив словарей
-            #endregion
-            // Словарь номиналов и количества денег
-            Dictionary<string, int> temp_bills = new Dictionary<string, int>(8);
-            temp_bills.Add("10", 1);
-            temp_bills.Add("50", 1);
-            temp_bills.Add("100", 1);
-            temp_bills.Add("200", 1);
-            temp_bills.Add("500", 1);
-            temp_bills.Add("1000", 1);
-            temp_bills.Add("2000", 1);
-            temp_bills.Add("5000", 1);
-
-            // Словари для дополнительных банкоматах, на основе Словарь номиналов и количества денег
-            Dictionary<string, int> temp_bills2 = new Dictionary<string, int>(temp_bills);
+            List<AtmMachine> machines = new List<AtmMachine>();
 
             // Банкоматы
-            AtmMachine[] machines = {
-                new AtmMachine(_bills: temp_bills),
-                new AtmMachine(_bills: temp_bills2),
-            };
+            for (int i = 0; i<SETTINGS.ATM_COUNT; i++)
+            {
+                machines.Add(new AtmMachine(new Dictionary<string, int> // Словарь номиналов и количества денег
+                {
+                    { "100", 1 },
+                    { "200", 1 },
+                    { "500", 1 },
+                    { "1000", 1 },
+                    { "2000", 1 },
+                    { "5000", 1 }
+                }));
+            }
 
-            // Добавить в банк массив банкоматов переоформленный в лист
-            Bank.AtmMachines.AddRange(machines.ToList());
+            // Добавить в банк лист банкоматов
+            Bank.AtmMachines.AddRange(machines);
         }
 
         /// <summary>
