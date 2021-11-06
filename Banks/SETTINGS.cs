@@ -15,7 +15,7 @@ namespace Banks
         /// <summary>
         /// Количество банкоматов
         /// </summary>
-        public static int ATM_COUNT = 2;
+        public static int ATM_COUNT = 3;
         /// <summary>
         /// Текущий пользователь приложения
         /// </summary>

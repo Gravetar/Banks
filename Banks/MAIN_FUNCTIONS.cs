@@ -20,8 +20,11 @@ namespace Banks
         /// <param name="Display">На какой дисплей сменить</param>
         public static Displays ChangeDisplay(int Machine, VISUALIZER _VISUALIZER, Control.ControlCollection Controls, Displays Display)
         {
+            Panel CurrentDisplay = Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
+
             RemoveItemByName<Panel>(Machine, "DISPLAY", Controls);   // Удалить старый дисплей
             Panel DISPLAY = new Panel();    // Новый дисплей
+
 
             if (Display == Displays.Welcome) // Если тип дисплей, на который надо поменять = Welcome (Дисплей приветствия)
                 _VISUALIZER.DisplayWelcome(Machine, ref DISPLAY); // Сменить дисплей на Welcome

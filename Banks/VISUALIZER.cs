@@ -25,12 +25,13 @@ namespace Banks
                 Panel Additional = new Panel();
 
                 DisplayWelcome(i, ref Display);
-                Keyboard = DisplayKeyboard(EventClick);
+                Keyboard = DisplayKeyboard(i, EventClick);
                 Additional = DisplayAdditional(i, EventClickInputCard);
                 Machines.Add(CreateATM(i, Display, Keyboard, Additional));
             }
             Machines[0].Location = new Point(100, 100);
             Machines[1].Location = new Point(400, 100);
+            Machines[2].Location = new Point(700, 100);
             return Machines;
         }
 
@@ -41,6 +42,7 @@ namespace Banks
             ATM.Location = new Point(100, 100);
             ATM.AutoSize = true;
             ATM.BorderStyle = BorderStyle.Fixed3D;
+            ATM.Tag = Machine;
             // TODO сделать под все банкоматы, сейчас токо первый
 
             ATM.Controls.AddRange(new Control[] { Display, Keyboard, Additional});
@@ -101,7 +103,6 @@ namespace Banks
             // Основной дисплей
             Panel DISPLAY_Pin = new Panel();
             DISPLAY_Pin.Name = "DISPLAY";
-            DISPLAY_Pin.Location = new Point(100, 100);
             DISPLAY_Pin.Size = SETTINGS.DISPLAY_SIZE;
             DISPLAY_Pin.BorderStyle = BorderStyle.Fixed3D;
             DISPLAY_Pin.Tag = Machine.ToString();
@@ -145,12 +146,12 @@ namespace Banks
         /// Клавиатура банкомата
         /// </summary>
         /// <param name="EventClick">Событие нажатия кнопки с цифрами</param>
-        public Panel DisplayKeyboard(EventHandler EventClick)
+        public Panel DisplayKeyboard(int Machine, EventHandler EventClick)
         {
             // Основной дисплей
             Panel DISPLAY_KEYBOARD = new Panel();
             DISPLAY_KEYBOARD.Name = "KEYBOARD";
-            DISPLAY_KEYBOARD.Location = new Point(0, 200);
+            DISPLAY_KEYBOARD.Location = new Point(0, 250);
             DISPLAY_KEYBOARD.Size = SETTINGS.KEYBOARD_SIZE;
             DISPLAY_KEYBOARD.BorderStyle = BorderStyle.Fixed3D;
 
@@ -169,6 +170,7 @@ namespace Banks
                 BTN_KEYB_NUM.Name = "BTN_KEYB_NUM" + i.ToString(); // KEYBOARD_BTN_1 ... KEYBOARD_BTN_9
                 BTN_KEYB_NUM.Size = new Size(30, 30);
                 BTN_KEYB_NUM.Text = i.ToString();
+                BTN_KEYB_NUM.Tag = Machine;
                 BTN_KEYB_NUM.Click += new EventHandler(EventClick);
                 DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NUM);
             }
@@ -177,12 +179,14 @@ namespace Banks
             BTN_KEYB_NULL.Name = "BTN_KEYB_NULL";
             BTN_KEYB_NULL.Size = new Size(30, 30);
             BTN_KEYB_NULL.Text = " ";
+            BTN_KEYB_NULL.Tag = Machine;
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL);
 
             Button BTN_KEYB_0 = new Button();
             BTN_KEYB_0.Name = "BTN_KEYB_0";
             BTN_KEYB_0.Size = new Size(30, 30);
             BTN_KEYB_0.Text = "0";
+            BTN_KEYB_0.Tag = Machine;
             BTN_KEYB_0.Click += new EventHandler(EventClick);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_0);
 
@@ -190,6 +194,7 @@ namespace Banks
             BTN_KEYB_NULL2.Name = "BTN_KEYB_NULL2";
             BTN_KEYB_NULL2.Size = new Size(30, 30);
             BTN_KEYB_NULL2.Text = " ";
+            BTN_KEYB_NULL2.Tag = Machine;
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL2);
 
             // Кнопки клавиатуры(CANCEL, CLEAR, ENTER, Пустая)
@@ -197,6 +202,7 @@ namespace Banks
             BTN_KEYB_CANCEL.Name = "BTN_KEYB_CANCEL";
             BTN_KEYB_CANCEL.Size = new Size(60, 30);
             BTN_KEYB_CANCEL.Text = "CANCEL";
+            BTN_KEYB_CANCEL.Tag = Machine;
             BTN_KEYB_CANCEL.Click += new EventHandler(EventClick);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CANCEL, 3, 0);
 
@@ -204,6 +210,7 @@ namespace Banks
             BTN_KEYB_CLEAR.Name = "BTN_KEYB_CLEAR";
             BTN_KEYB_CLEAR.Size = new Size(60, 30);
             BTN_KEYB_CLEAR.Text = "CLEAR";
+            BTN_KEYB_CLEAR.Tag = Machine;
             BTN_KEYB_CLEAR.Click += new EventHandler(EventClick);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CLEAR, 3, 1);
 
@@ -211,6 +218,7 @@ namespace Banks
             BTN_KEYB_ENTER.Name = "BTN_KEYB_ENTER";
             BTN_KEYB_ENTER.Size = new Size(60, 30);
             BTN_KEYB_ENTER.Text = "ENTER";
+            BTN_KEYB_ENTER.Tag = Machine;
             BTN_KEYB_ENTER.Click += new EventHandler(EventClick);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_ENTER, 3, 2);
 
@@ -218,6 +226,7 @@ namespace Banks
             BTN_KEYB_NULL3.Name = "BTN_KEYB_NULL3";
             BTN_KEYB_NULL3.Size = new Size(60, 30);
             BTN_KEYB_NULL3.Text = " ";
+            BTN_KEYB_NULL3.Tag = Machine;
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL3, 3, 3);
 
             DISPLAY_KEYBOARD.Controls.Add(DISPLAY_KEYB_TLP);
@@ -233,14 +242,13 @@ namespace Banks
         {
             Panel DISPLAY_ADDITIONAL = new Panel();
             DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
-            DISPLAY_ADDITIONAL.Location = new Point(220, 200);
+            DISPLAY_ADDITIONAL.Location = new Point(0, 200);
             DISPLAY_ADDITIONAL.Size = new Size(0, 0);
             DISPLAY_ADDITIONAL.AutoSize = true;
-            DISPLAY_ADDITIONAL.BorderStyle = BorderStyle.Fixed3D;
 
             Button BTN_ADDITIONAL_INCARD = new Button();
             BTN_ADDITIONAL_INCARD.Name = "BTN_ADDITIONAL_INCARD";
-            BTN_ADDITIONAL_INCARD.Size = new Size(120, 30);
+            BTN_ADDITIONAL_INCARD.Size = new Size(205, 30);
             BTN_ADDITIONAL_INCARD.Text = "Вставить карту";
             BTN_ADDITIONAL_INCARD.Left = 5;
             BTN_ADDITIONAL_INCARD.Top = 5;

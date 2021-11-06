@@ -16,9 +16,15 @@ namespace Banks
 
         DEBUGGER _DEBUGGER;
         VISUALIZER _VISUALIZER = new VISUALIZER();
+
+        Control.ControlCollection MainControls;
+
+
         public MainForm()
         {
             InitializeComponent();
+
+            MainControls = MainPanel.Controls;
 
             Bank = INIT.INIT_Bank();
             Bank.Clients = INIT.INIT_Clients();
@@ -30,7 +36,7 @@ namespace Banks
 
             List<Panel> ATMs = new List<Panel>();
             ATMs = _VISUALIZER.CreateAllATM(OnKeyboard_Click, OnInputCard_Click);
-            Controls.AddRange(ATMs.ToArray());
+            MainControls.AddRange(ATMs.ToArray());
 
             //Bank.AtmMachines[1].Display = MAIN_FUNCTIONS.ChangeDisplay(_VISUALIZER, Controls, Displays.Welcome); // TODO сделать для нескольких
             //Controls.Add(_VISUALIZER.DisplayKeyboard(OnKeyboard_Click));
@@ -55,9 +61,9 @@ namespace Banks
             Button CallerButton = sender as Button;
 
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
-            Panel CurrentAtm = Controls.Find("DISPLAY", true).Where(t => t.Tag == CallerButton.Tag).FirstOrDefault() as Panel;
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
 
-            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, Controls, Displays.InputPIN);
+            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
 
             CallerButton.Enabled = false;
         }
@@ -66,8 +72,9 @@ namespace Banks
         {
             Button CallerButton = sender as Button;
 
-            Panel Display = Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
-            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(Display.Tag)];
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+            Panel Display = CurrentAtm.Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
             TextBox Pin_InputText = Display.Controls.Find("DISPLAY_Pin_InputText", true).FirstOrDefault() as TextBox;
 
             if (CallerButton.Text == "CANCEL")
