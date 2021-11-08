@@ -19,7 +19,7 @@ namespace Banks
         /// <summary>
         /// Текущий пользователь приложения
         /// </summary>
-        public static User CURRENT_USER = User.Client;
+        public static User CURRENT_USER;
         /// <summary>
         /// Размер дисплея банкоматов
         /// </summary>

@@ -35,6 +35,10 @@ namespace Banks
         /// Адрес клиента
         /// </summary>
         public string _Adress;
+        /// <summary>
+        /// Текущий банкомат на которым работает клиент
+        /// </summary>
+        public int _ATM = -1;
 
         /// <summary>
         /// Счета клиента

@@ -51,5 +51,39 @@ namespace Banks
              item => item.Name == name && item.Tag.ToString() == Machine.ToString()))    // Имя объекта = Параметру name
                 Controls.Remove(item);  // Удалить объект из Controls
         }
+
+        /// <summary>
+        /// Сменить доступность банкоматов
+        /// </summary>
+        /// <param name="Controls">Компоненты формы</param>
+        /// <param name="Bank">Главный банк</param>
+        /// <param name="CurrentIdUser">Текущий пользователь</param>
+        public static void ChangeEnabledATMs(Control.ControlCollection Controls, ServerBank Bank, int CurrentIdUser)
+        {
+            // Массив всех банкоматов (На поле)
+            var ATMs = Controls.Find("ATM", true);
+            // Пройтись по всем банкоматам банка
+            for (int i = 0; i < Bank.AtmMachines.Count; i++)
+            {
+                // Пройтись по всем банкоматам (На поле)
+                for (int j = 0; j < ATMs.Length; j++)
+                {
+                    // Если тег банкомата (На поле) равен текущу-анализируемому банкомату банка
+                    if ((ATMs[j] as Panel).Tag.ToString() == i.ToString())
+                    {
+                        // Если:
+                        if (Bank.AtmMachines[i].CurrentClient == CurrentIdUser || // У текущей машины текущий клиент или:
+                            (Bank.Clients[CurrentIdUser]._ATM == -1 && Bank.AtmMachines[i].CurrentClient == -1)) // У текущей машины нет клиента и у текущего клиента нет машины
+                        {
+                            ATMs[j].Enabled = true; // Активировать для клиента банкомат
+                        }
+                        else // Иначе:
+                        {
+                            ATMs[j].Enabled = false; // Диактивировать для клиента банкомат
+                        }
+                    }
+                }
+            }
+        }
     }
 }

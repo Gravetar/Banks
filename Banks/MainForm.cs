@@ -19,11 +19,10 @@ namespace Banks
 
         Control.ControlCollection MainControls;
 
-
+        int CurrentIdUser;
         public MainForm()
         {
             InitializeComponent();
-
             MainControls = MainPanel.Controls;
 
             Bank = INIT.INIT_Bank();
@@ -38,17 +37,11 @@ namespace Banks
             ATMs = _VISUALIZER.CreateAllATM(OnKeyboard_Click, OnInputCard_Click);
             MainControls.AddRange(ATMs.ToArray());
 
-            //Bank.AtmMachines[1].Display = MAIN_FUNCTIONS.ChangeDisplay(_VISUALIZER, Controls, Displays.Welcome); // TODO сделать для нескольких
-            //Controls.Add(_VISUALIZER.DisplayKeyboard(OnKeyboard_Click));
-            //Controls.Add(_VISUALIZER.DisplayAdditional(OnInputCard_Click));
-
-            //Panel Display = Controls.Find("DISPLAY", true).Where(t => t.Tag.ToString() == "1").FirstOrDefault() as Panel; // TODO сделать для нескольких
-            //AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(Display.Tag)];
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
+            SelectUserCB.Items.Add("(Оператор)");
+            for (int i = 0; i<Bank.Clients.Count; i++)
+            {
+                SelectUserCB.Items.Add(Bank.Clients[i]._ID.ToString() + ": " + Bank.Clients[i]._FIO);
+            }
         }
 
         private void DebugTimer_Tick(object sender, EventArgs e)
@@ -65,6 +58,10 @@ namespace Banks
 
             CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
 
+            CurrentMachine.CurrentClient = CurrentIdUser;
+            Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
+            MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+
             CallerButton.Enabled = false;
         }
 
@@ -79,7 +76,12 @@ namespace Banks
 
             if (CallerButton.Text == "CANCEL")
             {
-                if (Pin_InputText.Text.Length > 0) Pin_InputText.Text = Pin_InputText.Text.Substring(0, Pin_InputText.Text.Length-1);
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                CurrentMachine.CurrentClient = -1;
+                Bank.Clients[CurrentIdUser]._ATM = -1;
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
             }
             else if (CallerButton.Text == "CLEAR")
             {
@@ -92,6 +94,22 @@ namespace Banks
             else if (CallerButton.Text != " ")
             {
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
+            }
+        }
+
+        private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MainPanel.Visible = true;
+            if (SelectUserCB.SelectedItem.ToString() == "(Оператор)")
+            {
+                SETTINGS.CURRENT_USER = User.Operator;
+                CurrentIdUser = -1;
+            }
+            else
+            {
+                SETTINGS.CURRENT_USER = User.Client;
+                CurrentIdUser = SelectUserCB.SelectedIndex - 1;
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
             }
         }
     }

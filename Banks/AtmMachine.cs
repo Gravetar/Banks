@@ -16,6 +16,10 @@ namespace Banks
         /// Состояние банкомата
         /// </summary>
         public StateAtm stateAtm = StateAtm.on;
+        /// <summary>
+        /// Кем занят банкомат
+        /// </summary>
+        public int CurrentClient = -1;
 
         /// <summary>
         /// Дисплей банкомата

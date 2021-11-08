@@ -13,40 +13,61 @@ namespace Banks
     /// </summary>
     class VISUALIZER
     {
-        public List<Panel> CreateAllATM(EventHandler EventClick, EventHandler EventClickInputCard)
+        /// <summary>
+        /// Динамическое создание всех бакноматов
+        /// </summary>
+        /// <param name="KeyboardEventClick">Событие нажатия на кнопки клавиатуры</param>
+        /// <param name="InputCardEventClick">Событие нажатия на кнопку "Вставить карту"</param>
+        /// <returns></returns>
+        public List<Panel> CreateAllATM(EventHandler KeyboardEventClick, EventHandler InputCardEventClick)
         {
+            // Лист банкоматов
             List<Panel> Machines = new List<Panel>();
-
-
+            // Создать банкоматы согласно их количеству
             for (int i = 0; i < SETTINGS.ATM_COUNT; i++)
             {
+                // Дисплей текуще-создоваемого банкомата
                 Panel Display = new Panel();
+                // Клавиатура текуще-создоваемого банкомата
                 Panel Keyboard = new Panel();
+                // Дополнительная панель текуще-создоваемого банкомата
                 Panel Additional = new Panel();
 
+                // Установить дисплей банкомата(приветственный дисплей)
                 DisplayWelcome(i, ref Display);
-                Keyboard = DisplayKeyboard(i, EventClick);
-                Additional = DisplayAdditional(i, EventClickInputCard);
+                // Установить клавиатуру банкомата
+                Keyboard = DisplayKeyboard(i, KeyboardEventClick);
+                // Установить дополнительнау панель банкомата
+                Additional = DisplayAdditional(i, InputCardEventClick);
+                // Добавить созданный банкомат в лист банкоматов
                 Machines.Add(CreateATM(i, Display, Keyboard, Additional));
+                // Установить расположение созданного банкомата
+                Machines[i].Location = new Point((Machines[i].Size.Width + 100) * i, 50);
             }
-            Machines[0].Location = new Point(100, 100);
-            Machines[1].Location = new Point(400, 100);
-            Machines[2].Location = new Point(700, 100);
+            // Вернуть лист панелей банкомата
             return Machines;
         }
 
+        /// <summary>
+        /// Создать панель банкомата
+        /// </summary>
+        /// <param name="Machine">Номер банкомата</param>
+        /// <param name="Display">Дисплей банкомата</param>
+        /// <param name="Keyboard">Клавиатура банкомата</param>
+        /// <param name="Additional">Дополнительная панель банкомата</param>
+        /// <returns></returns>
         public Panel CreateATM(int Machine, Panel Display, Panel Keyboard, Panel Additional)
         {
+            // Основная панель банкомата
             Panel ATM = new Panel();
             ATM.Name = "ATM";
             ATM.Location = new Point(100, 100);
             ATM.AutoSize = true;
             ATM.BorderStyle = BorderStyle.Fixed3D;
             ATM.Tag = Machine;
-            // TODO сделать под все банкоматы, сейчас токо первый
-
+            // Добавить Дисплей, клавиатуру и дополнительную панель в основную панель банкомата
             ATM.Controls.AddRange(new Control[] { Display, Keyboard, Additional});
-
+            // Вернуть панель банкомата
             return ATM;
         }
 
@@ -56,12 +77,13 @@ namespace Banks
         /// <param name="Display">Изменяемый дисплей(панель)</param>
         public void DisplayClear(ref Panel Display)
         {
+            // Основной дисплей
             Panel DISPLAY_Clear = new Panel();
             DISPLAY_Clear.Name = "DISPLAY";
             DISPLAY_Clear.Location = new Point(100, 100);
             DISPLAY_Clear.Size = SETTINGS.DISPLAY_SIZE;
             DISPLAY_Clear.BorderStyle = BorderStyle.Fixed3D;
-
+            // Вернуть панель основного дисплей
             Display = DISPLAY_Clear;
         }
 
@@ -240,12 +262,14 @@ namespace Banks
         /// <param name="EventClickInputCard">Событие нажатия кнопки "Вставить карту"</param>
         public Panel DisplayAdditional(int Machine,  EventHandler EventClickInputCard)
         {
+            // Основная панель для дополнительного
             Panel DISPLAY_ADDITIONAL = new Panel();
             DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
             DISPLAY_ADDITIONAL.Location = new Point(0, 200);
             DISPLAY_ADDITIONAL.Size = new Size(0, 0);
             DISPLAY_ADDITIONAL.AutoSize = true;
 
+            // Кнопка (Вставить карту)
             Button BTN_ADDITIONAL_INCARD = new Button();
             BTN_ADDITIONAL_INCARD.Name = "BTN_ADDITIONAL_INCARD";
             BTN_ADDITIONAL_INCARD.Size = new Size(205, 30);

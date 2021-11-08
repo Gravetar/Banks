@@ -33,6 +33,8 @@ namespace Banks
             this.DebugText = new System.Windows.Forms.RichTextBox();
             this.DebugTimer = new System.Windows.Forms.Timer(this.components);
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.SelectUserCB = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // DebugText
@@ -55,22 +57,45 @@ namespace Banks
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainPanel.AutoScroll = true;
-            this.MainPanel.Location = new System.Drawing.Point(12, 12);
+            this.MainPanel.Location = new System.Drawing.Point(12, 46);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(689, 578);
+            this.MainPanel.Size = new System.Drawing.Size(689, 544);
             this.MainPanel.TabIndex = 1;
+            this.MainPanel.Visible = false;
+            // 
+            // SelectUserCB
+            // 
+            this.SelectUserCB.FormattingEnabled = true;
+            this.SelectUserCB.Location = new System.Drawing.Point(160, 12);
+            this.SelectUserCB.Name = "SelectUserCB";
+            this.SelectUserCB.Size = new System.Drawing.Size(268, 21);
+            this.SelectUserCB.TabIndex = 2;
+            this.SelectUserCB.Text = "Выбрать...";
+            this.SelectUserCB.SelectedIndexChanged += new System.EventHandler(this.SelectUserCB_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(142, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Смотреть от имени...";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(970, 618);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.SelectUserCB);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.DebugText);
             this.Name = "MainForm";
             this.Text = "Банковская система";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -78,6 +103,8 @@ namespace Banks
         private System.Windows.Forms.Timer DebugTimer;
         public System.Windows.Forms.RichTextBox DebugText;
         private System.Windows.Forms.Panel MainPanel;
+        private System.Windows.Forms.ComboBox SelectUserCB;
+        private System.Windows.Forms.Label label1;
     }
 }
 
