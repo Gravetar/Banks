@@ -2,22 +2,28 @@
 	>Panel ATM									=> Панель банкомата
 
 	>Panel DISPLAY								=> Панель дисплея банкомата
-	>>Label DISPLAY_Welcome_MainText			=>> Текст приветствия на дисплее
-
-	>>TableLayoutPanel DISPLAY_PIN_FLP			=>> Панель для элементов основного дисплея(для правильного отображения)
-	>>>Label DISPLAY_Pin_MainText				=>>> Текст с просьбой ввести пин код
-	>>>TextBox DISPLAY_Pin_InputText			=>>> Текстовый блок для ввода пин кода
+	<Дисплей приветствия>===============================================================
+		>>Label DISPLAY_Welcome_MainText			=>> Текст приветствия на дисплее
+	<Дисплей ввода Пин-кода>============================================================
+		>>TableLayoutPanel DISPLAY_PIN_FLP			=>> Панель для элементов основного дисплея(для правильного отображения)
+		>>>Label DISPLAY_Pin_MainText				=>>> Текст с просьбой ввести пин код
+		>>>TextBox DISPLAY_Pin_InputText			=>>> Текстовый блок для ввода пин кода
 
 	>Panel KEYBOARD								=> Панель клавиатуры банкомата
-	>>TableLayoutPanel DISPLAY_KEYB_TLP			=>> Панель для элементов клавиатуры
-	>>>Button BTN_KEYB_NUM1...BTN_KEYB_NUM9		=>>> Кнопки клавиатуры(цифры 1-9)
-	>>>Button BTN_KEYB_NULL						=>>> Кнопки клавиатуры(0)
-	>>>Button BTN_KEYB_0						=>>> Кнопки клавиатуры(Пустая)
-	>>>Button BTN_KEYB_NULL2					=>>> Кнопки клавиатуры(Пустая)
-	>>>Button BTN_KEYB_CANCEL					=>>> Кнопки клавиатуры(CANCEL)
-	>>>Button BTN_KEYB_CLEAR					=>>> Кнопки клавиатуры(CLEAR)
-	>>>Button BTN_KEYB_ENTER					=>>> Кнопки клавиатуры(ENTER)
-	>>>Button BTN_KEYB_NULL3					=>>> Кнопки клавиатуры(Пустая)
+		>>TableLayoutPanel DISPLAY_KEYB_TLP			=>> Панель для элементов клавиатуры
+		>>>Button BTN_KEYB_NUM1...BTN_KEYB_NUM9		=>>> Кнопки клавиатуры(цифры 1-9)
+		>>>Button BTN_KEYB_NULL						=>>> Кнопки клавиатуры(0)
+		>>>Button BTN_KEYB_0						=>>> Кнопки клавиатуры(Пустая)
+		>>>Button BTN_KEYB_NULL2					=>>> Кнопки клавиатуры(Пустая)
+		>>>Button BTN_KEYB_CANCEL					=>>> Кнопки клавиатуры(CANCEL)
+		>>>Button BTN_KEYB_CLEAR					=>>> Кнопки клавиатуры(CLEAR)
+		>>>Button BTN_KEYB_ENTER					=>>> Кнопки клавиатуры(ENTER)
+		>>>Button BTN_KEYB_NULL3					=>>> Кнопки клавиатуры(Пустая)
 
 	>Panel ADDITIONAL							=> Основная панель для дополнительного
-	>>Button BTN_ADDITIONAL_INCARD				=>> Кнопка (Вставить карту)
+	<ДЛЯ КЛИЕНТА>=====================================================================
+		>>Button BTN_ADDITIONAL_INCARD				=>> Кнопка (Вставить карту)
+	<ДЛЯ ОПРЕАТОРА>===================================================================
+		>>Button BTN_ADDITIONAL_OnATM				=>> Кнопка (Включить)
+		>>Button BTN_ADDITIONAL_OffATM				=>> Кнопка (Выключить)
+		>>Button BTN_ADDITIONAL_AddMoney			=>> Кнопка (Внести наличные)
