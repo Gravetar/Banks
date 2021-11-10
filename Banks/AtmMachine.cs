@@ -72,6 +72,21 @@ namespace Banks
     }
 
     /// <summary>
+    /// Виды дополнительных панелей
+    /// </summary>
+    public enum AdditionalPanels
+    {
+        /// <summary>
+        /// Дополнительная панель для клиента
+        /// </summary>
+        For_Client,
+        /// <summary>
+        /// Дополнительная панель для оператора
+        /// </summary>
+        For_Operator
+    }
+
+    /// <summary>
     /// Стаусы работы банкомата
     /// </summary>
     enum StateAtm

@@ -24,8 +24,6 @@ namespace Banks
             // Номинал = НужноеКолВоДенег[Номинал] - ТекущееКолВоДенег[Номинал]
             Dictionary<string, int> ResultBills = new Dictionary<string, int>
             {
-                ["10"] = NeedBills["10"] - CurrentBills["10"],
-                ["50"] = NeedBills["50"] - CurrentBills["50"],
                 ["100"] = NeedBills["100"] - CurrentBills["100"],
                 ["200"] = NeedBills["200"] - CurrentBills["200"],
                 ["500"] = NeedBills["500"] - CurrentBills["500"],

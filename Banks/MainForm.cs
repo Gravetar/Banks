@@ -12,103 +12,203 @@ namespace Banks
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Главный банк
+        /// </summary>
         ServerBank Bank;
 
+        /// <summary>
+        /// Отладчик приложения
+        /// </summary>
         DEBUGGER _DEBUGGER;
-        VISUALIZER _VISUALIZER = new VISUALIZER();
+        /// <summary>
+        /// Главный визуализатор
+        /// </summary>
+        VISUALIZER VISUALIZER = new VISUALIZER();
 
+        /// <summary>
+        /// Главная панель банкоматов
+        /// </summary>
         Control.ControlCollection MainControls;
 
+        /// <summary>
+        /// ID текущего пользователя
+        /// </summary>
         int CurrentIdUser;
+
         public MainForm()
         {
             InitializeComponent();
+
+            // Установка событий на динамически создаваемые объекты
+            VISUALIZER.Events.Add(OnKeyboard_Click);
+            VISUALIZER.Events.Add(OnAdditional_Click);
+
+            // Компоненты главной панели банкоматов
             MainControls = MainPanel.Controls;
 
+            // Инициализация главного банка
             Bank = INIT.INIT_Bank();
+            // Инициализация клиентов главного банка
             Bank.Clients = INIT.INIT_Clients();
-
+            // Инициализация банкоматов главного банка
             INIT.INIT_ATM(Bank);
 
-            _DEBUGGER = new DEBUGGER(Bank: Bank);
+            // Создание отладчика на основе главного банка
+            _DEBUGGER = new DEBUGGER(Bank);
+            // Запустить работу таймера отладчика
             DebugTimer.Start();
 
-            List<Panel> ATMs = new List<Panel>();
-            ATMs = _VISUALIZER.CreateAllATM(OnKeyboard_Click, OnInputCard_Click);
+            // Начальные действия приложения
+            OnStart();
+        }
+
+        /// <summary>
+        /// Начальные действия приложения
+        /// </summary>
+        void OnStart()
+        {
+            // Лист банкоматов
+            List<Panel> ATMs;
+            // Создать визуализацию всех банкоматов
+            ATMs = VISUALIZER.CreateAllATM();
+            // Добавить созданные визуализации в Главную панель банкоматов
             MainControls.AddRange(ATMs.ToArray());
 
+            // Добавить оператор в ComboBox выбора текущего пользователя приложения
             SelectUserCB.Items.Add("(Оператор)");
-            for (int i = 0; i<Bank.Clients.Count; i++)
+            // Добавить всех клиентов в ComboBox выбора текущего пользователя приложения
+            for (int i = 0; i < Bank.Clients.Count; i++) // Пройтись по всем клиентам из списка клиентов банка
             {
-                SelectUserCB.Items.Add(Bank.Clients[i]._ID.ToString() + ": " + Bank.Clients[i]._FIO);
+                SelectUserCB.Items.Add(Bank.Clients[i]._ID.ToString() + ": " + Bank.Clients[i]._FIO); // Добавить ID и ФИО клиента в ComboBox
             }
         }
 
         private void DebugTimer_Tick(object sender, EventArgs e)
         {
-            _DEBUGGER.DEBUG(ref DebugText);
+            // Запустить отладку
+            _DEBUGGER.DEBUG(ref DebugText, CurrentIdUser);
         }
 
-        private void OnInputCard_Click(object sender, EventArgs e)
+        private void OnAdditional_Click(object sender, EventArgs e)
         {
+            // Кнопка, вызвавшая событие
             Button CallerButton = sender as Button;
 
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
             Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
 
-            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
+            // Обработка кнопок на дополнительной панели
+            // Для панели клиента
+            if (CallerButton.Text == "Вставить карту")
+            {
+                // Дисплей текущего банкомата
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
+                // Установить текущего клиента текущему банкомату
+                CurrentMachine.CurrentClient = CurrentIdUser;
+                // Установить текущему клиенту текущий банкомат
+                Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
+                // Сменить доступность банкоматов
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
 
-            CurrentMachine.CurrentClient = CurrentIdUser;
-            Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
-            MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+                // Деактивировать кнопку, вызвавшей событие(Вставить карту)
+                CallerButton.Enabled = false;
+            }
 
-            CallerButton.Enabled = false;
+            // Для панели Оператора
+            else if (CallerButton.Text == "Включить")
+            {
+                CurrentMachine.stateAtm = StateAtm.on; // Включить текущий банкомат
+                CallerButton.Enabled = false; // Деактивировать кнопку, вызвавшей событие(Включить)
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OffATM", true).FirstOrDefault() as Button).Enabled = true; // Найти кнопку "Выключить" и диактивировать ее
+            }
+            else if (CallerButton.Text == "Выключить")
+            {
+                CurrentMachine.stateAtm = StateAtm.off;  // Выключить текущий банкомат
+                CallerButton.Enabled = false;  // Деактивировать кнопку, вызвавшей событие(Включить)
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OnATM", true).FirstOrDefault() as Button).Enabled = true; // Найти кнопку "Включить" и активировать ее
+            }
+            else if (CallerButton.Text == "Внести наличные")
+            {
+                // Внести недостающие наличные в банкомат
+                Bank.Operator.AddCashNeedded(CurrentMachine, Bank.Operator.CheckCash(CurrentMachine.bills, INIT.INIT_MAIN_CASH()));
+            }
         }
 
         private void OnKeyboard_Click(object sender, EventArgs e)
         {
+            // Кнопка, вызвавшая событие
             Button CallerButton = sender as Button;
 
-            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
-            Panel Display = CurrentAtm.Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
-            TextBox Pin_InputText = Display.Controls.Find("DISPLAY_Pin_InputText", true).FirstOrDefault() as TextBox;
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+            // Текущий дисплей
+            Panel CurrentDisplay = CurrentAtm.Controls.Find("DISPLAY", true).FirstOrDefault() as Panel;
+            // Текущий текстовый блок для ввода Пин-кода
+            TextBox Pin_InputText = CurrentDisplay.Controls.Find("DISPLAY_Pin_InputText", true).FirstOrDefault() as TextBox;
 
-            if (CallerButton.Text == "CANCEL")
+            // Обработка кнопок клавиатуры
+            if (CallerButton.Text == "CANCEL") // Если кнопка, вызвавшая событие - CANCEL, то: ("Вытащить карту")
             {
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), _VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                // Сменить дисплей текущего банкомата на дисплей приветствия
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                // Убрать текущего клиента из текущего банкомата
                 CurrentMachine.CurrentClient = -1;
+                // Убрать текущий банкомат из текущего клиента
                 Bank.Clients[CurrentIdUser]._ATM = -1;
+                // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
-
+                // Найти и активировать кнопку "Вставить карту" у текущего банкомата
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
             }
-            else if (CallerButton.Text == "CLEAR")
+            else if (CallerButton.Text == "CLEAR") // Если кнопка, вызвавшая событие - CLEAR, то:
             {
-                Pin_InputText.Text = "";
+                Pin_InputText.Text = ""; // Очистить поле ввода Пин-кода
             }
-            else if (CallerButton.Text == "ENTER")
-            {
-                if (Pin_InputText.Text.Length == 4) Console.WriteLine("ПИН-КОД ВВЕДЕН!");
+            else if (CallerButton.Text == "ENTER") // Если кнопка, вызвавшая событие - ENTER, то:
+            { 
+                if (Pin_InputText.Text.Length == 4) Console.WriteLine("ПИН-КОД ВВЕДЕН!"); // TODO
             }
-            else if (CallerButton.Text != " ")
+            else if (CallerButton.Text != " ") // Если кнопка, вызвавшая событие - цифры, то:
             {
+                // Добавить цифру с текста кнопки, вызвавшей событие, но не больше 4ех символов
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
             }
         }
 
         private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Показать главную панель банкоматов
             MainPanel.Visible = true;
-            if (SelectUserCB.SelectedItem.ToString() == "(Оператор)")
+            if (SelectUserCB.SelectedItem.ToString() == "(Оператор)") // Если в качестве текущего пользователя был выбран оператор то:
             {
-                SETTINGS.CURRENT_USER = User.Operator;
-                CurrentIdUser = -1;
+                SETTINGS.CURRENT_USER = User.Operator; // Установить текущего пользователя приложения в "Оператор"
+                for (int i = 0; i<Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
+                {
+                    // Установить текущий банкомат
+                    Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
+                    // Сменить текущую дополнительную панель на панель оператора
+                    MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Operator, Bank, CurrentIdUser);
+                }
+                // Сменить доступность банкоматов
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
             }
             else
             {
-                SETTINGS.CURRENT_USER = User.Client;
-                CurrentIdUser = SelectUserCB.SelectedIndex - 1;
+                SETTINGS.CURRENT_USER = User.Client; // Установить текущего пользователя приложения в "Клиент"
+                CurrentIdUser = SelectUserCB.SelectedIndex - 1; // Установить ID текущего пользователя приложения
+                for (int i = 0; i < Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
+                {
+                    // Установить текущий банкомат
+                    Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
+                    // Сменить текущую дополнительную панель на панель клиента
+                    MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Client, Bank, CurrentIdUser);
+                }
+                // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
             }
         }

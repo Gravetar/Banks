@@ -54,12 +54,14 @@ namespace Banks
         /// Вывод информации
         /// </summary>
         /// <param name="RTB_Result">RichTextBox для вывода</param>
-        public void DEBUG(ref RichTextBox RTB_Result)
+        /// <param name="CurrentClient">Текущий клиент приложения</param>
+        public void DEBUG(ref RichTextBox RTB_Result, int CurrentClient)
         {
             string result = ""; // Результирующая строка
             if (_ClientInfo)
             {
                 result += "<ub>==========КЛИЕНТЫ==========</ub>" + "\n";
+                result += "<b>Текущий клиент:</b> " + CurrentClient.ToString() + "\n";
                 for (int i=0; i<_Bank.Clients.Count; i++)
                 {
                     result += "<b>ID:</b> " + _Bank.Clients[i]._ID + "\n";

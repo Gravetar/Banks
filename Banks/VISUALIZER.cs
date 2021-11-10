@@ -14,12 +14,17 @@ namespace Banks
     class VISUALIZER
     {
         /// <summary>
+        /// Лист событий:
+        /// 0 = OnKeyboard_Click
+        /// 1 = OnAdditional_Click
+        /// </summary>
+        public List<EventHandler> Events = new List<EventHandler>(2);
+
+        /// <summary>
         /// Динамическое создание всех бакноматов
         /// </summary>
-        /// <param name="KeyboardEventClick">Событие нажатия на кнопки клавиатуры</param>
-        /// <param name="InputCardEventClick">Событие нажатия на кнопку "Вставить карту"</param>
-        /// <returns></returns>
-        public List<Panel> CreateAllATM(EventHandler KeyboardEventClick, EventHandler InputCardEventClick)
+        /// <returns>Лист панелей банкомата</returns>
+        public List<Panel> CreateAllATM()
         {
             // Лист банкоматов
             List<Panel> Machines = new List<Panel>();
@@ -29,20 +34,20 @@ namespace Banks
                 // Дисплей текуще-создоваемого банкомата
                 Panel Display = new Panel();
                 // Клавиатура текуще-создоваемого банкомата
-                Panel Keyboard = new Panel();
+                Panel Keyboard;
                 // Дополнительная панель текуще-создоваемого банкомата
                 Panel Additional = new Panel();
 
                 // Установить дисплей банкомата(приветственный дисплей)
                 DisplayWelcome(i, ref Display);
                 // Установить клавиатуру банкомата
-                Keyboard = DisplayKeyboard(i, KeyboardEventClick);
+                Keyboard = DisplayKeyboard(i);
                 // Установить дополнительнау панель банкомата
-                Additional = DisplayAdditional(i, InputCardEventClick);
+                DisplayAdditional(i, ref Additional);
                 // Добавить созданный банкомат в лист банкоматов
                 Machines.Add(CreateATM(i, Display, Keyboard, Additional));
-                // Установить расположение созданного банкомата
-                Machines[i].Location = new Point((Machines[i].Size.Width + 100) * i, 50);
+                // Установить расстояние между банкоматами
+                Machines[i].Margin = new Padding(20);
             }
             // Вернуть лист панелей банкомата
             return Machines;
@@ -55,7 +60,7 @@ namespace Banks
         /// <param name="Display">Дисплей банкомата</param>
         /// <param name="Keyboard">Клавиатура банкомата</param>
         /// <param name="Additional">Дополнительная панель банкомата</param>
-        /// <returns></returns>
+        /// <returns>Панель банкомата</returns>
         public Panel CreateATM(int Machine, Panel Display, Panel Keyboard, Panel Additional)
         {
             // Основная панель банкомата
@@ -167,13 +172,13 @@ namespace Banks
         /// <summary>
         /// Клавиатура банкомата
         /// </summary>
-        /// <param name="EventClick">Событие нажатия кнопки с цифрами</param>
-        public Panel DisplayKeyboard(int Machine, EventHandler EventClick)
+        /// <param name="Machine">Банкомат клавиатуры</param>
+        public Panel DisplayKeyboard(int Machine)
         {
             // Основной дисплей
             Panel DISPLAY_KEYBOARD = new Panel();
             DISPLAY_KEYBOARD.Name = "KEYBOARD";
-            DISPLAY_KEYBOARD.Location = new Point(0, 250);
+            DISPLAY_KEYBOARD.Location = new Point(0, 200);
             DISPLAY_KEYBOARD.Size = SETTINGS.KEYBOARD_SIZE;
             DISPLAY_KEYBOARD.BorderStyle = BorderStyle.Fixed3D;
 
@@ -193,7 +198,7 @@ namespace Banks
                 BTN_KEYB_NUM.Size = new Size(30, 30);
                 BTN_KEYB_NUM.Text = i.ToString();
                 BTN_KEYB_NUM.Tag = Machine;
-                BTN_KEYB_NUM.Click += new EventHandler(EventClick);
+                BTN_KEYB_NUM.Click += new EventHandler(Events[0]);
                 DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NUM);
             }
             // Кнопки клавиатуры(0, Пустые)
@@ -209,7 +214,7 @@ namespace Banks
             BTN_KEYB_0.Size = new Size(30, 30);
             BTN_KEYB_0.Text = "0";
             BTN_KEYB_0.Tag = Machine;
-            BTN_KEYB_0.Click += new EventHandler(EventClick);
+            BTN_KEYB_0.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_0);
 
             Button BTN_KEYB_NULL2 = new Button();
@@ -225,7 +230,7 @@ namespace Banks
             BTN_KEYB_CANCEL.Size = new Size(60, 30);
             BTN_KEYB_CANCEL.Text = "CANCEL";
             BTN_KEYB_CANCEL.Tag = Machine;
-            BTN_KEYB_CANCEL.Click += new EventHandler(EventClick);
+            BTN_KEYB_CANCEL.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CANCEL, 3, 0);
 
             Button BTN_KEYB_CLEAR = new Button();
@@ -233,7 +238,7 @@ namespace Banks
             BTN_KEYB_CLEAR.Size = new Size(60, 30);
             BTN_KEYB_CLEAR.Text = "CLEAR";
             BTN_KEYB_CLEAR.Tag = Machine;
-            BTN_KEYB_CLEAR.Click += new EventHandler(EventClick);
+            BTN_KEYB_CLEAR.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_CLEAR, 3, 1);
 
             Button BTN_KEYB_ENTER = new Button();
@@ -241,7 +246,7 @@ namespace Banks
             BTN_KEYB_ENTER.Size = new Size(60, 30);
             BTN_KEYB_ENTER.Text = "ENTER";
             BTN_KEYB_ENTER.Tag = Machine;
-            BTN_KEYB_ENTER.Click += new EventHandler(EventClick);
+            BTN_KEYB_ENTER.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_ENTER, 3, 2);
 
             Button BTN_KEYB_NULL3 = new Button();
@@ -249,6 +254,7 @@ namespace Banks
             BTN_KEYB_NULL3.Size = new Size(60, 30);
             BTN_KEYB_NULL3.Text = " ";
             BTN_KEYB_NULL3.Tag = Machine;
+            BTN_KEYB_ENTER.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL3, 3, 3);
 
             DISPLAY_KEYBOARD.Controls.Add(DISPLAY_KEYB_TLP);
@@ -259,28 +265,84 @@ namespace Banks
         /// <summary>
         /// Дополнительная панель к банкомату
         /// </summary>
-        /// <param name="EventClickInputCard">Событие нажатия кнопки "Вставить карту"</param>
-        public Panel DisplayAdditional(int Machine,  EventHandler EventClickInputCard)
+        /// <param name="Machine">Банкомат дополнительной панели</param>
+        /// <param name="Additional">Изменяемая дополнительная панель</param>
+        public void DisplayAdditional(int Machine, ref Panel Additional)
         {
             // Основная панель для дополнительного
             Panel DISPLAY_ADDITIONAL = new Panel();
             DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
-            DISPLAY_ADDITIONAL.Location = new Point(0, 200);
+            DISPLAY_ADDITIONAL.Location = new Point(210, 200);
             DISPLAY_ADDITIONAL.Size = new Size(0, 0);
+            DISPLAY_ADDITIONAL.Tag = Machine.ToString();
             DISPLAY_ADDITIONAL.AutoSize = true;
+            DISPLAY_ADDITIONAL.BorderStyle = BorderStyle.Fixed3D;
 
             // Кнопка (Вставить карту)
             Button BTN_ADDITIONAL_INCARD = new Button();
             BTN_ADDITIONAL_INCARD.Name = "BTN_ADDITIONAL_INCARD";
-            BTN_ADDITIONAL_INCARD.Size = new Size(205, 30);
+            BTN_ADDITIONAL_INCARD.Size = new Size(100, 30);
             BTN_ADDITIONAL_INCARD.Text = "Вставить карту";
             BTN_ADDITIONAL_INCARD.Left = 5;
             BTN_ADDITIONAL_INCARD.Top = 5;
             BTN_ADDITIONAL_INCARD.Tag = Machine.ToString();
-            BTN_ADDITIONAL_INCARD.Click += new EventHandler(EventClickInputCard);
+            BTN_ADDITIONAL_INCARD.Click += new EventHandler(Events[1]);
             DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_INCARD);
 
-            return DISPLAY_ADDITIONAL;
+            Additional = DISPLAY_ADDITIONAL;
+        }
+
+        /// <summary>
+        /// Дополнительная панель к банкомату от лица оператора
+        /// </summary>
+        /// <param name="Machine">Банкомат дополнительной панели</param>
+        /// <param name="Additional">зменяемая дополнительная панель</param>
+        public void DisplayAdditionalOperator(int Machine, ref Panel Additional)
+        {
+            // Основная панель для дополнительного
+            Panel DISPLAY_ADDITIONAL = new Panel();
+            DISPLAY_ADDITIONAL.Name = "ADDITIONAL";
+            DISPLAY_ADDITIONAL.Tag = Machine.ToString();
+            DISPLAY_ADDITIONAL.Location = new Point(210, 200);
+            DISPLAY_ADDITIONAL.Size = new Size(0, 0);
+            DISPLAY_ADDITIONAL.AutoSize = true;
+            DISPLAY_ADDITIONAL.BorderStyle = BorderStyle.Fixed3D;
+
+            // Кнопка (Включить)
+            Button BTN_ADDITIONAL_OnATM = new Button();
+            BTN_ADDITIONAL_OnATM.Name = "BTN_ADDITIONAL_OnATM";
+            BTN_ADDITIONAL_OnATM.Size = new Size(130, 30);
+            BTN_ADDITIONAL_OnATM.Location = new Point(0, 0);
+            BTN_ADDITIONAL_OnATM.Text = "Включить";
+            BTN_ADDITIONAL_OnATM.Left = 5;
+            BTN_ADDITIONAL_OnATM.Top = 5;
+            BTN_ADDITIONAL_OnATM.Tag = Machine.ToString();
+            BTN_ADDITIONAL_OnATM.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OnATM);
+
+            // Кнопка (Выключить)
+            Button BTN_ADDITIONAL_OffATM = new Button();
+            BTN_ADDITIONAL_OffATM.Name = "BTN_ADDITIONAL_OffATM";
+            BTN_ADDITIONAL_OffATM.Size = new Size(130, 30);
+            BTN_ADDITIONAL_OffATM.Text = "Выключить";
+            BTN_ADDITIONAL_OffATM.Left = 5;
+            BTN_ADDITIONAL_OffATM.Top = 35;
+            BTN_ADDITIONAL_OffATM.Tag = Machine.ToString();
+            BTN_ADDITIONAL_OffATM.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OffATM);
+
+            // Кнопка (Внести наличные)
+            Button BTN_ADDITIONAL_AddMoney = new Button();
+            BTN_ADDITIONAL_AddMoney.Name = "BTN_ADDITIONAL_AddMoney";
+            BTN_ADDITIONAL_AddMoney.Size = new Size(130, 30);
+            BTN_ADDITIONAL_AddMoney.Text = "Внести наличные";
+            BTN_ADDITIONAL_AddMoney.Left = 5;
+            BTN_ADDITIONAL_AddMoney.Top = 65;
+            BTN_ADDITIONAL_AddMoney.Tag = Machine.ToString();
+            BTN_ADDITIONAL_AddMoney.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_AddMoney);
+
+            Additional = DISPLAY_ADDITIONAL;
         }
     }
 }
