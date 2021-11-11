@@ -17,6 +17,9 @@ namespace Banks
         /// Лист событий:
         /// 0 = OnKeyboard_Click
         /// 1 = OnAdditional_Click
+        /// 2 = OnMainMenu_Click
+        /// 3 = OnToMenu_Click
+        /// 4 = OnWithdrawСash_Click
         /// </summary>
         public List<EventHandler> Events = new List<EventHandler>(2);
 
@@ -167,6 +170,165 @@ namespace Banks
             DISPLAY_Pin.Controls.Add(DISPLAY_Pin_TLP);
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_Pin;
+        }
+
+        /// <summary>
+        /// Дисплей с меню выбора
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayMenu(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Menu = new Panel();
+            DISPLAY_Menu.Name = "DISPLAY";
+            DISPLAY_Menu.Location = new Point(0, 0);
+            DISPLAY_Menu.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Menu.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Menu.Tag = Machine.ToString();
+
+            // Панель для кнопок с основными операциями
+            FlowLayoutPanel DISPLAY_MENU_FLP = new FlowLayoutPanel();
+            DISPLAY_MENU_FLP.Name = "DISPLAY_MENU_FLP";
+            DISPLAY_MENU_FLP.FlowDirection = FlowDirection.TopDown;
+            DISPLAY_MENU_FLP.AutoSize = true;
+            DISPLAY_MENU_FLP.Padding = new Padding(10, 10, 10, 10);
+
+            Button BTN_MENU_WITHDRAW = new Button();
+            BTN_MENU_WITHDRAW.Name = "BTN_MENU_WITHDRAW"; 
+            BTN_MENU_WITHDRAW.Size = new Size(180, 30);
+            BTN_MENU_WITHDRAW.Text = "СНЯТЬ НАЛИЧНЫЕ";
+            BTN_MENU_WITHDRAW.Tag = Machine;
+            BTN_MENU_WITHDRAW.Click += new EventHandler(Events[2]);
+            DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_WITHDRAW);
+
+            Button BTN_MENU_HELP = new Button();
+            BTN_MENU_HELP.Name = "BTN_MENU_WITHDRAW"; 
+            BTN_MENU_HELP.Size = new Size(180, 30);
+            BTN_MENU_HELP.Text = "СПРАВКА";
+            BTN_MENU_HELP.Tag = Machine;
+            BTN_MENU_HELP.Click += new EventHandler(Events[2]);
+            DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_HELP);
+
+            Button BTN_MENU_TRANSFER = new Button();
+            BTN_MENU_TRANSFER.Name = "BTN_MENU_WITHDRAW"; 
+            BTN_MENU_TRANSFER.Size = new Size(180, 30);
+            BTN_MENU_TRANSFER.Text = "ПЕРЕВОД НАЛИЧНЫХ";
+            BTN_MENU_TRANSFER.Tag = Machine;
+            BTN_MENU_TRANSFER.Click += new EventHandler(Events[2]);
+            DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_TRANSFER);
+
+            // Добавить в основной дисплей:
+            // Дисплей меню
+            DISPLAY_Menu.Controls.Add(DISPLAY_MENU_FLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Menu;
+        }
+
+        /// <summary>
+        /// Дисплей справки
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayHelp(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Help = new Panel();
+            DISPLAY_Help.Name = "DISPLAY";
+            DISPLAY_Help.Location = new Point(0, 0);
+            DISPLAY_Help.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Help.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Help.Tag = Machine.ToString();
+
+            // Панель 
+            FlowLayoutPanel DISPLAY_HELP_FLP = new FlowLayoutPanel();
+            DISPLAY_HELP_FLP.Name = "DISPLAY_HELP_FLP";
+            DISPLAY_HELP_FLP.FlowDirection = FlowDirection.TopDown;
+            DISPLAY_HELP_FLP.AutoSize = true;
+
+            RichTextBox RTB_HELP = new RichTextBox();
+            RTB_HELP.Name = "RTB_HELP";
+            RTB_HELP.Size = new Size(200, 155);
+            RTB_HELP.ReadOnly = true;
+            DISPLAY_HELP_FLP.Controls.Add(RTB_HELP);
+
+            Button BTN_HELP_BACK = new Button();
+            BTN_HELP_BACK.Name = "BTN_HELP_BACK"; 
+            BTN_HELP_BACK.Size = new Size(200, 20);
+            BTN_HELP_BACK.Text = "ВЕРНУТЬСЯ НАЗАД";
+            BTN_HELP_BACK.ForeColor = Color.Red;
+            BTN_HELP_BACK.Tag = Machine;
+            BTN_HELP_BACK.Click += new EventHandler(Events[3]);
+            DISPLAY_HELP_FLP.Controls.Add(BTN_HELP_BACK);
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_Help.Controls.Add(DISPLAY_HELP_FLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Help;
+        }
+
+        /// <summary>
+        /// Дисплей справки
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayWithdraw(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Withdraw = new Panel();
+            DISPLAY_Withdraw.Name = "DISPLAY";
+            DISPLAY_Withdraw.Location = new Point(0, 0);
+            DISPLAY_Withdraw.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Withdraw.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Withdraw.Tag = Machine.ToString();
+
+            // Панель 
+            TableLayoutPanel DISPLAY_WITHDRAW_TLP = new TableLayoutPanel();
+            DISPLAY_WITHDRAW_TLP.Name = "DISPLAY_WITHDRAW_TLP";
+            DISPLAY_WITHDRAW_TLP.AutoSize = true;
+            DISPLAY_WITHDRAW_TLP.ColumnCount = 2;
+            DISPLAY_WITHDRAW_TLP.RowCount = 8;
+            DISPLAY_WITHDRAW_TLP.Padding = new Padding(10, 10, 10, 10);
+            int currency = 50;
+            // Кнопки валют(цифры 100-5000)
+            for (int i = 0; i < 6; i++)
+            {
+                currency = currency * 2;
+                if(i == 2 || i == 5)
+                {
+                    currency = currency + currency/4;
+                }
+
+                Button BTN_WITHDRAW_CURRENCY = new Button();
+                BTN_WITHDRAW_CURRENCY.Name = "BTN_WITHDRAW_CURRENCY" + currency.ToString(); // KEYBOARD_BTN_1 ... KEYBOARD_BTN_9
+                BTN_WITHDRAW_CURRENCY.Size = new Size(87, 30);
+                BTN_WITHDRAW_CURRENCY.Text = currency.ToString();
+                BTN_WITHDRAW_CURRENCY.Tag = Machine;
+                BTN_WITHDRAW_CURRENCY.Click += new EventHandler(Events[4]);
+                DISPLAY_WITHDRAW_TLP.Controls.Add(BTN_WITHDRAW_CURRENCY);
+            }
+
+            Button BTN_WITHDRAW_BACK = new Button();
+            BTN_WITHDRAW_BACK.Name = "BTN_WITHDRAW_BACK";
+            BTN_WITHDRAW_BACK.Size = new Size(87, 30);
+            BTN_WITHDRAW_BACK.Text = "НАЗАД";
+            BTN_WITHDRAW_BACK.ForeColor = Color.Red;
+            BTN_WITHDRAW_BACK.Tag = Machine;
+            BTN_WITHDRAW_BACK.Click += new EventHandler(Events[3]);
+            DISPLAY_WITHDRAW_TLP.Controls.Add(BTN_WITHDRAW_BACK);
+
+            Button BTN_WITHDRAW_ANOTHER = new Button();
+            BTN_WITHDRAW_ANOTHER.Name = "BTN_WITHDRAW_ANOTHER";
+            BTN_WITHDRAW_ANOTHER.Size = new Size(87, 30);
+            BTN_WITHDRAW_ANOTHER.Text = "ДРУГАЯ";
+            BTN_WITHDRAW_ANOTHER.ForeColor = Color.Green;
+            BTN_WITHDRAW_ANOTHER.Tag = Machine;
+            BTN_WITHDRAW_ANOTHER.Click += new EventHandler(Events[3]);
+            DISPLAY_WITHDRAW_TLP.Controls.Add(BTN_WITHDRAW_ANOTHER);
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_Withdraw.Controls.Add(DISPLAY_WITHDRAW_TLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Withdraw;
         }
 
         /// <summary>

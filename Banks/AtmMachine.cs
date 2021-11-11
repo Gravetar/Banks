@@ -68,7 +68,19 @@ namespace Banks
         /// <summary>
         /// Дисплей для ввода пин-кода
         /// </summary>
-        InputPIN
+        InputPIN,
+        /// <summary>
+        /// Дисплей с меню
+        /// </summary>
+        Menu,
+        /// <summary>
+        /// Дисплей справки
+        /// </summary>
+        Help,
+        /// <summary>
+        /// Дисплей для снятия денег
+        /// </summary>
+        Withdraw
     }
 
     /// <summary>

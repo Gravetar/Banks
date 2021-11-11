@@ -31,7 +31,13 @@ namespace Banks
             }
             else if (Display == Displays.InputPIN) // Если тип дисплей, на который надо поменять = InputPIN (Дисплей для ввода пин-кода)
                 VISUALIZER.DisplayInputPIN(Machine, ref DISPLAY); // Сменить дисплей на InputPIN
-            else
+            else if (Display == Displays.Menu) 
+                VISUALIZER.DisplayMenu(Machine, ref DISPLAY);
+            else if (Display == Displays.Help)
+                VISUALIZER.DisplayHelp(Machine, ref DISPLAY);
+            else if (Display == Displays.Withdraw)
+                VISUALIZER.DisplayWithdraw(Machine, ref DISPLAY);
+            else 
                 VISUALIZER.DisplayClear(ref DISPLAY); // Сменить дисплей на пустой
 
             Controls.Add(DISPLAY); // Добавить дисплей на форму

@@ -43,6 +43,9 @@ namespace Banks
             // Установка событий на динамически создаваемые объекты
             VISUALIZER.Events.Add(OnKeyboard_Click);
             VISUALIZER.Events.Add(OnAdditional_Click);
+            VISUALIZER.Events.Add(OnMainMenu_Click);
+            VISUALIZER.Events.Add(OnToMenu_Click);
+            VISUALIZER.Events.Add(OnWithdrawСash_Click);
 
             // Компоненты главной панели банкоматов
             MainControls = MainPanel.Controls;
@@ -170,14 +173,71 @@ namespace Banks
                 Pin_InputText.Text = ""; // Очистить поле ввода Пин-кода
             }
             else if (CallerButton.Text == "ENTER") // Если кнопка, вызвавшая событие - ENTER, то:
-            { 
-                if (Pin_InputText.Text.Length == 4) Console.WriteLine("ПИН-КОД ВВЕДЕН!"); // TODO
+            {
+                if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length == 4) {
+                    Console.WriteLine("ПИН-КОД ВВЕДЕН!"); // TODO
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                }
+                // Дисплей текущего банкомата
             }
             else if (CallerButton.Text != " ") // Если кнопка, вызвавшая событие - цифры, то:
             {
                 // Добавить цифру с текста кнопки, вызвавшей событие, но не больше 4ех символов
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
             }
+        }
+
+        private void OnWithdrawСash_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+
+            Console.WriteLine(CallerButton.Text);
+
+        }
+
+        private void OnMainMenu_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+            if (CallerButton.Text == "СНЯТЬ НАЛИЧНЫЕ") // Если кнопка, вызвавшая событие - CANCEL, то: ("Вытащить карту")
+            {
+                // Сменить дисплей текущего банкомата на дисплей приветствия
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Withdraw);
+
+            }
+            else if (CallerButton.Text == "СПРАВКА")
+            {
+                // Сменить дисплей текущего банкомата на дисплей приветствия
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Help);
+            }
+            else if (CallerButton.Text == "ПЕРЕВОД НАЛИЧНЫХ")
+            {
+                Console.WriteLine("ПЕРЕВОД НАЛИЧНЫХ");
+            }
+        }
+
+        private void OnToMenu_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+            
+            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
         }
 
         private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)
