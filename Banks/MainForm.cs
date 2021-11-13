@@ -307,6 +307,8 @@ namespace Banks
                 label2.Visible = true;
 
                 SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray());
+                // Сменить доступность банкоматов
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
             }
         }
 
@@ -323,8 +325,6 @@ namespace Banks
                 // Сменить текущую дополнительную панель на панель клиента
                 MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Client, Bank, CurrentIdUser);
             }
-            // Сменить доступность банкоматов
-            MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
         }
 
         private void button1_Click(object sender, EventArgs e)
