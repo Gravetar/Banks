@@ -98,6 +98,7 @@ namespace Banks
                         result += "<b>Статус:</b>: " + _Bank.AtmMachines[i].stateAtm + "\n";
                         result += "<b>Дисплей:</b>: " + _Bank.AtmMachines[i].Display + "\n";
                         result += "<b>Клиент:</b>: " + _Bank.AtmMachines[i].CurrentClient + "\n";
+                        result += "<b>Карта:</b>: " + _Bank.AtmMachines[i].CurrentCard + "\n";
                         foreach (KeyValuePair<string, int> keyValue in _Bank.AtmMachines[i].bills)
                         {
                             result += string.Format("Д{0} = {1}\n", keyValue.Key, keyValue.Value);

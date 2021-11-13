@@ -21,6 +21,10 @@ namespace Banks
         /// </summary>
         public int CurrentClient = -1;
         /// <summary>
+        /// Кем занят банкомат
+        /// </summary>
+        public string CurrentCard;
+        /// <summary>
         /// Сколько пытались ввести пин-код на Банкомате
         /// </summary>
         public int TryInputPin = 0;

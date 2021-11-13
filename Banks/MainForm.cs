@@ -118,8 +118,6 @@ namespace Banks
             // Для панели клиента
             if (CallerButton.Text == "Вставить карту")
             {
-                SelectCardCB.Enabled = false;
-
                 // Дисплей текущего банкомата
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
                 // Установить текущего клиента текущему банкомату
@@ -128,6 +126,8 @@ namespace Banks
                 Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
                 // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+
+                CurrentMachine.CurrentCard = CurrentCard._NumberCard;
 
                 // Деактивировать кнопку, вызвавшей событие(Вставить карту)
                 CallerButton.Enabled = false;
@@ -272,7 +272,7 @@ namespace Banks
 
         private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectCardCB.Visible = false;
+            SelectCardCB.Text = "Выбрать...";
 
             if (SelectUserCB.SelectedItem.ToString() == "(Оператор)") // Если в качестве текущего пользователя был выбран оператор то:
             {
@@ -293,13 +293,19 @@ namespace Banks
             {
                 SETTINGS.CURRENT_USER = User.Client; // Установить текущего пользователя приложения в "Клиент"
                 CurrentIdUser = SelectUserCB.SelectedIndex - 1; // Установить ID текущего пользователя приложения
+                SelectCardCB.Items.Clear();
+
+                if (Bank.Clients[CurrentIdUser]._ATM != -1)
+                {
+                    SelectCardCB.Text = Bank.AtmMachines[Bank.Clients[CurrentIdUser]._ATM].CurrentCard;
+                    SelectCardCB.Items.Add(Bank.AtmMachines[Bank.Clients[CurrentIdUser]._ATM].CurrentCard);
+                }
 
                 SelectCardCB.Visible = true;
                 label2.Visible = true;
                 MainPanel.Visible = false;
 
-                SelectCardCB.Items.Clear();
-                SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetCardsStrings().ToArray());
+                SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray());
             }
         }
 
