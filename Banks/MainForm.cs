@@ -175,6 +175,8 @@ namespace Banks
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
                 // Убрать текущего клиента из текущего банкомата
                 CurrentMachine.CurrentClient = -1;
+                // Убрать текущего клиента из текущего банкомата
+                CurrentMachine.CurrentCard = "";
                 // Убрать текущий банкомат из текущего клиента
                 Bank.Clients[CurrentIdUser]._ATM = -1;
                 // Сменить доступность банкоматов
@@ -309,6 +311,13 @@ namespace Banks
                 SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray());
                 // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+                for (int i = 0; i < Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
+                {
+                    // Установить текущий банкомат
+                    Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
+                    // Сменить текущую дополнительную панель на панель клиента
+                    MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Client, Bank, CurrentIdUser);
+                }
             }
         }
 
@@ -317,14 +326,6 @@ namespace Banks
             // Показать главную панель банкоматов
             MainPanel.Visible = true;
             CurrentCard = Bank.DebitCards.Find(c => c._NumberCard == SelectCardCB.Text);
-
-            for (int i = 0; i < Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
-            {
-                // Установить текущий банкомат
-                Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
-                // Сменить текущую дополнительную панель на панель клиента
-                MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Client, Bank, CurrentIdUser);
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)
