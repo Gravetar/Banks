@@ -82,7 +82,7 @@ namespace Banks
                 {
                     if (item_atm.CurrentCard == item._NumberCard) free = false;
                 }
-                if (free) result.Add(item._NumberCard);
+                if (free && item._ClientCard._ID == _ID) result.Add(item._NumberCard);
             }
 
             return result;

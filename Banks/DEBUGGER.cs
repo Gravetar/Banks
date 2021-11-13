@@ -24,7 +24,7 @@ namespace Banks
         /// <summary>
         /// Вывод информации
         /// </summary>
-        bool _ClientInfo, _BankInfo, _AtmInfo;
+        bool _ClientInfo, _BankInfo, _AtmInfo, _CardsInfo;
         /// <summary>
         /// Применять стиль к выводу
         /// </summary>
@@ -47,11 +47,12 @@ namespace Banks
         /// <param name="ClientInfo">Вывод информации о клиентах</param>
         /// <param name="BankInfo">Вывод информации о банке</param>
         /// <param name="AtmInfo">Вывод информации о банкоматах</param>
-        public DEBUGGER(ServerBank Bank, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, TypeDebug Type = TypeDebug.Console)
+        public DEBUGGER(ServerBank Bank, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, bool CardsInfo = true, TypeDebug Type = TypeDebug.Console)
         {
             _ClientInfo = ClientInfo;
             _BankInfo = BankInfo;
             _AtmInfo = AtmInfo;
+            _CardsInfo = CardsInfo;
 
             _Bank = Bank;
             _Style = Style;
@@ -82,6 +83,19 @@ namespace Banks
                         result += "\n";
                     }
                 } // Если надо вывести информацию о клиенте, то
+                if (_CardsInfo)
+                {
+                    result += "<ub>==========КАРТЫ============</ub>" + "\n";
+                    for (int i = 0; i < _Bank.DebitCards.Count; i++)
+                    {
+                        result += "<b>Номер карты:</b> " + _Bank.DebitCards[i]._NumberCard + "\n";
+                        result += "<b>Номер счета:</b> " + _Bank.DebitCards[i]._NumberAccount + "\n";
+                        result += "<b>Клиент:</b> " + _Bank.DebitCards[i]._ClientCard._FIO + "\n";
+                        result += "\n";
+                        result += "----------";
+                        result += "\n";
+                    }
+                } // Если надо вывести информацию о картах, то
                 if (_BankInfo)
                 {
                     result += "<ub>==========БАНК==========</ub>" + "\n";

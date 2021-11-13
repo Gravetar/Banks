@@ -32,6 +32,7 @@ namespace Banks
             double Total,
             string NumberAccount,
             string NumberCard,
+            Client ClientCard,
             CardStatus Card_Status = CardStatus.Valid)
         {
             _ID = ID;
@@ -43,6 +44,7 @@ namespace Banks
             _NumberAccount = NumberAccount;
             _Card_Status = Card_Status;
             _NumberCard = NumberCard;
+            _ClientCard = ClientCard;
         }
 
 
@@ -82,20 +84,10 @@ namespace Banks
         /// Номер карты
         /// </summary>
         public string _NumberCard;
-
-        public Client GetClient(ServerBank Bank)
-        {
-            Account acc = Bank.Accounts.Find(a => a._Number == _NumberAccount);
-            foreach (Client item_client in Bank.Clients)
-            {
-                foreach (Account item_account in item_client.Accounts)
-                {
-                    if (item_account._Number == _NumberAccount)
-                        return item_client;
-                }
-            }
-            return null;
-        }
+        /// <summary>
+        /// Клиент, привязанный к карте
+        /// </summary>
+        public Client _ClientCard;
     }
 
     /// <summary>
