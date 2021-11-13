@@ -280,6 +280,10 @@ namespace Banks
             {
                 // Показать главную панель банкоматов
                 MainPanel.Visible = true;
+
+                label2.Visible = false;
+                SelectCardCB.Visible = false;
+
                 SETTINGS.CURRENT_USER = User.Operator; // Установить текущего пользователя приложения в "Оператор"
                 for (int i = 0; i<Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
                 {
