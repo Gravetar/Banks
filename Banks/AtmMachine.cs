@@ -88,7 +88,15 @@ namespace Banks
         /// <summary>
         /// Дисплей для снятия денег
         /// </summary>
-        Withdraw
+        Withdraw,
+        /// <summary>
+        /// Дисплей для введения другой суммы  и снития суммы
+        /// </summary>
+        AnotherAmount,
+        /// <summary>
+        /// Дисплей для перевода между счетами
+        /// </summary>
+        Transfer
     }
 
     /// <summary>
