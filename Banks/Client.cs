@@ -48,5 +48,22 @@ namespace Banks
         /// Дебетовые карточки клиента
         /// </summary>
         public List<DebitCard> DebitCards = new List<DebitCard>();
+
+        public List<string> GetCardsStrings()
+        {
+            List<DebitCard> debitCards = new List<DebitCard>();
+            List<string> result = new List<string>();
+
+            foreach (Account item in Accounts)
+            {
+                debitCards.AddRange(item._DebitCards);
+            }
+            foreach (DebitCard item in debitCards)
+            {
+                result.Add(item._NumberCard);
+            }
+
+            return result;
+        }
     }
 }

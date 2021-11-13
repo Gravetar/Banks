@@ -416,7 +416,7 @@ namespace Banks
             BTN_KEYB_NULL3.Size = new Size(60, 30);
             BTN_KEYB_NULL3.Text = " ";
             BTN_KEYB_NULL3.Tag = Machine;
-            BTN_KEYB_ENTER.Click += new EventHandler(Events[0]);
+            BTN_KEYB_NULL3.Click += new EventHandler(Events[0]);
             DISPLAY_KEYB_TLP.Controls.Add(BTN_KEYB_NULL3, 3, 3);
 
             DISPLAY_KEYBOARD.Controls.Add(DISPLAY_KEYB_TLP);

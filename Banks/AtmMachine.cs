@@ -20,6 +20,10 @@ namespace Banks
         /// Кем занят банкомат
         /// </summary>
         public int CurrentClient = -1;
+        /// <summary>
+        /// Сколько пытались ввести пин-код на Банкомате
+        /// </summary>
+        public int TryInputPin = 0;
 
         /// <summary>
         /// Дисплей банкомата

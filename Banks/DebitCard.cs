@@ -21,6 +21,7 @@ namespace Banks
         /// <param name="Limit">Лимит</param>
         /// <param name="Total">Итого</param>
         /// <param name="NumberAccount">Номер счета</param>
+        /// <param name="NumberCard">Номер карты</param>
         /// <param name="Card_Status">Состояние</param>
         public DebitCard(
             int ID, 
@@ -30,6 +31,7 @@ namespace Banks
             double Limit, 
             double Total,
             string NumberAccount,
+            string NumberCard,
             CardStatus Card_Status = CardStatus.Valid)
         {
             _ID = ID;
@@ -40,6 +42,7 @@ namespace Banks
             _Total = Total;
             _NumberAccount = NumberAccount;
             _Card_Status = Card_Status;
+            _NumberCard = NumberCard;
         }
 
 
@@ -50,7 +53,7 @@ namespace Banks
         /// <summary>
         /// Пин-код
         /// </summary>
-        string _PIN;
+        public string _PIN;
         /// <summary>
         /// Дата начала
         /// </summary>
@@ -74,7 +77,25 @@ namespace Banks
         /// <summary>
         /// Номер счета
         /// </summary>
-        string _NumberAccount;
+        public string _NumberAccount;
+        /// <summary>
+        /// Номер карты
+        /// </summary>
+        public string _NumberCard;
+
+        public Client GetClient(ServerBank Bank)
+        {
+            Account acc = Bank.Accounts.Find(a => a._Number == _NumberAccount);
+            foreach (Client item_client in Bank.Clients)
+            {
+                foreach (Account item_account in item_client.Accounts)
+                {
+                    if (item_account._Number == _NumberAccount)
+                        return item_client;
+                }
+            }
+            return null;
+        }
     }
 
     /// <summary>

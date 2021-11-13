@@ -14,31 +14,52 @@ namespace Banks
         /// <summary>
         /// Дебетовые карточки счета
         /// </summary>
-        public List<DebitCard> DebitCards = new List<DebitCard>();
+        public List<DebitCard> _DebitCards = new List<DebitCard>();
 
         /// <summary>
         /// Номер счета
         /// </summary>
-        string Number;
+        public string _Number;
         /// <summary>
         /// Баланс
         /// </summary>
-        double Balance;
+        double _Balance;
+        /// <summary>
+        /// Тип счета
+        /// </summary>
+        TypeAccount _Type;
+
+        /// <summary>
+        /// Сумма последнего вклада(Для Type = Checking)
+        /// </summary>
+        public double _AmountLastDeposit;
+
+        /// <summary>
+        /// Процентная ставка(Для Type = Saving)
+        /// </summary>
+        public double _InterestRate;
+
+        public Account(List<DebitCard> DebitCards, string Number, double Balance, TypeAccount Type)
+        {
+            _DebitCards = DebitCards;
+            _Number = Number;
+            _Balance = Balance;
+            _Type = Type;
+        }
     }
 
-    class СheckingAccount : Account
+    /// <summary>
+    /// Типы счетов
+    /// </summary>
+    public enum TypeAccount
     {
         /// <summary>
-        /// Сумма последнего вклада
+        /// Текущий
         /// </summary>
-        public double AmountLastDeposit;
-    }
-
-    class SavingsAccount : Account
-    {
+        Checking,
         /// <summary>
-        /// Процентная ставка
+        /// Сберегаельный
         /// </summary>
-        public double InterestRate;
+        Saving
     }
 }

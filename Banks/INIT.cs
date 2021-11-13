@@ -68,6 +68,51 @@ namespace Banks
         }
 
         /// <summary>
+        /// Инициализация карточек
+        /// </summary>
+        /// <param name="Bank">Главный банк</param>
+        public static void INIT_Cards(ServerBank Bank)
+        {
+            // Карточки
+            DebitCard[] cards =
+            {
+                new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberCard: "1234 3213 3213 1234"),
+                new DebitCard(ID: 2, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 200000, Total: 20000, NumberAccount: "0", NumberCard: "5847 5967 3485 9607"),
+                new DebitCard(ID: 3, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 300000, Total: 30000, NumberAccount: "1", NumberCard: "1859 6584 9385 9584"),
+            };
+
+            // Добавить в банк карточки
+            Bank.DebitCards.AddRange(cards);
+        }
+
+        /// <summary>
+        /// Инициализация счетов
+        /// </summary>
+        /// <param name="Bank">Главный банк</param>
+        public static void INIT_Account(ServerBank Bank, List<DebitCard> debitCards)
+        {
+            // Основные счета
+            Account[] checkingaccounts =
+            {
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "0"), Number: "0", Balance: 10000, Type: TypeAccount.Checking),
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "1"), Number: "1", Balance: 20000, Type: TypeAccount.Checking),
+            };
+
+            // Добавить в банк счета
+            Bank.Accounts.AddRange(checkingaccounts);
+        }
+        /// <summary>
+        /// Присвоение счетов клиентам
+        /// </summary>
+        /// <param name="Bank">Главный банк</param>
+        public static void INIT_Account_Client(ServerBank Bank)
+        {
+            Bank.Clients[0].Accounts.Add(Bank.Accounts[0]);
+            Bank.Clients[1].Accounts.Add(Bank.Accounts[0]);
+            Bank.Clients[2].Accounts.Add(Bank.Accounts[1]);
+        }
+
+        /// <summary>
         /// Необходимое количество денег по номиналам
         /// </summary>
         /// <returns>Словарь необходимого наличия количества денег</returns>

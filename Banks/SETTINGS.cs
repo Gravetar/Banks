@@ -17,6 +17,10 @@ namespace Banks
         /// </summary>
         public static int ATM_COUNT = 3;
         /// <summary>
+        /// Количество карт
+        /// </summary>
+        public static int CARDS_COUNT = 3;
+        /// <summary>
         /// Текущий пользователь приложения
         /// </summary>
         public static User CURRENT_USER;

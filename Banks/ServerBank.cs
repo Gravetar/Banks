@@ -35,6 +35,10 @@ namespace Banks
         /// </summary>
         public List<DebitCard> DebitCards = new List<DebitCard>();
         /// <summary>
+        /// Конфискованные карточки
+        /// </summary>
+        public List<DebitCard> ConfiscatedCards = new List<DebitCard>();
+        /// <summary>
         /// Банкоматы банка
         /// </summary>
         public List<AtmMachine> AtmMachines = new List<AtmMachine>();
@@ -42,10 +46,19 @@ namespace Banks
         /// Клиенты банка
         /// </summary>
         public List<Client> Clients = new List<Client>();
+        /// <summary>
+        /// Cчета банка
+        /// </summary>
+        public List<Account> Accounts = new List<Account>();
 
         /// <summary>
         /// Оператор банка
         /// </summary>
         public Operator Operator = new Operator();
+
+        public bool CheckPIN(DebitCard debitCard, string PIN)
+        {
+            return debitCard._PIN == PIN;
+        }
     }
 }

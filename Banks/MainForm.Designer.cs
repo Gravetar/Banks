@@ -35,15 +35,17 @@ namespace Banks
             this.SelectUserCB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.MainPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SelectCardCB = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // DebugText
             // 
             this.DebugText.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DebugText.Location = new System.Drawing.Point(944, 0);
-            this.DebugText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DebugText.Location = new System.Drawing.Point(707, 0);
             this.DebugText.Name = "DebugText";
-            this.DebugText.Size = new System.Drawing.Size(349, 761);
+            this.DebugText.Size = new System.Drawing.Size(263, 618);
             this.DebugText.TabIndex = 0;
             this.DebugText.Text = "DEBUGGER";
             // 
@@ -55,10 +57,9 @@ namespace Banks
             // SelectUserCB
             // 
             this.SelectUserCB.FormattingEnabled = true;
-            this.SelectUserCB.Location = new System.Drawing.Point(213, 15);
-            this.SelectUserCB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SelectUserCB.Location = new System.Drawing.Point(160, 12);
             this.SelectUserCB.Name = "SelectUserCB";
-            this.SelectUserCB.Size = new System.Drawing.Size(356, 24);
+            this.SelectUserCB.Size = new System.Drawing.Size(268, 21);
             this.SelectUserCB.TabIndex = 2;
             this.SelectUserCB.Text = "Выбрать...";
             this.SelectUserCB.SelectedIndexChanged += new System.EventHandler(this.SelectUserCB_SelectedIndexChanged);
@@ -67,10 +68,9 @@ namespace Banks
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(16, 18);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(187, 20);
+            this.label1.Size = new System.Drawing.Size(142, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Смотреть от имени...";
             // 
@@ -79,23 +79,56 @@ namespace Banks
             this.MainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainPanel.Location = new System.Drawing.Point(20, 59);
-            this.MainPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MainPanel.Location = new System.Drawing.Point(15, 80);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(915, 687);
+            this.MainPanel.Size = new System.Drawing.Size(686, 526);
             this.MainPanel.TabIndex = 3;
             this.MainPanel.Visible = false;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(12, 42);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(114, 16);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Выбрать карту...";
+            this.label2.Visible = false;
+            // 
+            // SelectCardCB
+            // 
+            this.SelectCardCB.FormattingEnabled = true;
+            this.SelectCardCB.Location = new System.Drawing.Point(160, 39);
+            this.SelectCardCB.Name = "SelectCardCB";
+            this.SelectCardCB.Size = new System.Drawing.Size(268, 21);
+            this.SelectCardCB.TabIndex = 5;
+            this.SelectCardCB.Text = "Выбрать...";
+            this.SelectCardCB.Visible = false;
+            this.SelectCardCB.SelectedIndexChanged += new System.EventHandler(this.SelectCardCB_SelectedIndexChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(611, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(90, 46);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Переключить тип дебаггера";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1293, 761);
+            this.ClientSize = new System.Drawing.Size(970, 618);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.SelectCardCB);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SelectUserCB);
             this.Controls.Add(this.DebugText);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Банковская система";
             this.ResumeLayout(false);
@@ -109,6 +142,9 @@ namespace Banks
         private System.Windows.Forms.ComboBox SelectUserCB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel MainPanel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox SelectCardCB;
+        private System.Windows.Forms.Button button1;
     }
 }
 
