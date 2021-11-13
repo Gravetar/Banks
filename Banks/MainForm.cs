@@ -294,16 +294,17 @@ namespace Banks
                 SETTINGS.CURRENT_USER = User.Client; // Установить текущего пользователя приложения в "Клиент"
                 CurrentIdUser = SelectUserCB.SelectedIndex - 1; // Установить ID текущего пользователя приложения
                 SelectCardCB.Items.Clear();
+                MainPanel.Visible = false;
 
                 if (Bank.Clients[CurrentIdUser]._ATM != -1)
                 {
                     SelectCardCB.Text = Bank.AtmMachines[Bank.Clients[CurrentIdUser]._ATM].CurrentCard;
                     SelectCardCB.Items.Add(Bank.AtmMachines[Bank.Clients[CurrentIdUser]._ATM].CurrentCard);
+                    MainPanel.Visible = true;
                 }
 
                 SelectCardCB.Visible = true;
                 label2.Visible = true;
-                MainPanel.Visible = false;
 
                 SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray());
             }
