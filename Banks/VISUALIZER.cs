@@ -22,6 +22,7 @@ namespace Banks
         /// 4 = OnWithdrawСash_Click
         /// 5 = OnAnotherAmount_Click
         /// 6 = OnTransfer_Click
+        /// 7 = OnTb_Click
         /// </summary>
         public List<EventHandler> Events = new List<EventHandler>(2);
 
@@ -258,7 +259,7 @@ namespace Banks
             BTN_MENU_TRANSFER.Size = new Size(180, 30);
             BTN_MENU_TRANSFER.Text = "ПЕРЕВОД НАЛИЧНЫХ";
             BTN_MENU_TRANSFER.Tag = Machine;
-            BTN_MENU_TRANSFER.Click += new EventHandler(Events[6]);
+            BTN_MENU_TRANSFER.Click += new EventHandler(Events[2]);
             DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_TRANSFER);
 
             // Добавить в основной дисплей:
@@ -475,6 +476,7 @@ namespace Banks
             DISPLAY_Pin_SecondAccount_InputText.ReadOnly = true;
             DISPLAY_Pin_SecondAccount_InputText.Size = new Size(150, 100);
             DISPLAY_Pin_SecondAccount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_Pin_SecondAccount_InputText.Click += Events[7];
             DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_SecondAccount_InputText);
 
             // Текст с суммой переводы
@@ -491,6 +493,7 @@ namespace Banks
             DISPLAY_Pin_TransferAmount_InputText.ReadOnly = true;
             DISPLAY_Pin_TransferAmount_InputText.Size = new Size(150, 100);
             DISPLAY_Pin_TransferAmount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_Pin_TransferAmount_InputText.Click += Events[7];
             DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_TransferAmount_InputText);
 
             Button BTN_TRANSFER_BACK = new Button();
@@ -508,7 +511,7 @@ namespace Banks
             BTN_TRANSFER_TRANSFER.Text = "ВЫПОЛНИТЬ";
             BTN_TRANSFER_TRANSFER.ForeColor = Color.Green;
             BTN_TRANSFER_TRANSFER.Tag = Machine;
-            BTN_TRANSFER_TRANSFER.Click += new EventHandler(Events[3]);
+            BTN_TRANSFER_TRANSFER.Click += new EventHandler(Events[6]);
             DISPLAY_TRANSFER_TLP.Controls.Add(BTN_TRANSFER_TRANSFER);
 
             // Добавить в основной дисплей:

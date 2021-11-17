@@ -60,5 +60,26 @@ namespace Banks
         {
             return debitCard._PIN == PIN;
         }
+
+        public string Transfer(string AccountOut, string AccountIn, int Value)
+        {
+            Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда
+            Account In = Accounts.Find(a => a._Number == AccountIn); // Куда
+
+            if (Out != null &&  In != null)
+            {
+                if (Out._Balance >= Value)
+                {
+                    Out._Balance -= Value;
+                    In._Balance += Value;
+                    return "Перевод успешно произведен!";
+                }
+                else return "На счете недостаточно средств!";
+            }
+            else
+            {
+                return "Счет, куда направлен перевод не найден!";
+            }
+        }
     }
 }
