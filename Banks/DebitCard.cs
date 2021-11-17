@@ -88,6 +88,18 @@ namespace Banks
         /// Клиент, привязанный к карте
         /// </summary>
         public Client _ClientCard;
+
+        public Account GetAccountByCurrentCard(ServerBank Bank, string NumberCard)
+        {
+            foreach (Account item in Bank.Accounts)
+            {
+                foreach (DebitCard item_card in item._DebitCards)
+                {
+                    if (item_card._NumberCard == NumberCard) return item;
+                }
+            }
+            return null;
+        }
     }
 
     /// <summary>

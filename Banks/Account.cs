@@ -23,7 +23,7 @@ namespace Banks
         /// <summary>
         /// Баланс
         /// </summary>
-        double _Balance;
+        public double _Balance;
         /// <summary>
         /// Тип счета
         /// </summary>

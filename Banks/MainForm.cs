@@ -236,6 +236,8 @@ namespace Banks
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
             // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
             Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+
 
             _DEBUGGER.DEBUG_CONSOLE(CallerButton.Text);
 
@@ -260,6 +262,20 @@ namespace Banks
             {
                 // Сменить дисплей текущего банкомата на дисплей приветствия
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Help);
+                RichTextBox RTBHELP = CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox;
+
+                string resultRTBHELP = "";
+                resultRTBHELP = string.Format(
+                    "Банк {0} сообщает, что остаток денежных средств по счету {1} по состоянию на {2} составляет:\n" +
+                    "{3} рублей"
+                    ,
+                    Bank._Name,
+                    CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Number.ToString(),
+                    DateTime.Now.ToString("dd.mm.yyyy г."),
+                    CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString()
+                    );
+
+                RTBHELP.Text = resultRTBHELP;
             }
             else if (CallerButton.Text == "ПЕРЕВОД НАЛИЧНЫХ")
             {
