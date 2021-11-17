@@ -51,6 +51,8 @@ namespace Banks
             VISUALIZER.Events.Add(OnMainMenu_Click);
             VISUALIZER.Events.Add(OnToMenu_Click);
             VISUALIZER.Events.Add(OnWithdrawСash_Click);
+            VISUALIZER.Events.Add(OnAnotherAmount_Click);
+            VISUALIZER.Events.Add(OnTransfer_Click);
 
             // Компоненты главной панели банкоматов
             MainControls = MainPanel.Controls;
@@ -196,10 +198,15 @@ namespace Banks
                     if (!Bank.CheckPIN(CurrentCard, Pin_InputText.Text))
                     {
                         CurrentMachine.TryInputPin += 1;
+                        Label Warn = CurrentAtm.Controls.Find("DISPLAY_Pin_Warning_Label",true).FirstOrDefault() as Label;
+                        Warn.Visible = true;
+                        Warn.Text = "ПИН-КОД ВВЕДЕН НЕ ВЕРНО!\n";
+                        Warn.Text += "Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString();
                         _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН НЕ ВЕРНО!");
                         _DEBUGGER.DEBUG_CONSOLE("Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString());
                         if (CurrentMachine.TryInputPin == 3)
                         {
+                            Warn.Text = "КАРТА КОНФИСКОВАНА!";
                             _DEBUGGER.DEBUG_CONSOLE("Карта конфискована!");
                             CurrentMachine.TryInputPin = 0;
                             // TODO Карта конфискована!
@@ -218,7 +225,8 @@ namespace Banks
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
             }
         }
-
+        
+        //TODO поменять функцию
         private void OnWithdrawСash_Click(object sender, EventArgs e)
         {
             // Кнопка, вызвавшая событие
@@ -259,6 +267,7 @@ namespace Banks
             }
         }
 
+        //TODO
         private void OnToMenu_Click(object sender, EventArgs e)
         {
             // Кнопка, вызвавшая событие
@@ -270,6 +279,34 @@ namespace Banks
             Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
             
             CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+        }
+
+        //TODO
+        private void OnAnotherAmount_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+
+            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.AnotherAmount);
+        }
+
+        //TODO
+        private void OnTransfer_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+
+            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Transfer);
         }
 
         private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)

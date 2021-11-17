@@ -37,6 +37,10 @@ namespace Banks
                 VISUALIZER.DisplayHelp(Machine, ref DISPLAY);
             else if (Display == Displays.Withdraw)
                 VISUALIZER.DisplayWithdraw(Machine, ref DISPLAY);
+            else if (Display == Displays.AnotherAmount)
+                VISUALIZER.DisplayAnotherAmount(Machine, ref DISPLAY);
+            else if (Display == Displays.Transfer)
+                VISUALIZER.DisplayTransfer(Machine, ref DISPLAY);
             else 
                 VISUALIZER.DisplayClear(ref DISPLAY); // Сменить дисплей на пустой
 

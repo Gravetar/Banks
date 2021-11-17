@@ -20,6 +20,8 @@ namespace Banks
         /// 2 = OnMainMenu_Click
         /// 3 = OnToMenu_Click
         /// 4 = OnWithdrawСash_Click
+        /// 5 = OnAnotherAmount_Click
+        /// 6 = OnTransfer_Click
         /// </summary>
         public List<EventHandler> Events = new List<EventHandler>(2);
 
@@ -141,6 +143,7 @@ namespace Banks
             TableLayoutPanel DISPLAY_Pin_TLP = new TableLayoutPanel();
             DISPLAY_Pin_TLP.Name = "DISPLAY_PIN_FLP";
             DISPLAY_Pin_TLP.ColumnCount = 3;
+            DISPLAY_Pin_TLP.AutoSize = true;
             DISPLAY_Pin_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             DISPLAY_Pin_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200F));
             DISPLAY_Pin_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -160,13 +163,25 @@ namespace Banks
             DISPLAY_Pin_InputText.Size = new Size(150, 100);
             DISPLAY_Pin_InputText.Anchor = AnchorStyles.None;
 
+            //Текст с предупреждением
+            Label DISPLAY_Pin_Warning_Label = new Label();
+            DISPLAY_Pin_Warning_Label.Name = "DISPLAY_Pin_Warning_Label";
+            DISPLAY_Pin_Warning_Label.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_Pin_Warning_Label.Margin = new Padding(0, 10, 0, 0);
+            DISPLAY_Pin_Warning_Label.Visible = false;
+            DISPLAY_Pin_Warning_Label.AutoSize = true;
+            DISPLAY_Pin_Warning_Label.ForeColor = Color.Red;
+            DISPLAY_Pin_Warning_Label.Anchor = AnchorStyles.None;
+
             //Добавить в Панель для элементов основного дисплея:
-                // Текст с просьбой
+            // Текст с просьбой
             DISPLAY_Pin_TLP.Controls.Add(DISPLAY_Pin_MainText, 1, 1);
-                // Текстовый блок для ввода
+            // Текстовый блок для ввода
             DISPLAY_Pin_TLP.Controls.Add(DISPLAY_Pin_InputText, 1, 2);
+            //Текст с предупреждением
+            DISPLAY_Pin_TLP.Controls.Add(DISPLAY_Pin_Warning_Label, 1, 3);
             // Добавить в основной дисплей:
-                // Панель для элементов основного дисплея
+            // Панель для элементов основного дисплея
             DISPLAY_Pin.Controls.Add(DISPLAY_Pin_TLP);
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_Pin;
@@ -214,7 +229,7 @@ namespace Banks
             BTN_MENU_TRANSFER.Size = new Size(180, 30);
             BTN_MENU_TRANSFER.Text = "ПЕРЕВОД НАЛИЧНЫХ";
             BTN_MENU_TRANSFER.Tag = Machine;
-            BTN_MENU_TRANSFER.Click += new EventHandler(Events[2]);
+            BTN_MENU_TRANSFER.Click += new EventHandler(Events[6]);
             DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_TRANSFER);
 
             // Добавить в основной дисплей:
@@ -321,7 +336,7 @@ namespace Banks
             BTN_WITHDRAW_ANOTHER.Text = "ДРУГАЯ";
             BTN_WITHDRAW_ANOTHER.ForeColor = Color.Green;
             BTN_WITHDRAW_ANOTHER.Tag = Machine;
-            BTN_WITHDRAW_ANOTHER.Click += new EventHandler(Events[3]);
+            BTN_WITHDRAW_ANOTHER.Click += new EventHandler(Events[5]);
             DISPLAY_WITHDRAW_TLP.Controls.Add(BTN_WITHDRAW_ANOTHER);
 
             // Добавить в основной дисплей:
@@ -329,6 +344,149 @@ namespace Banks
             DISPLAY_Withdraw.Controls.Add(DISPLAY_WITHDRAW_TLP);
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_Withdraw;
+        }
+
+
+        /// <summary>
+        /// Дисплей с введением другой суммы и снятию этой суммы
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayAnotherAmount(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel Display_Another_Amount = new Panel();
+            Display_Another_Amount.Name = "DISPLAY";
+            Display_Another_Amount.Location = new Point(0, 0);
+            Display_Another_Amount.Size = SETTINGS.DISPLAY_SIZE;
+            Display_Another_Amount.BorderStyle = BorderStyle.Fixed3D;
+            Display_Another_Amount.Tag = Machine.ToString();
+
+            // Панель для кнопок с основными операциями
+            FlowLayoutPanel Display_ANOTHER_AMOUNT_FLP = new FlowLayoutPanel();
+            Display_ANOTHER_AMOUNT_FLP.Name = "Display_ANOTHER_AMOUNT_FLP";
+            Display_ANOTHER_AMOUNT_FLP.FlowDirection = FlowDirection.TopDown;
+            Display_ANOTHER_AMOUNT_FLP.AutoSize = true;
+            Display_ANOTHER_AMOUNT_FLP.Padding = new Padding(10, 10, 10, 10);
+
+            // Текстовый блок для ввода
+            TextBox DISPLAY_Another_Amount_InputText = new TextBox();
+            DISPLAY_Another_Amount_InputText.Name = "DISPLAY_Another_Amount_InputText";
+            DISPLAY_Another_Amount_InputText.ReadOnly = true;
+            DISPLAY_Another_Amount_InputText.Size = new Size(150, 100);
+            DISPLAY_Another_Amount_InputText.Anchor = AnchorStyles.None;
+
+            // Кнопка для снятия суммы
+            Button BTN_ANOTHER_AMOUNT_WITHDRAW = new Button();
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Name = "BTN_ANOTHER_AMOUNT_WITHDRAW";
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Size = new Size(180, 30);
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Text = "СНЯТЬ СУММУ";
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Tag = Machine;
+            // TODO
+            //Поменять ивент
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Click += new EventHandler(Events[3]);
+            Display_ANOTHER_AMOUNT_FLP.Controls.Add(DISPLAY_Another_Amount_InputText);
+            Display_ANOTHER_AMOUNT_FLP.Controls.Add(BTN_ANOTHER_AMOUNT_WITHDRAW);
+
+            // Добавить в основной дисплей:
+            // Дисплей меню
+            Display_Another_Amount.Controls.Add(Display_ANOTHER_AMOUNT_FLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = Display_Another_Amount;
+        }
+
+        /// <summary>
+        /// Дисплей перевода между счетами 
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayTransfer(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Transfer = new Panel();
+            DISPLAY_Transfer.Name = "DISPLAY";
+            DISPLAY_Transfer.Location = new Point(0, 0);
+            DISPLAY_Transfer.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Transfer.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Transfer.Tag = Machine.ToString();
+
+            // Панель 
+            TableLayoutPanel DISPLAY_TRANSFER_TLP = new TableLayoutPanel();
+            DISPLAY_TRANSFER_TLP.Name = "DISPLAY_TRANSFER_TLP";
+            DISPLAY_TRANSFER_TLP.AutoSize = true;
+            DISPLAY_TRANSFER_TLP.ColumnCount = 2;
+            DISPLAY_TRANSFER_TLP.RowCount = 4;
+            DISPLAY_TRANSFER_TLP.Padding = new Padding(10, 10, 10, 10);
+
+            // Текст с первым счетом
+            Label DISPLAY_Pin_FirstAccount_Label = new Label();
+            DISPLAY_Pin_FirstAccount_Label.Name = "DISPLAY_Pin_FirstAccount_Label";
+            DISPLAY_Pin_FirstAccount_Label.Text = "Счет списания";
+            DISPLAY_Pin_FirstAccount_Label.AutoSize = true;
+            DISPLAY_Pin_FirstAccount_Label.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_FirstAccount_Label);
+
+            // Текстовый блок для ввода первого счета
+            TextBox DISPLAY_Pin_FirstAccount_InputText = new TextBox();
+            DISPLAY_Pin_FirstAccount_InputText.Name = "DISPLAY_Pin_FirstAccount_InputText";
+            DISPLAY_Pin_FirstAccount_InputText.ReadOnly = true;
+            DISPLAY_Pin_FirstAccount_InputText.Size = new Size(150, 100);
+            DISPLAY_Pin_FirstAccount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_FirstAccount_InputText);
+
+            // Текст со вторым счетом
+            Label DISPLAY_Pin_SecondAccount_Label = new Label();
+            DISPLAY_Pin_SecondAccount_Label.Name = "DISPLAY_Pin_SecondAccount_Label";
+            DISPLAY_Pin_SecondAccount_Label.Text = "Счет пополнения";
+            DISPLAY_Pin_SecondAccount_Label.AutoSize = true;
+            DISPLAY_Pin_SecondAccount_Label.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_SecondAccount_Label);
+
+            // Текстовый блок для ввода
+            TextBox DISPLAY_Pin_SecondAccount_InputText = new TextBox();
+            DISPLAY_Pin_SecondAccount_InputText.Name = "DISPLAY_Pin_SecondAccount_InputText";
+            DISPLAY_Pin_SecondAccount_InputText.ReadOnly = true;
+            DISPLAY_Pin_SecondAccount_InputText.Size = new Size(150, 100);
+            DISPLAY_Pin_SecondAccount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_SecondAccount_InputText);
+
+            // Текст с суммой переводы
+            Label DISPLAY_Pin_TransferAmount_Label = new Label();
+            DISPLAY_Pin_TransferAmount_Label.Name = "DISPLAY_Pin_TransferAmount_Label";
+            DISPLAY_Pin_TransferAmount_Label.Text = "Введите сумму";
+            DISPLAY_Pin_TransferAmount_Label.AutoSize = true;
+            DISPLAY_Pin_TransferAmount_Label.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_TransferAmount_Label);
+
+            // Текстовый блок для ввода суммы перевода
+            TextBox DISPLAY_Pin_TransferAmount_InputText = new TextBox();
+            DISPLAY_Pin_TransferAmount_InputText.Name = "DISPLAY_Pin_TransferAmount_InputText";
+            DISPLAY_Pin_TransferAmount_InputText.ReadOnly = true;
+            DISPLAY_Pin_TransferAmount_InputText.Size = new Size(150, 100);
+            DISPLAY_Pin_TransferAmount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_TransferAmount_InputText);
+
+            Button BTN_TRANSFER_BACK = new Button();
+            BTN_TRANSFER_BACK.Name = "BTN_WITHDRAW_BACK";
+            BTN_TRANSFER_BACK.Size = new Size(87, 30);
+            BTN_TRANSFER_BACK.Text = "НАЗАД";
+            BTN_TRANSFER_BACK.ForeColor = Color.Red;
+            BTN_TRANSFER_BACK.Tag = Machine;
+            BTN_TRANSFER_BACK.Click += new EventHandler(Events[3]);
+            DISPLAY_TRANSFER_TLP.Controls.Add(BTN_TRANSFER_BACK);
+
+            Button BTN_TRANSFER_TRANSFER = new Button();
+            BTN_TRANSFER_TRANSFER.Name = "BTN_WITHDRAW_ANOTHER";
+            BTN_TRANSFER_TRANSFER.Size = new Size(87, 30);
+            BTN_TRANSFER_TRANSFER.Text = "ВЫПОЛНИТЬ";
+            BTN_TRANSFER_TRANSFER.ForeColor = Color.Green;
+            BTN_TRANSFER_TRANSFER.Tag = Machine;
+            BTN_TRANSFER_TRANSFER.Click += new EventHandler(Events[3]);
+            DISPLAY_TRANSFER_TLP.Controls.Add(BTN_TRANSFER_TRANSFER);
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_Transfer.Controls.Add(DISPLAY_TRANSFER_TLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Transfer;
         }
 
         /// <summary>
