@@ -134,6 +134,25 @@ namespace Banks
                 // Деактивировать кнопку, вызвавшей событие(Вставить карту)
                 CallerButton.Enabled = false;
             }
+            else if(CallerButton.Text == "Забрать карту")
+            {
+                SelectCardCB.Enabled = true;
+                // Сменить дисплей текущего банкомата на дисплей приветствия
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                // Убрать текущего клиента из текущего банкомата
+                CurrentMachine.CurrentClient = -1;
+                // Убрать текущего клиента из текущего банкомата
+                CurrentMachine.CurrentCard = "";
+                // Убрать текущий банкомат из текущего клиента
+                Bank.Clients[CurrentIdUser]._ATM = -1;
+                // Сменить доступность банкоматов
+                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+                // Найти и активировать кнопку "Вставить карту" у текущего банкомата
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                CurrentMachine.TryInputPin = 0;
+            }
+
 
             // Для панели Оператора
             else if (CallerButton.Text == "Включить")
@@ -170,22 +189,11 @@ namespace Banks
             TextBox Pin_InputText = CurrentDisplay.Controls.Find("DISPLAY_Pin_InputText", true).FirstOrDefault() as TextBox;
 
             // Обработка кнопок клавиатуры
-            if (CallerButton.Text == "CANCEL") // Если кнопка, вызвавшая событие - CANCEL, то: ("Вытащить карту")
+            if (CallerButton.Text == "CANCEL" && CurrentMachine.Display != Displays.Welcome) // Если кнопка, вызвавшая событие - CANCEL, то: ("Вытащить карту")
             {
-                SelectCardCB.Enabled = true;
-                // Сменить дисплей текущего банкомата на дисплей приветствия
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
-                // Убрать текущего клиента из текущего банкомата
-                CurrentMachine.CurrentClient = -1;
-                // Убрать текущего клиента из текущего банкомата
-                CurrentMachine.CurrentCard = "";
-                // Убрать текущий банкомат из текущего клиента
-                Bank.Clients[CurrentIdUser]._ATM = -1;
-                // Сменить доступность банкоматов
-                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
-                // Найти и активировать кнопку "Вставить карту" у текущего банкомата
-                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
-                CurrentMachine.TryInputPin = 0;
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+
             }
             else if (CallerButton.Text == "CLEAR" && CurrentMachine.Display == Displays.InputPIN) // Если кнопка, вызвавшая событие - CLEAR, то:
             {
@@ -271,7 +279,7 @@ namespace Banks
                     ,
                     Bank._Name,
                     CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Number.ToString(),
-                    DateTime.Now.ToString("dd.mm.yyyy г."),
+                    DateTime.Now.ToString("dd.MM.yyyy г."),
                     CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString()
                     );
 

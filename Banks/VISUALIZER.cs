@@ -127,6 +127,35 @@ namespace Banks
         }
 
         /// <summary>
+        /// Дисплей заберите карту
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayOutCard(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_OutCard = new Panel();
+            DISPLAY_OutCard.Name = "DISPLAY";
+            DISPLAY_OutCard.Location = new Point(0, 0);
+            DISPLAY_OutCard.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_OutCard.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_OutCard.Tag = Machine.ToString();
+
+            //Текст приветствия на дисплее
+            Label DISPLAY_OutCard_MainText = new Label();
+            DISPLAY_OutCard_MainText.Name = "DISPLAY_OutCard_MainText";
+            DISPLAY_OutCard_MainText.Text = SETTINGS.OUTCARD_TEXT;
+            DISPLAY_OutCard_MainText.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_OutCard_MainText.AutoSize = true;
+            DISPLAY_OutCard_MainText.Location = new Point((DISPLAY_OutCard.Width / 2) - DISPLAY_OutCard_MainText.Size.Width, (DISPLAY_OutCard.Height / 2) - DISPLAY_OutCard_MainText.Size.Height);
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_OutCard.Controls.Add(DISPLAY_OutCard_MainText);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_OutCard;
+        }
+
+        /// <summary>
         /// Дисплей для ввода пин-кода
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
@@ -609,6 +638,18 @@ namespace Banks
             BTN_ADDITIONAL_INCARD.Tag = Machine.ToString();
             BTN_ADDITIONAL_INCARD.Click += new EventHandler(Events[1]);
             DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_INCARD);
+
+            // Кнопка (Забрать карту)
+            Button BTN_ADDITIONAL_OUTCARD = new Button();
+            BTN_ADDITIONAL_OUTCARD.Name = "BTN_ADDITIONAL_OUTCARD";
+            BTN_ADDITIONAL_OUTCARD.Size = new Size(100, 30);
+            BTN_ADDITIONAL_OUTCARD.Text = "Забрать карту";
+            BTN_ADDITIONAL_OUTCARD.Left = 5;
+            BTN_ADDITIONAL_OUTCARD.Top = 40;
+            BTN_ADDITIONAL_OUTCARD.Tag = Machine.ToString();
+            BTN_ADDITIONAL_OUTCARD.Enabled = false;
+            BTN_ADDITIONAL_OUTCARD.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OUTCARD);
 
             Additional = DISPLAY_ADDITIONAL;
         }

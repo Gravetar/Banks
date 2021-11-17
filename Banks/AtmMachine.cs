@@ -96,7 +96,11 @@ namespace Banks
         /// <summary>
         /// Дисплей для перевода между счетами
         /// </summary>
-        Transfer
+        Transfer,
+        /// <summary>
+        /// Дисплей забрать карту
+        /// </summary>
+        OutCard
     }
 
     /// <summary>

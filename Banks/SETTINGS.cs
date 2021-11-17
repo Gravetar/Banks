@@ -36,6 +36,11 @@ namespace Banks
         /// Сообщение приветствия
         /// </summary>
         public static string WELCOME_TEXT = "Добро Пожаловать\nВставьте пожалуйста вашу карту";
+        /// <summary>
+        /// Сообщение забрать карту
+        /// </summary>
+        public static string OUTCARD_TEXT = "До свидания\nЗаберте пожалуйста вашу карту";
+
     }
 
     /// <summary>
