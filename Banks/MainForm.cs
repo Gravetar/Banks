@@ -291,6 +291,9 @@ namespace Banks
                     Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
                     // Сменить текущую дополнительную панель на панель оператора
                     MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Operator, Bank, CurrentIdUser);
+                    // Заблокирвоать клавиатуру оператору
+                    Panel Keyboard = MainControls.Find("KEYBOARD", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
+                    Keyboard.Enabled = false;
                 }
                 // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
@@ -321,6 +324,9 @@ namespace Banks
                     Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
                     // Сменить текущую дополнительную панель на панель клиента
                     MAIN_FUNCTIONS.ChangeAdditionalPanel(i, VISUALIZER, CurrentAtm.Controls, AdditionalPanels.For_Client, Bank, CurrentIdUser);
+                    // Разблокирвоать клавиатуру клиенту
+                    Panel Keyboard = MainControls.Find("KEYBOARD", true).Where(t => t.Tag.ToString() == i.ToString()).FirstOrDefault() as Panel;
+                    Keyboard.Enabled = true;
                 }
             }
         }

@@ -343,6 +343,7 @@ namespace Banks
             DISPLAY_KEYBOARD.Location = new Point(0, 200);
             DISPLAY_KEYBOARD.Size = SETTINGS.KEYBOARD_SIZE;
             DISPLAY_KEYBOARD.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_KEYBOARD.Tag = Machine;
 
             // Панель для элементов клавиатуры 
             TableLayoutPanel DISPLAY_KEYB_TLP = new TableLayoutPanel();
