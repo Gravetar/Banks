@@ -39,6 +39,8 @@ namespace Banks
         /// </summary>
         ServerBank _Bank;
 
+        ContextMenuStrip _CMS_Debug;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -47,7 +49,7 @@ namespace Banks
         /// <param name="ClientInfo">Вывод информации о клиентах</param>
         /// <param name="BankInfo">Вывод информации о банке</param>
         /// <param name="AtmInfo">Вывод информации о банкоматах</param>
-        public DEBUGGER(ServerBank Bank, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, bool CardsInfo = true, TypeDebug Type = TypeDebug.Console)
+        public DEBUGGER(ServerBank Bank, ContextMenuStrip CMS_Debug, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, bool CardsInfo = true, TypeDebug Type = TypeDebug.Console)
         {
             _ClientInfo = ClientInfo;
             _BankInfo = BankInfo;
@@ -57,6 +59,9 @@ namespace Banks
             _Bank = Bank;
             _Style = Style;
             _Type = Type;
+
+            _CMS_Debug = CMS_Debug;
+
         }
 
         /// <summary>
@@ -66,6 +71,12 @@ namespace Banks
         /// <param name="CurrentClient">Текущий клиент приложения</param>
         public void DEBUG(int CurrentClient)
         {
+            _Style = (_CMS_Debug.Items.Find("StyleStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+            _BankInfo = (_CMS_Debug.Items.Find("BankInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+            _CardsInfo = (_CMS_Debug.Items.Find("CardsInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+            _ClientInfo = (_CMS_Debug.Items.Find("ClientInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+            _AtmInfo = (_CMS_Debug.Items.Find("AtmInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+
             if (_Type == TypeDebug.Debugger)
             {
                 string result = ""; // Результирующая строка

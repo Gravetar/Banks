@@ -77,7 +77,7 @@ namespace Banks
             INIT.INIT_Account_Client(Bank);
 
             // Создание отладчика на основе главного банка
-            _DEBUGGER = new DEBUGGER(Bank);
+            _DEBUGGER = new DEBUGGER(Bank, CMS_Debugger);
             _DEBUGGER.RTB_Result = DebugText;
             // Запустить работу таймера отладчика
             DebugTimer.Start();
@@ -432,9 +432,16 @@ namespace Banks
             CurrentCard = Bank.DebitCards.Find(c => c._NumberCard == SelectCardCB.Text);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CMS_Click(object sender, EventArgs e)
         {
-            _DEBUGGER.ChangeDebugger();
+            ToolStripMenuItem CallerItem = sender as ToolStripMenuItem;
+
+            if (CallerItem.Text == "Изменить тип") _DEBUGGER.ChangeDebugger();
+            if (CallerItem.Text == "Отладка")
+            {
+                if (CallerItem.Checked) DebugTimer.Start();
+                else DebugTimer.Stop();
+            }
         }
 
         private void OnTb_Click(object sender, EventArgs e)
