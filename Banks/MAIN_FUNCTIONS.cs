@@ -61,6 +61,7 @@ namespace Banks
         {
             // Массив всех банкоматов (На поле)
             var ATMs = Controls.Find("ATM", true);
+            var DISs = Controls.Find("DISPLAY", true);
             // Пройтись по всем банкоматам банка
             for (int i = 0; i < Bank.AtmMachines.Count; i++)
             {
@@ -76,8 +77,6 @@ namespace Banks
                             (Bank.AtmMachines[i].CurrentClient == CurrentIdUser) || // У текущей машины текущий клиент или:
                             (Bank.Clients[CurrentIdUser]._ATM == -1 && Bank.AtmMachines[i].CurrentClient == -1) // У текущей машины нет клиента и у текущего клиента нет машины
                             )
-                            || // Или:
-                            SETTINGS.CURRENT_USER == User.Operator // Текущий пользователь приложения-Оператор
                             )
                         {
                             ATMs[j].Enabled = true; // Активировать банкомат
@@ -87,6 +86,8 @@ namespace Banks
                             ATMs[j].Enabled = false; // Диактивировать банкомат
                         }
                     }
+                    if (SETTINGS.CURRENT_USER == User.Operator) DISs[j].Enabled = false; // Текущий пользователь приложения-Оператор
+                    else DISs[j].Enabled = true;
                 }
             }
         }

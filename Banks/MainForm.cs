@@ -348,13 +348,17 @@ namespace Banks
             // Кнопка, вызвавшая событие
             Button CallerButton = sender as Button;
 
+            // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
+            Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
+
             TextBox TbSum = MainControls.Find("DISPLAY_Another_Amount_InputText", true).FirstOrDefault() as TextBox;
             // Текущий банкомат(Согласно кнопке, вызвавшей событие)
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
 
-            if (CurrentMachine.Display == Displays.AnotherAmount)
+            if (CurrentMachine.Display == Displays.AnotherAmount && TbSum.Text != "")
             {
                 _DEBUGGER.DEBUG_CONSOLE(Bank.Withdraw(CurrentCard._NumberAccount, Convert.ToInt32(TbSum.Text), CurrentMachine));
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
             }
             else if (CurrentMachine.Display == Displays.Withdraw)
             {

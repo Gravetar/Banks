@@ -415,8 +415,6 @@ namespace Banks
             BTN_ANOTHER_AMOUNT_WITHDRAW.Tag = Machine;
             BTN_ANOTHER_AMOUNT_WITHDRAW.Click += Events[7];
             // TODO
-            //Поменять ивент
-            BTN_ANOTHER_AMOUNT_WITHDRAW.Click += new EventHandler(Events[3]);
             Display_ANOTHER_AMOUNT_FLP.Controls.Add(DISPLAY_Another_Amount_InputText);
             Display_ANOTHER_AMOUNT_FLP.Controls.Add(BTN_ANOTHER_AMOUNT_WITHDRAW);
 
