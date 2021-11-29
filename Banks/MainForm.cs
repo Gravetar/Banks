@@ -450,5 +450,10 @@ namespace Banks
 
             CurrentActiveTb = CallerTb;
         }
+
+        private void WIthdraw_Click(object sender, EventArgs e)
+        {
+            Bank.withdraw("0", 5300, Bank.AtmMachines[0]);
+        }
     }
 }

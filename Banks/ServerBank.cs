@@ -81,5 +81,55 @@ namespace Banks
                 return "Счет, куда направлен перевод не найден!";
             }
         }
+
+        public string withdraw(string AccountOut, int Value, AtmMachine Atm)
+        {
+            Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда
+            string Max = "";
+            int sum = 0;
+            Dictionary<string, int>  bills = Atm.bills;
+            Dictionary<string, int> billsOut = new Dictionary<string, int> // Словарь номиналов и количества денег
+                {
+                    { "100", 0 },
+                    { "200", 0 },
+                    { "500", 0 },
+                    { "1000", 0 },
+                    { "2000", 0 },
+                    { "5000", 0 }
+                };
+            if (Value % 100 != 0)
+            {
+                return "НЕВЕРНО ВВЕДЕНА СУММА!";
+            }
+
+            while(Value != 0)
+            {
+                foreach (KeyValuePair<string, int> keyValue in bills)
+                {
+                    if (Int32.Parse(keyValue.Key) <= Value && keyValue.Value != 0)
+                    {
+                        Max = keyValue.Key;
+                    }
+                }
+                if (bills[Max] > 0)
+                {
+                    bills[Max]--;
+                    billsOut[Max]++;
+                    sum += Int32.Parse(Max);
+                    Value -= Int32.Parse(Max);
+                    Console.WriteLine(Max);
+                }
+                else
+                {
+                    return "В БАНКОМАТЕ НЕДОСТАТОЧНО КУПЮР!";
+                }
+                
+            }
+            Console.WriteLine(Out._Balance);
+            Out._Balance -= sum;
+            Console.WriteLine(Out._Balance);
+            Console.WriteLine(sum);
+            return "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ";
+        }
     }
 }
