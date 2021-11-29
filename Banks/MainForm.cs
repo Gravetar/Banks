@@ -58,6 +58,7 @@ namespace Banks
             VISUALIZER.Events.Add(OnWithdrawСash_Click);
             VISUALIZER.Events.Add(OnAnotherAmount_Click);
             VISUALIZER.Events.Add(OnTransfer_Click);
+            VISUALIZER.Events.Add(OnWithdraw_Click);
 
             VISUALIZER.Events.Add(OnTb_Click);
 
@@ -244,7 +245,7 @@ namespace Banks
             {
                 // Добавить цифру с текста кнопки, вызвавшей событие, но не больше 4ех символов
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
-                if (CurrentMachine.Display == Displays.Transfer)
+                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.AnotherAmount)
                 {
                     if (CurrentActiveTb != null)
                     CurrentActiveTb.Text += CallerButton.Text;
@@ -342,8 +343,27 @@ namespace Banks
             CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.AnotherAmount);
         }
 
-        //TODO
-        private void OnTransfer_Click(object sender, EventArgs e)
+        private void OnWithdraw_Click(object sender, EventArgs e)
+        {
+            // Кнопка, вызвавшая событие
+            Button CallerButton = sender as Button;
+
+            TextBox TbSum = MainControls.Find("DISPLAY_Another_Amount_InputText", true).FirstOrDefault() as TextBox;
+            // Текущий банкомат(Согласно кнопке, вызвавшей событие)
+            AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
+
+            if (CurrentMachine.Display == Displays.AnotherAmount)
+            {
+                _DEBUGGER.DEBUG_CONSOLE(Bank.Withdraw(CurrentCard._NumberAccount, Convert.ToInt32(TbSum.Text), CurrentMachine));
+            }
+            else if (CurrentMachine.Display == Displays.Withdraw)
+            {
+                _DEBUGGER.DEBUG_CONSOLE(Bank.Withdraw(CurrentCard._NumberAccount, Convert.ToInt32(CallerButton.Text), CurrentMachine));
+            }
+        }
+
+            //TODO
+            private void OnTransfer_Click(object sender, EventArgs e)
         {
             // Кнопка, вызвавшая событие
             Button CallerButton = sender as Button;
@@ -453,7 +473,7 @@ namespace Banks
 
         private void WIthdraw_Click(object sender, EventArgs e)
         {
-            Bank.withdraw("0", 5300, Bank.AtmMachines[0]);
+            Bank.Withdraw("0", 5300, Bank.AtmMachines[0]);
         }
     }
 }

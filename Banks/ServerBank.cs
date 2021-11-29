@@ -82,7 +82,7 @@ namespace Banks
             }
         }
 
-        public string withdraw(string AccountOut, int Value, AtmMachine Atm)
+        public string Withdraw(string AccountOut, int Value, AtmMachine Atm)
         {
             Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда
             string Max = "";
@@ -126,10 +126,17 @@ namespace Banks
                 
             }
             Console.WriteLine(Out._Balance);
-            Out._Balance -= sum;
-            Console.WriteLine(Out._Balance);
-            Console.WriteLine(sum);
-            return "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ";
+            if ((Out._Balance -= sum) >= 0)
+            {
+                Console.WriteLine(Out._Balance);
+                Console.WriteLine(sum);
+                return "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ";
+            }
+            else
+            {
+                Out._Balance += sum;
+                return "НЕДОСТАТОЧНО СРЕДСТ НА СЧЕТУ!";
+            }
         }
     }
 }

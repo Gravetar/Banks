@@ -22,7 +22,8 @@ namespace Banks
         /// 4 = OnWithdrawСash_Click
         /// 5 = OnAnotherAmount_Click
         /// 6 = OnTransfer_Click
-        /// 7 = OnTb_Click
+        /// 7 = OnWithdraw_Click
+        /// 8 = OnTb_Click
         /// </summary>
         public List<EventHandler> Events = new List<EventHandler>(2);
 
@@ -312,7 +313,7 @@ namespace Banks
         }
 
         /// <summary>
-        /// Дисплей справки
+        /// Дисплей снятия
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
         public void DisplayWithdraw(int Machine, ref Panel Display)
@@ -347,7 +348,7 @@ namespace Banks
                 BTN_WITHDRAW_CURRENCY.Size = new Size(87, 30);
                 BTN_WITHDRAW_CURRENCY.Text = currency.ToString();
                 BTN_WITHDRAW_CURRENCY.Tag = Machine;
-                BTN_WITHDRAW_CURRENCY.Click += new EventHandler(Events[4]);
+                BTN_WITHDRAW_CURRENCY.Click += new EventHandler(Events[7]);
                 DISPLAY_WITHDRAW_TLP.Controls.Add(BTN_WITHDRAW_CURRENCY);
             }
 
@@ -404,6 +405,7 @@ namespace Banks
             DISPLAY_Another_Amount_InputText.ReadOnly = true;
             DISPLAY_Another_Amount_InputText.Size = new Size(150, 100);
             DISPLAY_Another_Amount_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_Another_Amount_InputText.Click += Events[8];
 
             // Кнопка для снятия суммы
             Button BTN_ANOTHER_AMOUNT_WITHDRAW = new Button();
@@ -411,6 +413,7 @@ namespace Banks
             BTN_ANOTHER_AMOUNT_WITHDRAW.Size = new Size(180, 30);
             BTN_ANOTHER_AMOUNT_WITHDRAW.Text = "СНЯТЬ СУММУ";
             BTN_ANOTHER_AMOUNT_WITHDRAW.Tag = Machine;
+            BTN_ANOTHER_AMOUNT_WITHDRAW.Click += Events[7];
             // TODO
             //Поменять ивент
             BTN_ANOTHER_AMOUNT_WITHDRAW.Click += new EventHandler(Events[3]);
@@ -492,7 +495,7 @@ namespace Banks
             DISPLAY_Pin_TransferAmount_InputText.ReadOnly = true;
             DISPLAY_Pin_TransferAmount_InputText.Size = new Size(150, 100);
             DISPLAY_Pin_TransferAmount_InputText.Anchor = AnchorStyles.None;
-            DISPLAY_Pin_TransferAmount_InputText.Click += Events[7];
+            DISPLAY_Pin_TransferAmount_InputText.Click += Events[8];
             DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_TransferAmount_InputText);
 
             Button BTN_TRANSFER_BACK = new Button();
