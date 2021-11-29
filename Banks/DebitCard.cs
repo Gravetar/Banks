@@ -20,7 +20,8 @@ namespace Banks
         /// <param name="DateEnd">Дата окончания</param>
         /// <param name="Limit">Лимит</param>
         /// <param name="Total">Итого</param>
-        /// <param name="NumberAccount">Номер счета</param>
+        /// <param name="NumberAccount">Номер дебетового счета</param>
+        /// <param name="NumberAccountCredit">Номер кредитного счета</param>
         /// <param name="NumberCard">Номер карты</param>
         /// <param name="Card_Status">Состояние</param>
         public DebitCard(
@@ -31,6 +32,7 @@ namespace Banks
             double Limit, 
             double Total,
             string NumberAccount,
+            string NumberAccountCredit,
             string NumberCard,
             Client ClientCard,
             CardStatus Card_Status = CardStatus.Valid)
@@ -42,6 +44,7 @@ namespace Banks
             _Limit = Limit;
             _Total = Total;
             _NumberAccount = NumberAccount;
+            _NumberAccountCredit = NumberAccountCredit;
             _Card_Status = Card_Status;
             _NumberCard = NumberCard;
             _ClientCard = ClientCard;
@@ -77,9 +80,13 @@ namespace Banks
         /// </summary>
         double _Total;
         /// <summary>
-        /// Номер счета
+        /// Номер дебетового счета
         /// </summary>
         public string _NumberAccount;
+        /// <summary>
+        /// Номер кредитного счета
+        /// </summary>
+        public string _NumberAccountCredit;
         /// <summary>
         /// Номер карты
         /// </summary>

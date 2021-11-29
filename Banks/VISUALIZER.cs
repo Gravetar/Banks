@@ -476,7 +476,6 @@ namespace Banks
             DISPLAY_Pin_SecondAccount_InputText.ReadOnly = true;
             DISPLAY_Pin_SecondAccount_InputText.Size = new Size(150, 100);
             DISPLAY_Pin_SecondAccount_InputText.Anchor = AnchorStyles.None;
-            DISPLAY_Pin_SecondAccount_InputText.Click += Events[7];
             DISPLAY_TRANSFER_TLP.Controls.Add(DISPLAY_Pin_SecondAccount_InputText);
 
             // Текст с суммой переводы

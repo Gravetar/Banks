@@ -76,9 +76,9 @@ namespace Banks
             // Карточки
             DebitCard[] cards =
             {
-                new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberCard: "1234 3213 3213 1234", ClientCard: Bank.Clients[0]),
-                new DebitCard(ID: 2, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 200000, Total: 20000, NumberAccount: "0", NumberCard: "5847 5967 3485 9607", ClientCard: Bank.Clients[1]),
-                new DebitCard(ID: 3, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 300000, Total: 30000, NumberAccount: "1", NumberCard: "1859 6584 9385 9584", ClientCard: Bank.Clients[2]),
+                new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberAccountCredit: "2", NumberCard: "1234 3213 3213 1234", ClientCard: Bank.Clients[0]),
+                new DebitCard(ID: 2, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 200000, Total: 20000, NumberAccount: "0", NumberAccountCredit: "3", NumberCard: "5847 5967 3485 9607", ClientCard: Bank.Clients[1]),
+                new DebitCard(ID: 3, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 300000, Total: 30000, NumberAccount: "1", NumberAccountCredit: "4", NumberCard: "1859 6584 9385 9584", ClientCard: Bank.Clients[2]),
             };
 
             // Добавить в банк карточки
@@ -96,6 +96,10 @@ namespace Banks
             {
                 new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "0"), Number: "0", Balance: 10000, Type: TypeAccount.Checking),
                 new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "1"), Number: "1", Balance: 20000, Type: TypeAccount.Checking),
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "2"), Number: "2", Balance: 30000, Type: TypeAccount.Checking),
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "3"), Number: "3", Balance: 15000, Type: TypeAccount.Checking),
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "4"), Number: "4", Balance: 17000, Type: TypeAccount.Checking),
+
             };
 
             // Добавить в банк счета
@@ -108,8 +112,13 @@ namespace Banks
         public static void INIT_Account_Client(ServerBank Bank)
         {
             Bank.Clients[0].Accounts.Add(Bank.Accounts[0]);
+            Bank.Clients[0].Accounts.Add(Bank.Accounts[2]);
+
             Bank.Clients[1].Accounts.Add(Bank.Accounts[0]);
+            Bank.Clients[1].Accounts.Add(Bank.Accounts[3]);
+
             Bank.Clients[2].Accounts.Add(Bank.Accounts[1]);
+            Bank.Clients[2].Accounts.Add(Bank.Accounts[4]);
         }
 
         /// <summary>

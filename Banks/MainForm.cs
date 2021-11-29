@@ -308,6 +308,9 @@ namespace Banks
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Transfer);
                 TextBox Out = CurrentAtm.Controls.Find("DISPLAY_Pin_FirstAccount_InputText", true).FirstOrDefault() as TextBox;
                 Out.Text = CurrentCard._NumberAccount;
+
+                TextBox In = CurrentAtm.Controls.Find("DISPLAY_Pin_SecondAccount_InputText", true).FirstOrDefault() as TextBox;
+                In.Text = CurrentCard._NumberAccountCredit;
             }
         }
 

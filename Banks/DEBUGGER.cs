@@ -89,7 +89,8 @@ namespace Banks
                     for (int i = 0; i < _Bank.DebitCards.Count; i++)
                     {
                         result += "<b>Номер карты:</b> " + _Bank.DebitCards[i]._NumberCard + "\n";
-                        result += "<b>Номер счета:</b> " + _Bank.DebitCards[i]._NumberAccount + "\n";
+                        result += "<b>Номер д. счета:</b> " + _Bank.DebitCards[i]._NumberAccount + "\n";
+                        result += "<b>Номер к. счета:</b> " + _Bank.DebitCards[i]._NumberAccountCredit + "\n";
                         result += "<b>Клиент:</b> " + _Bank.DebitCards[i]._ClientCard._FIO + "\n";
                         result += "\n";
                         result += "----------";

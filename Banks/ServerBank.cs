@@ -66,7 +66,7 @@ namespace Banks
             Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда
             Account In = Accounts.Find(a => a._Number == AccountIn); // Куда
 
-            if (Out != null &&  In != null)
+            if (Out != null &&  In != null )
             {
                 if (Out._Balance >= Value)
                 {
