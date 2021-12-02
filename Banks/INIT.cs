@@ -128,9 +128,7 @@ namespace Banks
         public static Dictionary<string, int> INIT_MAIN_CASH()
         {
             // Словарь необходимого наличия количества денег
-            Dictionary<string, int> temp_bills = new Dictionary<string, int>(8);
-            temp_bills.Add("10", 10);
-            temp_bills.Add("50", 10);
+            Dictionary<string, int> temp_bills = new Dictionary<string, int>(6);
             temp_bills.Add("100", 10);
             temp_bills.Add("200", 10);
             temp_bills.Add("500", 10);

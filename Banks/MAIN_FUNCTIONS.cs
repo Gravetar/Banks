@@ -43,6 +43,8 @@ namespace Banks
                 VISUALIZER.DisplayTransfer(Machine, ref DISPLAY);
             else if (Display == Displays.OutCard)
                 VISUALIZER.DisplayOutCard(Machine, ref DISPLAY);
+            else if (Display == Displays.SelectAccount)
+                VISUALIZER.DisplaySelectAccount(Machine, ref DISPLAY);
             else 
                 VISUALIZER.DisplayClear(ref DISPLAY); // Сменить дисплей на пустой
 

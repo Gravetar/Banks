@@ -100,7 +100,11 @@ namespace Banks
         /// <summary>
         /// Дисплей забрать карту
         /// </summary>
-        OutCard
+        OutCard,
+        /// <summary>
+        /// Дисплей выбора счета
+        /// </summary>
+        SelectAccount
     }
 
     /// <summary>

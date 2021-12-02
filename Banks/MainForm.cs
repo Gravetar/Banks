@@ -240,12 +240,37 @@ namespace Banks
                         }
                     }
                 }
+                else if (CurrentMachine.Display == Displays.SelectAccount)
+                {
+                    if (!Bank.CheckPIN(CurrentCard, Pin_InputText.Text))
+                    {
+                        CurrentMachine.TryInputPin += 1;
+                        Label Warn = CurrentAtm.Controls.Find("DISPLAY_Pin_Warning_Label", true).FirstOrDefault() as Label;
+                        Warn.Visible = true;
+                        Warn.Text = "ПИН-КОД ВВЕДЕН НЕ ВЕРНО!\n";
+                        Warn.Text += "Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString();
+                        _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН НЕ ВЕРНО!");
+                        _DEBUGGER.DEBUG_CONSOLE("Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString());
+                        if (CurrentMachine.TryInputPin == 3)
+                        {
+                            Warn.Text = "КАРТА КОНФИСКОВАНА!";
+                            _DEBUGGER.DEBUG_CONSOLE("Карта конфискована!");
+                            CurrentMachine.TryInputPin = 0;
+                            // TODO Карта конфискована!
+                        }
+                    }
+                    else
+                    {
+                        _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН ВЕРНО!");
+                        CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                    }
+                }
             }
             else if (CallerButton.Text != " ") // Если кнопка, вызвавшая событие - цифры, то:
             {
                 // Добавить цифру с текста кнопки, вызвавшей событие, но не больше 4ех символов
                 if (CurrentMachine.Display == Displays.InputPIN && Pin_InputText.Text.Length < 4) Pin_InputText.Text += CallerButton.Text;
-                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.AnotherAmount)
+                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.AnotherAmount || CurrentMachine.Display == Displays.SelectAccount)
                 {
                     if (CurrentActiveTb != null)
                     CurrentActiveTb.Text += CallerButton.Text;
@@ -282,7 +307,7 @@ namespace Banks
             if (CallerButton.Text == "СНЯТЬ НАЛИЧНЫЕ") // Если кнопка, вызвавшая событие - CANCEL, то: ("Вытащить карту")
             {
                 // Сменить дисплей текущего банкомата на дисплей приветствия
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Withdraw);
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.SelectAccount);
 
             }
             else if (CallerButton.Text == "СПРАВКА")

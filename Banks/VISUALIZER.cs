@@ -313,6 +313,69 @@ namespace Banks
         }
 
         /// <summary>
+        /// Дисплей для выбора счета 
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplaySelectAccount(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Account = new Panel();
+            DISPLAY_Account.Name = "DISPLAY";
+            DISPLAY_Account.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Account.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Account.Tag = Machine.ToString();
+
+            // Панель для элементов основного дисплея(для правильного отображения) 
+            TableLayoutPanel DISPLAY_Account_TLP = new TableLayoutPanel();
+            DISPLAY_Account_TLP.Name = "DISPLAY_Account_TLP";
+            DISPLAY_Account_TLP.ColumnCount = 3;
+            DISPLAY_Account_TLP.AutoSize = true;
+            DISPLAY_Account_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            DISPLAY_Account_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200F));
+            DISPLAY_Account_TLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            DISPLAY_Account_TLP.Padding = new Padding(0, 50, 0, 0);
+
+            // Текст с просьбой
+            Label DISPLAY_Account_MainText = new Label();
+            DISPLAY_Account_MainText.Name = "DISPLAY_Account_MainText";
+            DISPLAY_Account_MainText.Text = "Введите номер счета";
+            DISPLAY_Account_MainText.AutoSize = true;
+            DISPLAY_Account_MainText.Anchor = AnchorStyles.None;
+
+            // Текстовый блок для ввода
+            TextBox DISPLAY_Account_InputText = new TextBox();
+            DISPLAY_Account_InputText.Name = "DISPLAY_Account_InputText";
+            DISPLAY_Account_InputText.ReadOnly = true;
+            DISPLAY_Account_InputText.Size = new Size(150, 100);
+            DISPLAY_Account_InputText.Anchor = AnchorStyles.None;
+            DISPLAY_Account_InputText.Click += new EventHandler(Events[8]);
+
+            //Текст с предупреждением
+            Label DISPLAY_Account_Warning_Label = new Label();
+            DISPLAY_Account_Warning_Label.Name = "DISPLAY_Account_Warning_Label";
+            DISPLAY_Account_Warning_Label.Text = "Ошибка доступа!";
+            DISPLAY_Account_Warning_Label.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_Account_Warning_Label.Margin = new Padding(0, 10, 0, 0);
+            DISPLAY_Account_Warning_Label.Visible = false;
+            DISPLAY_Account_Warning_Label.AutoSize = true;
+            DISPLAY_Account_Warning_Label.ForeColor = Color.Red;
+            DISPLAY_Account_Warning_Label.Anchor = AnchorStyles.None;
+
+            //Добавить в Панель для элементов основного дисплея:
+            // Текст с просьбой
+            DISPLAY_Account_TLP.Controls.Add(DISPLAY_Account_MainText, 1, 1);
+            // Текстовый блок для ввода
+            DISPLAY_Account_TLP.Controls.Add(DISPLAY_Account_InputText, 1, 2);
+            //Текст с предупреждением
+            DISPLAY_Account_TLP.Controls.Add(DISPLAY_Account_Warning_Label, 1, 3);
+            // Добавить в основной дисплей:
+            // Панель для элементов основного дисплея
+            DISPLAY_Account.Controls.Add(DISPLAY_Account_TLP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Account;
+        }
+
+        /// <summary>
         /// Дисплей снятия
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
