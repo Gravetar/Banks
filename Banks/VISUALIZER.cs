@@ -717,6 +717,18 @@ namespace Banks
             BTN_ADDITIONAL_OUTCARD.Click += new EventHandler(Events[1]);
             DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OUTCARD);
 
+            // Кнопка (Забрать наличные)
+            Button BTN_ADDITIONAL_OUTCASH = new Button();
+            BTN_ADDITIONAL_OUTCASH.Name = "BTN_ADDITIONAL_OUTCASH";
+            BTN_ADDITIONAL_OUTCASH.Size = new Size(100, 30);
+            BTN_ADDITIONAL_OUTCASH.Text = "Забрать нал.";
+            BTN_ADDITIONAL_OUTCASH.Left = 5;
+            BTN_ADDITIONAL_OUTCASH.Top = 75;
+            BTN_ADDITIONAL_OUTCASH.Tag = Machine.ToString();
+            BTN_ADDITIONAL_OUTCASH.Enabled = false;
+            BTN_ADDITIONAL_OUTCASH.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OUTCASH);
+
             Additional = DISPLAY_ADDITIONAL;
         }
 

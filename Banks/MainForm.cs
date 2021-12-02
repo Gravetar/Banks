@@ -160,6 +160,14 @@ namespace Banks
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
                 CurrentMachine.TryInputPin = 0;
             }
+            else if (CallerButton.Text == "Забрать нал.")
+            {
+                SelectCardCB.Enabled = true;
+                // Сменить дисплей текущего банкомата на дисплей меню
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = false;
+                MAIN_FUNCTIONS.Block_UnBlockElement(false, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+            }
 
 
             // Для панели Оператора
@@ -207,7 +215,7 @@ namespace Banks
             {
                 if (CurrentMachine.Display == Displays.InputPIN)
                     Pin_InputText.Text = ""; // Очистить поле ввода Пин-кода
-                if (CurrentMachine.Display == Displays.Transfer)
+                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.SelectAccount)
                     CurrentActiveTb.Text = ""; // Очистить поле ввода Пин-кода
             }
             else if (CallerButton.Text == "ENTER") // Если кнопка, вызвавшая событие - ENTER, то:
@@ -242,27 +250,19 @@ namespace Banks
                 }
                 else if (CurrentMachine.Display == Displays.SelectAccount)
                 {
-                    if (!Bank.CheckPIN(CurrentCard, Pin_InputText.Text))
+                    TextBox SelectAcc = MainControls.Find("DISPLAY_Account_InputText", true).FirstOrDefault() as TextBox;
+                    if (Bank.CheckAccount(CurrentIdUser, SelectAcc.Text) && SelectAcc.Text != "")
                     {
-                        CurrentMachine.TryInputPin += 1;
-                        Label Warn = CurrentAtm.Controls.Find("DISPLAY_Pin_Warning_Label", true).FirstOrDefault() as Label;
-                        Warn.Visible = true;
-                        Warn.Text = "ПИН-КОД ВВЕДЕН НЕ ВЕРНО!\n";
-                        Warn.Text += "Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString();
-                        _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН НЕ ВЕРНО!");
-                        _DEBUGGER.DEBUG_CONSOLE("Осталось попыток:" + (3 - CurrentMachine.TryInputPin).ToString());
-                        if (CurrentMachine.TryInputPin == 3)
-                        {
-                            Warn.Text = "КАРТА КОНФИСКОВАНА!";
-                            _DEBUGGER.DEBUG_CONSOLE("Карта конфискована!");
-                            CurrentMachine.TryInputPin = 0;
-                            // TODO Карта конфискована!
-                        }
+                        Label WarnLabel = MainControls.Find("DISPLAY_Account_Warning_Label", true).FirstOrDefault() as Label;
+                        WarnLabel.Visible = false;
+                        CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Withdraw);
+
+                        CurrentMachine.ActiveAccount = SelectAcc.Text;
                     }
                     else
                     {
-                        _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН ВЕРНО!");
-                        CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                        Label WarnLabel = MainControls.Find("DISPLAY_Account_Warning_Label", true).FirstOrDefault() as Label;
+                        WarnLabel.Visible = true;
                     }
                 }
             }
@@ -380,14 +380,30 @@ namespace Banks
             // Текущий банкомат(Согласно кнопке, вызвавшей событие)
             AtmMachine CurrentMachine = Bank.AtmMachines[Convert.ToInt32(CallerButton.Tag)];
 
+            string result = "";
+
             if (CurrentMachine.Display == Displays.AnotherAmount && TbSum.Text != "")
             {
-                _DEBUGGER.DEBUG_CONSOLE(Bank.Withdraw(CurrentCard._NumberAccount, Convert.ToInt32(TbSum.Text), CurrentMachine));
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                result = Bank.Withdraw(CurrentMachine.ActiveAccount, Convert.ToInt32(TbSum.Text), CurrentMachine);
+                _DEBUGGER.DEBUG_CONSOLE(result);
+                if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
+                {
+                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "DISPLAY", MainControls);
+                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                }
             }
             else if (CurrentMachine.Display == Displays.Withdraw)
             {
-                _DEBUGGER.DEBUG_CONSOLE(Bank.Withdraw(CurrentCard._NumberAccount, Convert.ToInt32(CallerButton.Text), CurrentMachine));
+                result = Bank.Withdraw(CurrentMachine.ActiveAccount, Convert.ToInt32(CallerButton.Text), CurrentMachine);
+                _DEBUGGER.DEBUG_CONSOLE(result);
+
+                if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
+                {
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "DISPLAY", MainControls);
+                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                }
             }
         }
 

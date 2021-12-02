@@ -141,5 +141,17 @@ namespace Banks
              item => item.Name == name && item.Tag.ToString() == Machine.ToString()))    // Имя объекта = Параметру name
                 Controls.Remove(item);  // Удалить объект из Controls
         }
+
+        /// <summary>
+        /// Блокирвоать дисплей
+        /// </summary>
+        /// <param name="Blocked">Блокировать дисплей?</param>
+        /// <param name="Machine">Id машины</param>
+        /// <param name="Controls">Элементы формы</param>
+        public static void Block_UnBlockElement(bool Blocked, int Machine, string NameElement, Control.ControlCollection Controls)
+        {
+            if (Blocked) (Controls.Find(NameElement, true).Where(d => d.Tag.ToString() == Machine.ToString()).FirstOrDefault()).Enabled = false;
+            else (Controls.Find(NameElement, true).Where(d => d.Tag.ToString() == Machine.ToString()).FirstOrDefault()).Enabled = true;
+        }
     }
 }

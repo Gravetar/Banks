@@ -61,6 +61,18 @@ namespace Banks
             return debitCard._PIN == PIN;
         }
 
+        public bool CheckAccount(int IdUser, string InAccount)
+        {
+            Client client = Clients[IdUser];
+
+            foreach (Account item in client.Accounts)
+            {
+                if (item._Number == InAccount) return true;
+            }
+
+            return false;
+        }
+
         public string Transfer(string AccountOut, string AccountIn, int Value)
         {
             Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда

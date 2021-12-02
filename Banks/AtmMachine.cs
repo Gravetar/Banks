@@ -28,6 +28,10 @@ namespace Banks
         /// Сколько пытались ввести пин-код на Банкомате
         /// </summary>
         public int TryInputPin = 0;
+        /// <summary>
+        /// Активный счет банкомата
+        /// </summary>
+        public string ActiveAccount = "";
 
         /// <summary>
         /// Дисплей банкомата
