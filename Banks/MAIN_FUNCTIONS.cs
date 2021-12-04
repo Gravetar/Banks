@@ -33,8 +33,8 @@ namespace Banks
                 VISUALIZER.DisplayInputPIN(Machine, ref DISPLAY); // Сменить дисплей на InputPIN
             else if (Display == Displays.Menu) 
                 VISUALIZER.DisplayMenu(Machine, ref DISPLAY);
-            else if (Display == Displays.Help)
-                VISUALIZER.DisplayHelp(Machine, ref DISPLAY);
+            else if (Display == Displays.Check)
+                VISUALIZER.DisplayCheck(Machine, ref DISPLAY);
             else if (Display == Displays.Withdraw)
                 VISUALIZER.DisplayWithdraw(Machine, ref DISPLAY);
             else if (Display == Displays.AnotherAmount)

@@ -313,18 +313,23 @@ namespace Banks
             else if (CallerButton.Text == "СПРАВКА")
             {
                 // Сменить дисплей текущего банкомата на дисплей приветствия
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Help);
+                // TODO Сделать дисплей забрать справку
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
                 RichTextBox RTBHELP = CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox;
 
                 string resultRTBHELP = "";
                 resultRTBHELP = string.Format(
-                    "Банк {0} сообщает, что остаток денежных средств по счету {1} по состоянию на {2} составляет:\n" +
-                    "{3} рублей"
+                    "Банк {0} сообщает, что остаток денежных средств по дебетовому счету {1} по состоянию на {2} составляет:\n" +
+                    "{3} рублей\n\n"+
+                    "Банк {0} сообщает, что остаток денежных средств по кредитному счету {4} по состоянию на {2} составляет:\n" +
+                    "{5} рублей\n\n"
                     ,
                     Bank._Name,
                     CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Number.ToString(),
                     DateTime.Now.ToString("dd.MM.yyyy г."),
-                    CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString()
+                    CurrentCard.GetAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString(),
+                    CurrentCard.GetCreditAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Number.ToString(),
+                    CurrentCard.GetCreditAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString()
                     );
 
                 RTBHELP.Text = resultRTBHELP;

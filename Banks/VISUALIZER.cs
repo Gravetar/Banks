@@ -50,7 +50,7 @@ namespace Banks
                 // Установить дисплей банкомата(приветственный дисплей)
                 DisplayWelcome(i, ref Display);
                 // Установить Банковский чек
-                DisplayHelp(i, ref Check);
+                DisplayPanelHelp(ref Check);
                 // Установить клавиатуру банкомата
                 Keyboard = DisplayKeyboard(i);
                 // Установить дополнительнау панель банкомата
@@ -134,10 +134,10 @@ namespace Banks
         }
 
         /// <summary>
-        /// Дисплей справки
+        /// Панель чека
         /// </summary>
         /// <param name="Check">Изменяемый дисплей(панель)</param>
-        public void DisplayHelp(int Machine, ref Panel Check)
+        public void DisplayPanelHelp(ref Panel Check)
         {
             // Панель 
             Panel DISPLAY_HELP_PANEL = new Panel();
@@ -198,6 +198,35 @@ namespace Banks
             DISPLAY_OutCard.Controls.Add(DISPLAY_OutCard_MainText);
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_OutCard;
+        }
+
+        /// <summary>
+        /// Дисплей заберите  чек
+        /// </summary>
+        /// <param name="Display">Изменяемый дисплей(панель)</param>
+        public void DisplayCheck(int Machine, ref Panel Display)
+        {
+            // Основной дисплей
+            Panel DISPLAY_Check = new Panel();
+            DISPLAY_Check.Name = "DISPLAY";
+            DISPLAY_Check.Location = new Point(0, 0);
+            DISPLAY_Check.Size = SETTINGS.DISPLAY_SIZE;
+            DISPLAY_Check.BorderStyle = BorderStyle.Fixed3D;
+            DISPLAY_Check.Tag = Machine.ToString();
+
+            //Текст приветствия на дисплее
+            Label DISPLAY_Check_MainText = new Label();
+            DISPLAY_Check_MainText.Name = "DISPLAY_Check_MainText";
+            DISPLAY_Check_MainText.Text = "Заберите пожалуйста ваш чек";
+            DISPLAY_Check_MainText.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_Check_MainText.AutoSize = true;
+            DISPLAY_Check_MainText.Location = new Point((DISPLAY_Check.Width / 2) - DISPLAY_Check_MainText.Size.Width, (DISPLAY_Check.Height / 2) - DISPLAY_Check_MainText.Size.Height);
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_Check.Controls.Add(DISPLAY_Check_MainText);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Display = DISPLAY_Check;
         }
 
         /// <summary>

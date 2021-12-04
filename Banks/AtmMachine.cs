@@ -86,9 +86,9 @@ namespace Banks
         /// </summary>
         Menu,
         /// <summary>
-        /// Дисплей справки
+        /// Дисплей заберите чек
         /// </summary>
-        Help,
+        Check,
         /// <summary>
         /// Дисплей для снятия денег
         /// </summary>
@@ -108,7 +108,7 @@ namespace Banks
         /// <summary>
         /// Дисплей выбора счета
         /// </summary>
-        SelectAccount
+        SelectAccount,
     }
 
     /// <summary>

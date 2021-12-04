@@ -100,10 +100,15 @@ namespace Banks
         {
             foreach (Account item in Bank.Accounts)
             {
-                foreach (DebitCard item_card in item._DebitCards)
-                {
-                    if (item_card._NumberCard == NumberCard) return item;
-                }
+                if (_NumberAccount == item._Number) return item;
+            }
+            return null;
+        }
+        public Account GetCreditAccountByCurrentCard(ServerBank Bank, string NumberCard)
+        {
+            foreach (Account item in Bank.Accounts)
+            {
+                if (_NumberAccountCredit == item._Number) return item;
             }
             return null;
         }
