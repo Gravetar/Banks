@@ -147,7 +147,7 @@ namespace Banks
             else
             {
                 Out._Balance += sum;
-                return "НЕДОСТАТОЧНО СРЕДСТ НА СЧЕТУ!";
+                return "НЕДОСТАТОЧНО СРЕДСТВ НА СЧЕТЕ!";
             }
         }
     }

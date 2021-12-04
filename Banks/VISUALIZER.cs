@@ -44,15 +44,19 @@ namespace Banks
                 Panel Keyboard;
                 // Дополнительная панель текуще-создоваемого банкомата
                 Panel Additional = new Panel();
+                // Дисплей текуще-создоваемого банкомата
+                Panel Check = new Panel();
 
                 // Установить дисплей банкомата(приветственный дисплей)
                 DisplayWelcome(i, ref Display);
+                // Установить Банковский чек
+                DisplayHelp(i, ref Check);
                 // Установить клавиатуру банкомата
                 Keyboard = DisplayKeyboard(i);
                 // Установить дополнительнау панель банкомата
                 DisplayAdditional(i, ref Additional);
                 // Добавить созданный банкомат в лист банкоматов
-                Machines.Add(CreateATM(i, Display, Keyboard, Additional));
+                Machines.Add(CreateATM(i, Display, Check, Keyboard, Additional));
                 // Установить расстояние между банкоматами
                 Machines[i].Margin = new Padding(20);
             }
@@ -65,10 +69,11 @@ namespace Banks
         /// </summary>
         /// <param name="Machine">Номер банкомата</param>
         /// <param name="Display">Дисплей банкомата</param>
+        /// <param name="Check">Бансковский чек</param>
         /// <param name="Keyboard">Клавиатура банкомата</param>
         /// <param name="Additional">Дополнительная панель банкомата</param>
         /// <returns>Панель банкомата</returns>
-        public Panel CreateATM(int Machine, Panel Display, Panel Keyboard, Panel Additional)
+        public Panel CreateATM(int Machine, Panel Display,Panel Check, Panel Keyboard, Panel Additional)
         {
             // Основная панель банкомата
             Panel ATM = new Panel();
@@ -77,8 +82,8 @@ namespace Banks
             ATM.AutoSize = true;
             ATM.BorderStyle = BorderStyle.Fixed3D;
             ATM.Tag = Machine;
-            // Добавить Дисплей, клавиатуру и дополнительную панель в основную панель банкомата
-            ATM.Controls.AddRange(new Control[] { Display, Keyboard, Additional});
+            // Добавить Дисплей, Чек, Клавиатуру и Дополнительную панель в основную панель банкомата
+            ATM.Controls.AddRange(new Control[] { Display, Check, Keyboard, Additional});
             // Вернуть панель банкомата
             return ATM;
         }
@@ -127,6 +132,44 @@ namespace Banks
             // Изменяемый дисплей(панель) изменить на Основной дисплей
             Display = DISPLAY_Welcome;
         }
+
+        /// <summary>
+        /// Дисплей справки
+        /// </summary>
+        /// <param name="Check">Изменяемый дисплей(панель)</param>
+        public void DisplayHelp(int Machine, ref Panel Check)
+        {
+            // Панель 
+            Panel DISPLAY_HELP_PANEL = new Panel();
+            DISPLAY_HELP_PANEL.Name = "DISPLAY_HELP_PANEL";
+            DISPLAY_HELP_PANEL.Location = new Point(210, 0);
+            DISPLAY_HELP_PANEL.Size = new Size(0, 0);
+            DISPLAY_HELP_PANEL.AutoSize = true;
+
+            RichTextBox RTB_HELP = new RichTextBox();
+            RTB_HELP.Name = "RTB_HELP";
+            RTB_HELP.Size = new Size(158, 190);
+            RTB_HELP.Margin = new Padding(0);
+            RTB_HELP.BorderStyle = BorderStyle.None;
+            RTB_HELP.ReadOnly = true;
+            DISPLAY_HELP_PANEL.Controls.Add(RTB_HELP);
+
+            /*Button BTN_HELP_BACK = new Button();
+            BTN_HELP_BACK.Name = "BTN_HELP_BACK";
+            BTN_HELP_BACK.Size = new Size(200, 20);
+            BTN_HELP_BACK.Text = "ВЕРНУТЬСЯ НАЗАД";
+            BTN_HELP_BACK.ForeColor = Color.Red;
+            BTN_HELP_BACK.Tag = Machine;
+            BTN_HELP_BACK.Click += new EventHandler(Events[3]);
+            DISPLAY_HELP_FLP.Controls.Add(BTN_HELP_BACK);*/
+
+            // Добавить в основной дисплей:
+            // Текст приветствия на дисплее
+            DISPLAY_HELP_PANEL.Controls.Add(RTB_HELP);
+            // Изменяемый дисплей(панель) изменить на Основной дисплей
+            Check = DISPLAY_HELP_PANEL;
+        }
+
 
         /// <summary>
         /// Дисплей заберите карту
@@ -270,47 +313,7 @@ namespace Banks
             Display = DISPLAY_Menu;
         }
 
-        /// <summary>
-        /// Дисплей справки
-        /// </summary>
-        /// <param name="Display">Изменяемый дисплей(панель)</param>
-        public void DisplayHelp(int Machine, ref Panel Display)
-        {
-            // Основной дисплей
-            Panel DISPLAY_Help = new Panel();
-            DISPLAY_Help.Name = "DISPLAY";
-            DISPLAY_Help.Location = new Point(0, 0);
-            DISPLAY_Help.Size = SETTINGS.DISPLAY_SIZE;
-            DISPLAY_Help.BorderStyle = BorderStyle.Fixed3D;
-            DISPLAY_Help.Tag = Machine.ToString();
 
-            // Панель 
-            FlowLayoutPanel DISPLAY_HELP_FLP = new FlowLayoutPanel();
-            DISPLAY_HELP_FLP.Name = "DISPLAY_HELP_FLP";
-            DISPLAY_HELP_FLP.FlowDirection = FlowDirection.TopDown;
-            DISPLAY_HELP_FLP.AutoSize = true;
-
-            RichTextBox RTB_HELP = new RichTextBox();
-            RTB_HELP.Name = "RTB_HELP";
-            RTB_HELP.Size = new Size(200, 155);
-            RTB_HELP.ReadOnly = true;
-            DISPLAY_HELP_FLP.Controls.Add(RTB_HELP);
-
-            Button BTN_HELP_BACK = new Button();
-            BTN_HELP_BACK.Name = "BTN_HELP_BACK"; 
-            BTN_HELP_BACK.Size = new Size(200, 20);
-            BTN_HELP_BACK.Text = "ВЕРНУТЬСЯ НАЗАД";
-            BTN_HELP_BACK.ForeColor = Color.Red;
-            BTN_HELP_BACK.Tag = Machine;
-            BTN_HELP_BACK.Click += new EventHandler(Events[3]);
-            DISPLAY_HELP_FLP.Controls.Add(BTN_HELP_BACK);
-
-            // Добавить в основной дисплей:
-            // Текст приветствия на дисплее
-            DISPLAY_Help.Controls.Add(DISPLAY_HELP_FLP);
-            // Изменяемый дисплей(панель) изменить на Основной дисплей
-            Display = DISPLAY_Help;
-        }
 
         /// <summary>
         /// Дисплей для выбора счета 
@@ -697,7 +700,7 @@ namespace Banks
             // Кнопка (Вставить карту)
             Button BTN_ADDITIONAL_INCARD = new Button();
             BTN_ADDITIONAL_INCARD.Name = "BTN_ADDITIONAL_INCARD";
-            BTN_ADDITIONAL_INCARD.Size = new Size(100, 30);
+            BTN_ADDITIONAL_INCARD.Size = new Size(145, 30);
             BTN_ADDITIONAL_INCARD.Text = "Вставить карту";
             BTN_ADDITIONAL_INCARD.Left = 5;
             BTN_ADDITIONAL_INCARD.Top = 5;
@@ -708,7 +711,7 @@ namespace Banks
             // Кнопка (Забрать карту)
             Button BTN_ADDITIONAL_OUTCARD = new Button();
             BTN_ADDITIONAL_OUTCARD.Name = "BTN_ADDITIONAL_OUTCARD";
-            BTN_ADDITIONAL_OUTCARD.Size = new Size(100, 30);
+            BTN_ADDITIONAL_OUTCARD.Size = new Size(145, 30);
             BTN_ADDITIONAL_OUTCARD.Text = "Забрать карту";
             BTN_ADDITIONAL_OUTCARD.Left = 5;
             BTN_ADDITIONAL_OUTCARD.Top = 40;
@@ -720,7 +723,7 @@ namespace Banks
             // Кнопка (Забрать наличные)
             Button BTN_ADDITIONAL_OUTCASH = new Button();
             BTN_ADDITIONAL_OUTCASH.Name = "BTN_ADDITIONAL_OUTCASH";
-            BTN_ADDITIONAL_OUTCASH.Size = new Size(100, 30);
+            BTN_ADDITIONAL_OUTCASH.Size = new Size(145, 30);
             BTN_ADDITIONAL_OUTCASH.Text = "Забрать нал.";
             BTN_ADDITIONAL_OUTCASH.Left = 5;
             BTN_ADDITIONAL_OUTCASH.Top = 75;
@@ -728,6 +731,18 @@ namespace Banks
             BTN_ADDITIONAL_OUTCASH.Enabled = false;
             BTN_ADDITIONAL_OUTCASH.Click += new EventHandler(Events[1]);
             DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_OUTCASH);
+
+            // Кнопка (Забрать чек)
+            Button BTN_ADDITIONAL_CHECK = new Button();
+            BTN_ADDITIONAL_CHECK.Name = "BTN_ADDITIONAL_CHECK";
+            BTN_ADDITIONAL_CHECK.Size = new Size(145, 30);
+            BTN_ADDITIONAL_CHECK.Text = "Забрать чек";
+            BTN_ADDITIONAL_CHECK.Left = 5;
+            BTN_ADDITIONAL_CHECK.Top = 110;
+            BTN_ADDITIONAL_CHECK.Tag = Machine.ToString();
+            BTN_ADDITIONAL_CHECK.Enabled = false;
+            BTN_ADDITIONAL_CHECK.Click += new EventHandler(Events[1]);
+            DISPLAY_ADDITIONAL.Controls.Add(BTN_ADDITIONAL_CHECK);
 
             Additional = DISPLAY_ADDITIONAL;
         }
@@ -751,7 +766,7 @@ namespace Banks
             // Кнопка (Включить)
             Button BTN_ADDITIONAL_OnATM = new Button();
             BTN_ADDITIONAL_OnATM.Name = "BTN_ADDITIONAL_OnATM";
-            BTN_ADDITIONAL_OnATM.Size = new Size(130, 30);
+            BTN_ADDITIONAL_OnATM.Size = new Size(145, 30);
             BTN_ADDITIONAL_OnATM.Location = new Point(0, 0);
             BTN_ADDITIONAL_OnATM.Text = "Включить";
             BTN_ADDITIONAL_OnATM.Left = 5;
@@ -763,7 +778,7 @@ namespace Banks
             // Кнопка (Выключить)
             Button BTN_ADDITIONAL_OffATM = new Button();
             BTN_ADDITIONAL_OffATM.Name = "BTN_ADDITIONAL_OffATM";
-            BTN_ADDITIONAL_OffATM.Size = new Size(130, 30);
+            BTN_ADDITIONAL_OffATM.Size = new Size(145, 30);
             BTN_ADDITIONAL_OffATM.Text = "Выключить";
             BTN_ADDITIONAL_OffATM.Left = 5;
             BTN_ADDITIONAL_OffATM.Top = 35;
@@ -774,7 +789,7 @@ namespace Banks
             // Кнопка (Внести наличные)
             Button BTN_ADDITIONAL_AddMoney = new Button();
             BTN_ADDITIONAL_AddMoney.Name = "BTN_ADDITIONAL_AddMoney";
-            BTN_ADDITIONAL_AddMoney.Size = new Size(130, 30);
+            BTN_ADDITIONAL_AddMoney.Size = new Size(145, 30);
             BTN_ADDITIONAL_AddMoney.Text = "Внести наличные";
             BTN_ADDITIONAL_AddMoney.Left = 5;
             BTN_ADDITIONAL_AddMoney.Top = 65;
