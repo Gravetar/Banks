@@ -158,6 +158,7 @@ namespace Banks
                 // Найти и активировать кнопку "Вставить карту" у текущего банкомата
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
                 CurrentMachine.TryInputPin = 0;
             }
             else if (CallerButton.Text == "Забрать нал.")
@@ -167,6 +168,17 @@ namespace Banks
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = false;
                 MAIN_FUNCTIONS.Block_UnBlockElement(false, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+            }
+
+            else if (CallerButton.Text == "Забрать чек")
+            {
+                SelectCardCB.Enabled = true;
+                // Сменить дисплей текущего банкомата на дисплей меню
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                (CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox).Text = "";
+
             }
 
 
@@ -239,6 +251,30 @@ namespace Banks
                                 _DEBUGGER.DEBUG_CONSOLE("Карта конфискована!");
                                 CurrentMachine.TryInputPin = 0;
                                 // TODO Карта конфискована!
+
+                                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                                SelectCardCB.Text = "Выбрать...";
+                                SelectCardCB.Enabled = true;
+
+                                Bank.ConfiscatedCards.Add(CurrentCard);
+
+                                // Сменить дисплей текущего банкомата на дисплей приветствия
+                                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                                // Убрать текущего клиента из текущего банкомата
+                                CurrentMachine.CurrentClient = -1;
+                                // Убрать текущего клиента из текущего банкомата
+                                CurrentMachine.CurrentCard = "";
+                                // Убрать текущий банкомат из текущего клиента
+                                Bank.Clients[CurrentIdUser]._ATM = -1;
+                                // Сменить доступность банкоматов
+                                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+                                // Найти и активировать кнопку "Вставить карту" у текущего банкомата
+                                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                                CurrentMachine.TryInputPin = 0;
+                                FormatCardCombobox();
+                                MainPanel.Visible = false;
                             }
                         }
                         else
@@ -331,6 +367,8 @@ namespace Banks
                     CurrentCard.GetCreditAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Number.ToString(),
                     CurrentCard.GetCreditAccountByCurrentCard(Bank, CurrentCard._NumberCard)._Balance.ToString()
                     );
+
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = true;
 
                 RTBHELP.Text = resultRTBHELP;
             }
@@ -436,6 +474,33 @@ namespace Banks
             }
         }
 
+        void FormatCardCombobox()
+        {
+            bool Check = false;
+            SelectCardCB.Items.Clear();
+            List<string> TempListCard = new List<string>();
+            foreach (string Item in Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray())
+            {
+                foreach (DebitCard ItemCard in Bank.ConfiscatedCards)
+                {
+                    if (Item == ItemCard._NumberCard)
+                    {
+                        TempListCard.Add(Item + " - конфискована");
+                        Check = true;
+                        continue;
+                        
+                    }
+                    
+                }
+                if (!Check)
+                {
+                    TempListCard.Add(Item);
+                }
+
+            }
+            SelectCardCB.Items.AddRange(TempListCard.ToArray());
+        }
+
         private void SelectUserCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectCardCB.Text = "Выбрать...";
@@ -478,8 +543,7 @@ namespace Banks
 
                 SelectCardCB.Visible = true;
                 label2.Visible = true;
-
-                SelectCardCB.Items.AddRange(Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray());
+                FormatCardCombobox();
                 // Сменить доступность банкоматов
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
                 for (int i = 0; i < Bank.AtmMachines.Count; i++) // Пройтись по всем банкоматам
@@ -498,8 +562,12 @@ namespace Banks
         private void SelectCardCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Показать главную панель банкоматов
-            MainPanel.Visible = true;
-            CurrentCard = Bank.DebitCards.Find(c => c._NumberCard == SelectCardCB.Text);
+            if (!SelectCardCB.Text.Contains("конфискована"))
+            {
+                MainPanel.Visible = true;
+                CurrentCard = Bank.DebitCards.Find(c => c._NumberCard == SelectCardCB.Text);
+            }
+
         }
 
         private void CMS_Click(object sender, EventArgs e)

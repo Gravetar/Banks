@@ -60,6 +60,15 @@ namespace Banks
         {
             return debitCard._PIN == PIN;
         }
+        public bool CheckConfiscatedCard(DebitCard debitCard)
+        {
+            bool result = false;
+            if (ConfiscatedCards.Find(c=>c._NumberCard == debitCard._NumberCard) != null)
+            {
+                result = true;
+            }
+            return result;
+        }
 
         public bool CheckAccount(int IdUser, string InAccount)
         {

@@ -78,6 +78,7 @@ namespace Banks
                             (
                             (Bank.AtmMachines[i].CurrentClient == CurrentIdUser) || // У текущей машины текущий клиент или:
                             (Bank.Clients[CurrentIdUser]._ATM == -1 && Bank.AtmMachines[i].CurrentClient == -1) // У текущей машины нет клиента и у текущего клиента нет машины
+                            || SETTINGS.CURRENT_USER == User.Operator
                             )
                             )
                         {
