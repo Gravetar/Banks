@@ -197,10 +197,12 @@ namespace Banks
             else if (CallerButton.Text == "Забрать нал.")
             {
                 SelectCardCB.Enabled = true;
-                // Сменить дисплей текущего банкомата на дисплей меню
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                // Сменить дисплей текущего банкомата на дисплей выдачи наличных
+                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                Label TakeCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                TakeCard.Text = "До свидания!\nПожалуйста заберте вашу карту";
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = false;
-                MAIN_FUNCTIONS.Block_UnBlockElement(false, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
             }
 
             else if (CallerButton.Text == "Забрать чек")
@@ -329,8 +331,13 @@ namespace Banks
                     }
                     else
                     {
-                        Label WarnLabel = MainControls.Find("DISPLAY_Account_Warning_Label", true).FirstOrDefault() as Label;
-                        WarnLabel.Visible = true;
+                        //Label WarnLabel = MainControls.Find("DISPLAY_Account_Warning_Label", true).FirstOrDefault() as Label;
+                        //WarnLabel.Visible = true;
+    
+                        CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                        Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                        Warn_OutCard.Text = "Недопустимый номер счета\nЗаберте пожалуйста вашу карту";
+                        (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
                     }
                 }
             }
@@ -463,7 +470,10 @@ namespace Banks
                 _DEBUGGER.DEBUG_CONSOLE(result);
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
-                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "DISPLAY", MainControls);
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Пожалуйста заберте ваши деньги";
                     MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
                 }
@@ -475,9 +485,12 @@ namespace Banks
 
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
-                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
-                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "DISPLAY", MainControls);
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Пожалуйста заберте ваши деньги";
                     MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
                 }
             }
         }
