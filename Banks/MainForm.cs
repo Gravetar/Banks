@@ -77,6 +77,7 @@ namespace Banks
 
             INIT.INIT_Account_Client(Bank);
 
+            INIT.INIT_StealLoseCards(Bank);
             // Создание отладчика на основе главного банка
             _DEBUGGER = new DEBUGGER(Bank, CMS_Debugger);
             _DEBUGGER.RTB_Result = DebugText;
@@ -128,19 +129,51 @@ namespace Banks
             // Для панели клиента
             if (CallerButton.Text == "Вставить карту")
             {
-                // Дисплей текущего банкомата
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
-                // Установить текущего клиента текущему банкомату
-                CurrentMachine.CurrentClient = CurrentIdUser;
-                // Установить текущему клиенту текущий банкомат
-                Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
-                // Сменить доступность банкоматов
-                MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
 
-                CurrentMachine.CurrentCard = CurrentCard._NumberCard;
+                if (CurrentCard._DateEnd < DateTime.Now || Bank.StealLoseCards.Contains(CurrentCard._NumberCard))
+                {
+                    _DEBUGGER.DEBUG_CONSOLE("Карта конфискована!");
 
-                // Деактивировать кнопку, вызвавшей событие(Вставить карту)
-                CallerButton.Enabled = false;
+                    SelectCardCB.Text = "Выбрать...";
+                    SelectCardCB.Enabled = true;
+
+                    Bank.ConfiscatedCards.Add(CurrentCard);
+
+                    // Сменить дисплей текущего банкомата на дисплей приветствия
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
+                    // Убрать текущего клиента из текущего банкомата
+                    CurrentMachine.CurrentClient = -1;
+                    // Убрать текущего клиента из текущего банкомата
+                    CurrentMachine.CurrentCard = "";
+                    // Убрать текущий банкомат из текущего клиента
+                    Bank.Clients[CurrentIdUser]._ATM = -1;
+                    // Сменить доступность банкоматов
+                    MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+                    // Найти и активировать кнопку "Вставить карту" у текущего банкомата
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                    CurrentMachine.TryInputPin = 0;
+                    FormatCardCombobox();
+                    MainPanel.Visible = false;
+                }
+                else
+                {
+                    // Дисплей текущего банкомата
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.InputPIN);
+                    // Установить текущего клиента текущему банкомату
+                    CurrentMachine.CurrentClient = CurrentIdUser;
+                    // Установить текущему клиенту текущий банкомат
+                    Bank.Clients[CurrentIdUser]._ATM = Convert.ToInt32(CallerButton.Tag);
+                    // Сменить доступность банкоматов
+                    MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
+
+                    CurrentMachine.CurrentCard = CurrentCard._NumberCard;
+
+                    // Деактивировать кнопку, вызвавшей событие(Вставить карту)
+                    CallerButton.Enabled = false;
+                }
+
             }
             else if(CallerButton.Text == "Забрать карту")
             {
@@ -252,7 +285,6 @@ namespace Banks
                                 CurrentMachine.TryInputPin = 0;
                                 // TODO Карта конфискована!
 
-                                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
                                 SelectCardCB.Text = "Выбрать...";
                                 SelectCardCB.Enabled = true;
 
@@ -476,18 +508,19 @@ namespace Banks
 
         void FormatCardCombobox()
         {
-            bool Check = false;
+            
             SelectCardCB.Items.Clear();
             List<string> TempListCard = new List<string>();
             foreach (string Item in Bank.Clients[CurrentIdUser].GetFreeCardsStrings(Bank).ToArray())
             {
+                bool Check = false;
                 foreach (DebitCard ItemCard in Bank.ConfiscatedCards)
                 {
                     if (Item == ItemCard._NumberCard)
                     {
                         TempListCard.Add(Item + " - конфискована");
                         Check = true;
-                        continue;
+                        break;
                         
                     }
                     
@@ -498,6 +531,7 @@ namespace Banks
                 }
 
             }
+
             SelectCardCB.Items.AddRange(TempListCard.ToArray());
         }
 

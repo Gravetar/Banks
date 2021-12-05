@@ -79,10 +79,26 @@ namespace Banks
                 new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberAccountCredit: "2", NumberCard: "1234 3213 3213 1234", ClientCard: Bank.Clients[0]),
                 new DebitCard(ID: 2, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 200000, Total: 20000, NumberAccount: "0", NumberAccountCredit: "3", NumberCard: "5847 5967 3485 9607", ClientCard: Bank.Clients[1]),
                 new DebitCard(ID: 3, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 300000, Total: 30000, NumberAccount: "1", NumberAccountCredit: "4", NumberCard: "1859 6584 9385 9584", ClientCard: Bank.Clients[2]),
+
+                new DebitCard(ID: 4, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberAccountCredit: "2", NumberCard: "1555 3213 3213 1234", ClientCard: Bank.Clients[0]),
             };
 
             // Добавить в банк карточки
             Bank.DebitCards.AddRange(cards);
+        }
+
+        /// <summary>
+        /// Инициализация потерянных или украденных карт
+        /// </summary>
+        /// <param name="Bank">Главный банк</param>
+        public static void INIT_StealLoseCards(ServerBank Bank)
+        {
+            // Карточки
+            string[] cards =
+            {"5847 5967 3485 9607", };
+
+            // Добавить в банк карточки
+            Bank.StealLoseCards.AddRange(cards);
         }
 
         /// <summary>

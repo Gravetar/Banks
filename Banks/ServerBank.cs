@@ -38,6 +38,12 @@ namespace Banks
         /// Конфискованные карточки
         /// </summary>
         public List<DebitCard> ConfiscatedCards = new List<DebitCard>();
+
+        /// <summary>
+        /// Потерянные или украденные карточки
+        /// </summary>
+        public List<string> StealLoseCards = new List<string>();
+
         /// <summary>
         /// Банкоматы банка
         /// </summary>

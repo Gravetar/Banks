@@ -66,7 +66,7 @@ namespace Banks
         /// <summary>
         /// Дата окончания
         /// </summary>
-        DateTime _DateEnd;
+        public DateTime _DateEnd;
         /// <summary>
         /// Состояние
         /// </summary>
@@ -74,7 +74,7 @@ namespace Banks
         /// <summary>
         /// Лимит
         /// </summary>
-        double _Limit;
+        public double _Limit;
         /// <summary>
         /// Итого
         /// </summary>
