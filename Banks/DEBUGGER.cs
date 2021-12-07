@@ -24,7 +24,7 @@ namespace Banks
         /// <summary>
         /// Вывод информации
         /// </summary>
-        bool _ClientInfo, _BankInfo, _AtmInfo, _CardsInfo, _AccountsInfo;
+        bool _ClientInfo, _BankInfo, _AtmInfo, _CardsInfo, _AccountsInfo, _Transaction;
         /// <summary>
         /// Применять стиль к выводу
         /// </summary>
@@ -49,13 +49,14 @@ namespace Banks
         /// <param name="ClientInfo">Вывод информации о клиентах</param>
         /// <param name="BankInfo">Вывод информации о банке</param>
         /// <param name="AtmInfo">Вывод информации о банкоматах</param>
-        public DEBUGGER(ServerBank Bank, ContextMenuStrip CMS_Debug, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, bool CardsInfo = true, bool AccountsInfo = true, TypeDebug Type = TypeDebug.Console)
+        public DEBUGGER(ServerBank Bank, ContextMenuStrip CMS_Debug, bool Style = false, bool ClientInfo = true, bool BankInfo = true, bool AtmInfo = true, bool CardsInfo = true, bool AccountsInfo = true, bool Transactions = true, TypeDebug Type = TypeDebug.Console)
         {
             _ClientInfo = ClientInfo;
             _BankInfo = BankInfo;
             _AtmInfo = AtmInfo;
             _CardsInfo = CardsInfo;
             _AccountsInfo = AccountsInfo;
+            _Transaction = Transactions;
 
             _Bank = Bank;
             _Style = Style;
@@ -78,6 +79,7 @@ namespace Banks
             _ClientInfo = (_CMS_Debug.Items.Find("ClientInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
             _AtmInfo = (_CMS_Debug.Items.Find("AtmInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
             _AccountsInfo = (_CMS_Debug.Items.Find("AccountsInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
+            _Transaction = (_CMS_Debug.Items.Find("TransactionsInfoStrip", true).FirstOrDefault() as ToolStripMenuItem).Checked;
 
             if (_Type == TypeDebug.Debugger)
             {
@@ -144,6 +146,18 @@ namespace Banks
                         result += "\n";
                     }
                 } // Если надо вывести информацию о счетах, то
+                if (_Transaction)
+                {
+                    result += "<ub>========ТРАНЗАКЦИИ======</ub>" + "\n";
+                    for (int i = 0; i < _Bank.Transactions.Count; i++)
+                    {
+                        result += "<b>Транзакция № </b>: " + _Bank.Transactions[i]._ID_Transaction + "\n";
+                        result += "<b>Тип:</b>: " + _Bank.Transactions[i]._Type + "\n";
+                        result += "<b>Сумма:</b>: " + _Bank.Transactions[i]._Sum + "\n";
+                        result += "<b>Баланс:</b>: " + _Bank.Transactions[i]._Balance + "\n";
+                        result += "\n";
+                    }
+                } // Если надо вывести информацию о транзакциях, то
 
                 if (_Style)
                 {

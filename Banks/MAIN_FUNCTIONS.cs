@@ -19,7 +19,7 @@ namespace Banks
         /// <param name="VISUALIZER">Главный визуализатор проекта</param>
         /// <param name="Controls">Компоненты формы</param>
         /// <param name="Display">На какой дисплей сменить</param>
-        public static Displays ChangeDisplay(int Machine, VISUALIZER VISUALIZER, Control.ControlCollection Controls, Displays Display)
+        public static Displays ChangeDisplay(int Machine, VISUALIZER VISUALIZER, Control.ControlCollection Controls, Displays Display, string DebAcc = "", string CredAcc = "")
         {
             RemoveItemByName<Panel>(Machine, "DISPLAY", Controls);   // Удалить старый дисплей
             Panel DISPLAY = new Panel();    // Новый дисплей
@@ -32,7 +32,7 @@ namespace Banks
             else if (Display == Displays.InputPIN) // Если тип дисплей, на который надо поменять = InputPIN (Дисплей для ввода пин-кода)
                 VISUALIZER.DisplayInputPIN(Machine, ref DISPLAY); // Сменить дисплей на InputPIN
             else if (Display == Displays.Menu) 
-                VISUALIZER.DisplayMenu(Machine, ref DISPLAY);
+                VISUALIZER.DisplayMenu(Machine, ref DISPLAY, DebAcc, CredAcc);
             else if (Display == Displays.Check)
                 VISUALIZER.DisplayCheck(Machine, ref DISPLAY);
             else if (Display == Displays.Withdraw)

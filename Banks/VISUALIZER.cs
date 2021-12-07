@@ -294,7 +294,7 @@ namespace Banks
         /// Дисплей с меню выбора
         /// </summary>
         /// <param name="Display">Изменяемый дисплей(панель)</param>
-        public void DisplayMenu(int Machine, ref Panel Display)
+        public void DisplayMenu(int Machine, ref Panel Display, string DebAcc, string CredAcc)
         {
             // Основной дисплей
             Panel DISPLAY_Menu = new Panel();
@@ -338,11 +338,12 @@ namespace Banks
             //Текст с счетами
             Label DISPLAY_Account_Label = new Label();
             DISPLAY_Account_Label.Name = "DISPLAY_Account_Label";
-            DISPLAY_Account_Label.Text = "счета";
             DISPLAY_Account_Label.TextAlign = ContentAlignment.MiddleCenter;
             DISPLAY_Account_Label.Margin = new Padding(0, 10, 0, 0);
             DISPLAY_Account_Label.AutoSize = true;
             DISPLAY_Account_Label.Anchor = AnchorStyles.None;
+            DISPLAY_Account_Label.Text = string.Format("Дебетовый счет: {0}\nКредитный счет: {1}", DebAcc, CredAcc);
+
             DISPLAY_MENU_FLP.Controls.Add(DISPLAY_Account_Label);
             // Добавить в основной дисплей:
             // Дисплей меню

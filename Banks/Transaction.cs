@@ -14,19 +14,27 @@ namespace Banks
         /// <summary>
         /// ID Транзакции
         /// </summary>
-        string ID_Transaction;
+        public int _ID_Transaction;
         /// <summary>
         /// Тип
         /// </summary>
-        TypeTransaction Type;
+        public TypeTransaction _Type;
         /// <summary>
         /// Сумма
         /// </summary>
-        int Sum;
+        public int _Sum;
         /// <summary>
         /// Баланс счета
         /// </summary>
-        string Balance;
+        public double _Balance;
+
+        public Transaction(int ID_Transaction, TypeTransaction Type, int sum, double Balance)
+        {
+            _ID_Transaction = ID_Transaction;
+            _Type = Type;
+            _Sum = sum;
+            _Balance = Balance;
+        }
     }
 
     public enum TypeTransaction

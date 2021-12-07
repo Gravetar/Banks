@@ -323,9 +323,7 @@ namespace Banks
                         else
                         {
                             _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН ВЕРНО!");
-                            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
-                            Label Account_Label = CurrentAtm.Controls.Find("DISPLAY_Account_Label", true).FirstOrDefault() as Label;
-                            Account_Label.Text = string.Format("Дебетовый счет: {0}\nКредитный счет: {1}", CurrentCard._NumberAccount, CurrentCard._NumberAccountCredit);
+                            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu, CurrentCard._NumberAccount, CurrentCard._NumberAccountCredit);
                         }
                     }
                 }
@@ -444,7 +442,7 @@ namespace Banks
             // Текущий банкомат-визуализация(Согласно кнопке, вызвавшей событие)
             Panel CurrentAtm = MainControls.Find("ATM", true).Where(t => t.Tag.ToString() == CallerButton.Tag.ToString()).FirstOrDefault() as Panel;
             
-            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+            CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu, CurrentCard._NumberAccount, CurrentCard._NumberAccountCredit);
         }
 
         //TODO
@@ -481,6 +479,9 @@ namespace Banks
                 _DEBUGGER.DEBUG_CONSOLE(result);
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
+                    Account TempAcc = Bank.Accounts.Find(a => a._Number == CurrentMachine.ActiveAccount);
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(TbSum.Text), TempAcc._Balance));
+
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
 
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
@@ -499,10 +500,6 @@ namespace Banks
                 {
                     (CurrentAtm.Controls.Find("DISPLAY_Incorrect_Warning_Label", true).FirstOrDefault() as Label).Visible = true;
                 }
-                else if (result == "В БАНКОМАТЕ НЕДОСТАТОЧНО КУПЮР!")
-                {
-
-                }
             }
             else if (CurrentMachine.Display == Displays.Withdraw)
             {
@@ -511,6 +508,9 @@ namespace Banks
 
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
+                    Account TempAcc = Bank.Accounts.Find(a => a._Number == CurrentMachine.ActiveAccount);
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(CallerButton.Text), TempAcc._Balance));
+
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
 
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
@@ -555,6 +555,12 @@ namespace Banks
                 string result = "";
                 if (In.Text != string.Empty && Out.Text != string.Empty && Value.Text != string.Empty)
                     result = Bank.Transfer(Out.Text, In.Text, Convert.ToInt32(Value.Text));
+
+                if (result == "Перевод успешно произведен!")
+                {
+                    Account TempAcc = Bank.Accounts.Find(a => a._Number == Out.Text);
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Transfer, Convert.ToInt32(Value.Text), TempAcc._Balance));
+                }
 
                 _DEBUGGER.DEBUG_CONSOLE(result);
             }
