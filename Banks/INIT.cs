@@ -54,12 +54,12 @@ namespace Banks
             {
                 machines.Add(new AtmMachine(new Dictionary<string, int> // Словарь номиналов и количества денег
                 {
-                    { "100", 10 },
-                    { "200", 10 },
-                    { "500", 10 },
-                    { "1000", 10 },
-                    { "2000", 10 },
-                    { "5000", 10 }
+                    { "100", 0 },
+                    { "200", 0 },
+                    { "500", 0 },
+                    { "1000", 0 },
+                    { "2000", 0 },
+                    { "5000", 1 }
                 }));
             }
 
@@ -76,7 +76,7 @@ namespace Banks
             // Карточки
             DebitCard[] cards =
             {
-                new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 100000, Total: 10000, NumberAccount: "0", NumberAccountCredit: "2", NumberCard: "1234 3213 3213 1234", ClientCard: Bank.Clients[0]),
+                new DebitCard(ID: 1, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 10000, Total: 10000, NumberAccount: "0", NumberAccountCredit: "2", NumberCard: "1234 3213 3213 1234", ClientCard: Bank.Clients[0]),
                 new DebitCard(ID: 2, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 200000, Total: 20000, NumberAccount: "0", NumberAccountCredit: "3", NumberCard: "5847 5967 3485 9607", ClientCard: Bank.Clients[1]),
                 new DebitCard(ID: 3, PIN: "1234", DateStart: new DateTime(2021, 11, 13), DateEnd: new DateTime(2025, 11, 13), Limit: 300000, Total: 30000, NumberAccount: "1", NumberAccountCredit: "4", NumberCard: "1859 6584 9385 9584", ClientCard: Bank.Clients[2]),
 
@@ -110,7 +110,7 @@ namespace Banks
             // Основные счета
             Account[] checkingaccounts =
             {
-                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "0"), Number: "0", Balance: 10000, Type: TypeAccount.Checking),
+                new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "0"), Number: "0", Balance: 11000, Type: TypeAccount.Checking),
                 new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "1"), Number: "1", Balance: 20000, Type: TypeAccount.Checking),
                 new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "2"), Number: "2", Balance: 30000, Type: TypeAccount.Checking),
                 new Account(DebitCards: debitCards.FindAll(c => c._NumberAccount == "3"), Number: "3", Balance: 15000, Type: TypeAccount.Checking),

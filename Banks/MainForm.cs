@@ -177,6 +177,13 @@ namespace Banks
             }
             else if(CallerButton.Text == "Забрать карту")
             {
+                Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+
+                if (Warn_OutCard.Text == "Сожалеем,\nВ банкомате недостаточно купюр.\nПожалуйста, заберите вашу карту")
+                {
+                    CurrentMachine.stateAtm = StateAtm.off;
+                }
+
                 SelectCardCB.Enabled = true;
                 // Сменить дисплей текущего банкомата на дисплей приветствия
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Welcome);
@@ -193,6 +200,8 @@ namespace Banks
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
                 CurrentMachine.TryInputPin = 0;
+
+
             }
             else if (CallerButton.Text == "Забрать нал.")
             {
@@ -262,7 +271,7 @@ namespace Banks
             {
                 if (CurrentMachine.Display == Displays.InputPIN)
                     Pin_InputText.Text = ""; // Очистить поле ввода Пин-кода
-                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.SelectAccount)
+                if (CurrentMachine.Display == Displays.Transfer || CurrentMachine.Display == Displays.SelectAccount || CurrentMachine.Display == Displays.AnotherAmount)
                     CurrentActiveTb.Text = ""; // Очистить поле ввода Пин-кода
             }
             else if (CallerButton.Text == "ENTER") // Если кнопка, вызвавшая событие - ENTER, то:
@@ -315,6 +324,8 @@ namespace Banks
                         {
                             _DEBUGGER.DEBUG_CONSOLE("ПИН-КОД ВВЕДЕН ВЕРНО!");
                             CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Menu);
+                            Label Account_Label = CurrentAtm.Controls.Find("DISPLAY_Account_Label", true).FirstOrDefault() as Label;
+                            Account_Label.Text = string.Format("Дебетовый счет: {0}\nКредитный счет: {1}", CurrentCard._NumberAccount, CurrentCard._NumberAccountCredit);
                         }
                     }
                 }
@@ -466,21 +477,36 @@ namespace Banks
 
             if (CurrentMachine.Display == Displays.AnotherAmount && TbSum.Text != "")
             {
-                result = Bank.Withdraw(CurrentMachine.ActiveAccount, Convert.ToInt32(TbSum.Text), CurrentMachine);
+                result = Bank.Withdraw(CurrentMachine.ActiveAccount,CurrentCard._NumberCard, Convert.ToInt32(TbSum.Text), CurrentMachine);
                 _DEBUGGER.DEBUG_CONSOLE(result);
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
 
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
-                    Warn_OutCard.Text = "Пожалуйста заберте ваши деньги";
-                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                    Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                }
+                else if (result == "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!")
+                {
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Сожалеем,\nбыл превышен суточный лимит.\nПожалуйста, заберите вашу карту";
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                }
+                else if (result == "НЕВЕРНО ВВЕДЕНА СУММА!")
+                {
+                    (CurrentAtm.Controls.Find("DISPLAY_Incorrect_Warning_Label", true).FirstOrDefault() as Label).Visible = true;
+                }
+                else if (result == "В БАНКОМАТЕ НЕДОСТАТОЧНО КУПЮР!")
+                {
+
                 }
             }
             else if (CurrentMachine.Display == Displays.Withdraw)
             {
-                result = Bank.Withdraw(CurrentMachine.ActiveAccount, Convert.ToInt32(CallerButton.Text), CurrentMachine);
+                result = Bank.Withdraw(CurrentMachine.ActiveAccount, CurrentCard._NumberCard, Convert.ToInt32(CallerButton.Text), CurrentMachine);
                 _DEBUGGER.DEBUG_CONSOLE(result);
 
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
@@ -488,9 +514,24 @@ namespace Banks
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
 
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
-                    Warn_OutCard.Text = "Пожалуйста заберте ваши деньги";
-                    MAIN_FUNCTIONS.Block_UnBlockElement(true, Convert.ToInt32(CurrentAtm.Tag), "BTN_KEYB_CANCEL", MainControls);
+                    Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                }
+                else if (result == "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!")
+                {
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Сожалеем,\nбыл превышен суточный лимит.\nПожалуйста, заберите вашу карту";
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                }
+                else if (result == "В БАНКОМАТЕ НЕДОСТАТОЧНО КУПЮР!")
+                {
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Сожалеем,\nВ банкомате недостаточно купюр.\nПожалуйста, заберите вашу карту";
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
                 }
             }
         }
@@ -638,7 +679,7 @@ namespace Banks
 
         private void WIthdraw_Click(object sender, EventArgs e)
         {
-            Bank.Withdraw("0", 5300, Bank.AtmMachines[0]);
+            //Bank.Withdraw("0", 5300, Bank.AtmMachines[0]);
         }
     }
 }

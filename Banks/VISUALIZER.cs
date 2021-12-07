@@ -335,6 +335,15 @@ namespace Banks
             BTN_MENU_TRANSFER.Click += new EventHandler(Events[2]);
             DISPLAY_MENU_FLP.Controls.Add(BTN_MENU_TRANSFER);
 
+            //Текст с счетами
+            Label DISPLAY_Account_Label = new Label();
+            DISPLAY_Account_Label.Name = "DISPLAY_Account_Label";
+            DISPLAY_Account_Label.Text = "счета";
+            DISPLAY_Account_Label.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_Account_Label.Margin = new Padding(0, 10, 0, 0);
+            DISPLAY_Account_Label.AutoSize = true;
+            DISPLAY_Account_Label.Anchor = AnchorStyles.None;
+            DISPLAY_MENU_FLP.Controls.Add(DISPLAY_Account_Label);
             // Добавить в основной дисплей:
             // Дисплей меню
             DISPLAY_Menu.Controls.Add(DISPLAY_MENU_FLP);
@@ -510,9 +519,21 @@ namespace Banks
             BTN_ANOTHER_AMOUNT_WITHDRAW.Tag = Machine;
             BTN_ANOTHER_AMOUNT_WITHDRAW.Click += Events[7];
             // TODO
+
+            //Текст с ошибкой с неверной суммой
+            Label DISPLAY_Incorrect_Warning_Label = new Label();
+            DISPLAY_Incorrect_Warning_Label.Name = "DISPLAY_Incorrect_Warning_Label";
+            DISPLAY_Incorrect_Warning_Label.Text = "Введена неверная сумма!";
+            DISPLAY_Incorrect_Warning_Label.TextAlign = ContentAlignment.MiddleCenter;
+            DISPLAY_Incorrect_Warning_Label.Margin = new Padding(0, 10, 0, 0);
+            DISPLAY_Incorrect_Warning_Label.Visible = false;
+            DISPLAY_Incorrect_Warning_Label.AutoSize = true;
+            DISPLAY_Incorrect_Warning_Label.ForeColor = Color.Red;
+            DISPLAY_Incorrect_Warning_Label.Anchor = AnchorStyles.None;
+
             Display_ANOTHER_AMOUNT_FLP.Controls.Add(DISPLAY_Another_Amount_InputText);
             Display_ANOTHER_AMOUNT_FLP.Controls.Add(BTN_ANOTHER_AMOUNT_WITHDRAW);
-
+            Display_ANOTHER_AMOUNT_FLP.Controls.Add(DISPLAY_Incorrect_Warning_Label);
             // Добавить в основной дисплей:
             // Дисплей меню
             Display_Another_Amount.Controls.Add(Display_ANOTHER_AMOUNT_FLP);
@@ -601,7 +622,7 @@ namespace Banks
             DISPLAY_TRANSFER_TLP.Controls.Add(BTN_TRANSFER_BACK);
 
             Button BTN_TRANSFER_TRANSFER = new Button();
-            BTN_TRANSFER_TRANSFER.Name = "BTN_WITHDRAW_ANOTHER";
+            BTN_TRANSFER_TRANSFER.Name = "BTN_TRANSFER_TRANSFER";
             BTN_TRANSFER_TRANSFER.Size = new Size(87, 30);
             BTN_TRANSFER_TRANSFER.Text = "ВЫПОЛНИТЬ";
             BTN_TRANSFER_TRANSFER.ForeColor = Color.Green;

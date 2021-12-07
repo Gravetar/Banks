@@ -58,6 +58,11 @@ namespace Banks
         public List<Account> Accounts = new List<Account>();
 
         /// <summary>
+        /// Список транзакций
+        /// </summary>
+        public List<Transaction> Transactions = new List<Transaction>();
+
+        /// <summary>
         /// Оператор банка
         /// </summary>
         public Operator Operator = new Operator();
@@ -109,7 +114,7 @@ namespace Banks
             }
         }
 
-        public string Withdraw(string AccountOut, int Value, AtmMachine Atm)
+        public string Withdraw(string AccountOut, string DebitCard, int Value, AtmMachine Atm)
         {
             Account Out = Accounts.Find(a => a._Number == AccountOut); // Откуда
             string Max = "";
@@ -129,11 +134,16 @@ namespace Banks
                 return "НЕВЕРНО ВВЕДЕНА СУММА!";
             }
 
-            while(Value != 0)
+            if(!CheckDayLimit(DebitCard, Value))
+            {
+                return "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!";
+            }
+
+            while (Value != 0)
             {
                 foreach (KeyValuePair<string, int> keyValue in bills)
                 {
-                    if (Int32.Parse(keyValue.Key) <= Value && keyValue.Value != 0)
+                    if (Int32.Parse(keyValue.Key) <= Value)
                     {
                         Max = keyValue.Key;
                     }
@@ -164,6 +174,18 @@ namespace Banks
                 Out._Balance += sum;
                 return "НЕДОСТАТОЧНО СРЕДСТВ НА СЧЕТЕ!";
             }
+        }
+
+        public bool CheckDayLimit(string Numbercard, int Value)
+        {
+            DebitCard Out = DebitCards.Find(a => a._NumberCard == Numbercard);
+            Out._Limit -= Value;
+            if(Out._Limit < 0)
+            {
+                Out._Limit += Value;
+                return false;
+            }
+            return true;
         }
     }
 }
