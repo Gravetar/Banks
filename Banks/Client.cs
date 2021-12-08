@@ -77,12 +77,7 @@ namespace Banks
             }
             foreach (DebitCard item in debitCards)
             {
-                bool free = true;
-                foreach (AtmMachine item_atm in Bank.AtmMachines)
-                {
-                    if (item_atm.CurrentCard == item._NumberCard) free = false;
-                }
-                if (free && item._ClientCard._ID == _ID) result.Add(item._NumberCard);
+                if (item._ClientCard._ID == _ID) result.Add(item._NumberCard);
             }
 
             return result;

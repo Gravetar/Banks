@@ -31,7 +31,7 @@ namespace Banks
             }
             else if (Display == Displays.InputPIN) // Если тип дисплей, на который надо поменять = InputPIN (Дисплей для ввода пин-кода)
                 VISUALIZER.DisplayInputPIN(Machine, ref DISPLAY); // Сменить дисплей на InputPIN
-            else if (Display == Displays.Menu) 
+            else if (Display == Displays.Menu)
                 VISUALIZER.DisplayMenu(Machine, ref DISPLAY, DebAcc, CredAcc);
             else if (Display == Displays.Check)
                 VISUALIZER.DisplayCheck(Machine, ref DISPLAY);
@@ -45,7 +45,7 @@ namespace Banks
                 VISUALIZER.DisplayOutCard(Machine, ref DISPLAY);
             else if (Display == Displays.SelectAccount)
                 VISUALIZER.DisplaySelectAccount(Machine, ref DISPLAY);
-            else 
+            else
                 VISUALIZER.DisplayClear(ref DISPLAY); // Сменить дисплей на пустой
 
             Controls.Add(DISPLAY); // Добавить дисплей на форму
@@ -89,7 +89,13 @@ namespace Banks
                             ATMs[j].Enabled = false; // Диактивировать банкомат
                         }
                     }
-                    if (SETTINGS.CURRENT_USER == User.Operator) DISs[j].Enabled = false; // Текущий пользователь приложения-Оператор
+                    if (SETTINGS.CURRENT_USER == User.Operator)
+                    {
+                        ATMs[j].Enabled = true; // Активировать банкомат
+                        DISs[j].Enabled = false;
+                        (ATMs[j].Controls.Find("KEYBOARD", true).FirstOrDefault() as Panel).Enabled = false;
+                    }
+                    // Текущий пользователь приложения-Оператор
                     else DISs[j].Enabled = true;
                 }
             }
@@ -99,7 +105,7 @@ namespace Banks
         {
             var ATMs = Controls.Find("ATM", true);
 
-            for (int i = 0; i<ATMs.Count(); i++)
+            for (int i = 0; i < ATMs.Count(); i++)
             {
                 if (SETTINGS.CURRENT_USER == User.Client)
                 {
@@ -125,7 +131,7 @@ namespace Banks
         /// <param name="Additional">Тип дополнительной панели, на который надо сменить</param>
         /// <param name="Bank">Главный банк</param>
         /// <param name="CurrentClient">Текущий пользователь приложения</param>
-        public static void ChangeAdditionalPanel (int Machine, VISUALIZER VISUALIZER, Control.ControlCollection Controls, AdditionalPanels Additional, ServerBank Bank, int CurrentClient)
+        public static void ChangeAdditionalPanel(int Machine, VISUALIZER VISUALIZER, Control.ControlCollection Controls, AdditionalPanels Additional, ServerBank Bank, int CurrentClient)
         {
             RemoveItemByName<Panel>(Machine, "ADDITIONAL", Controls);   // Удалить старую дополнительную панель
             Panel ADDITIONAL = new Panel();    // Новая дополнительная панель
@@ -141,10 +147,6 @@ namespace Banks
             else if (Additional == AdditionalPanels.For_Operator) // Если тип дополнительной панели, на которую надо поменять = For_Operator (Дополнительная панель для оператора)
             {
                 VISUALIZER.DisplayAdditionalOperator(Machine, ref ADDITIONAL); // Сменить дополнительную панель на For_Operator
-                if (Bank.AtmMachines[Machine].stateAtm == StateAtm.on) // Если банкомат включен:
-                    (ADDITIONAL.Controls.Find("BTN_ADDITIONAL_OnATM", true).FirstOrDefault() as Button).Enabled = false; // Диактивировать кнопку включения
-                else // Иначе:
-                    (ADDITIONAL.Controls.Find("BTN_ADDITIONAL_OffATM", true).FirstOrDefault() as Button).Enabled = false; // Диактивировать кнопку выключения
             }
 
             Controls.Add(ADDITIONAL); // Добавить дополнительную панель на форму
