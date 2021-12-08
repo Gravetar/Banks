@@ -225,20 +225,28 @@ namespace Banks
 
             else if (CallerButton.Text == "Забрать чек")
             {
-                SelectCardCB.Enabled = true;
-                // Сменить дисплей текущего банкомата на дисплей меню
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
-                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
-                CurrentMachine.BTN_OutputCard = true;
-                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
-                CurrentMachine.BTN_TakeCheck = false;
-                (CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox).Text = "";
-
-                CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
-                Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
-                Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
-                (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
-                CurrentMachine.BTN_OutputCash = true;
+                if ((CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text == "Заберите пожалуйста ваш чек\nснятия наличных")
+                {
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
+                    Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCash = true;
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                    CurrentMachine.BTN_TakeCheck = false;
+                    (CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox).Text = "";
+                }
+                else
+                {
+                    SelectCardCB.Enabled = true;
+                    // Сменить дисплей текущего банкомата на дисплей меню
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCard = true;
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                    CurrentMachine.BTN_TakeCheck = false;
+                    (CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox).Text = "";
+                }
             }
 
 
@@ -508,6 +516,7 @@ namespace Banks
                     Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(TbSum.Text), TempAcc._Balance));
 
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
+                    (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nснятия наличных";
                     RichTextBox RTBHELP = CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox;
 
                     string resultRTBHELP = "";
@@ -553,12 +562,26 @@ namespace Banks
                     Account TempAcc = Bank.Accounts.Find(a => a._Number == CurrentMachine.ActiveAccount);
                     Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(CallerButton.Text), TempAcc._Balance));
 
-                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
+                    (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nснятия наличных";
+                    RichTextBox RTBHELP = CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox;
 
-                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
-                    Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
-                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
-                    CurrentMachine.BTN_OutputCash = true;
+                    string resultRTBHELP = "";
+                    resultRTBHELP = string.Format(
+                        "номер транзакции{0}\n" +
+                        "тип транзакции{1}\n" +
+                        "сумма списания{2}\n" +
+                        "баланс счета{3}",
+                        Bank.Transactions[Bank.Transactions.Count - 1]._ID_Transaction,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Type,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Sum,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Balance
+                        );
+
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_TakeCheck = true;
+
+                    RTBHELP.Text = resultRTBHELP;
                 }
                 else if (result == "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!")
                 {
@@ -606,12 +629,26 @@ namespace Banks
                     Account TempAcc = Bank.Accounts.Find(a => a._Number == Out.Text);
                     Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Transfer, Convert.ToInt32(Value.Text), TempAcc._Balance));
 
-                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
+                    CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
+                    (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nперевода";
+                    RichTextBox RTBHELP = CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox;
 
-                    Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
-                    Warn_OutCard.Text = "Перевод успешно совершен,\nзаберите вашу карту";
-                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
-                    CurrentMachine.BTN_OutputCard = true;
+                    string resultRTBHELP = "";
+                    resultRTBHELP = string.Format(
+                        "номер транзакции{0}\n" +
+                        "тип транзакции{1}\n" +
+                        "сумма списания{2}\n" +
+                        "баланс счета{3}",
+                        Bank.Transactions[Bank.Transactions.Count - 1]._ID_Transaction,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Type,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Sum,
+                        Bank.Transactions[Bank.Transactions.Count - 1]._Balance
+                        );
+
+                    (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_TakeCheck = true;
+
+                    RTBHELP.Text = resultRTBHELP;
                 }
                 else if (result == "На счете недостаточно средств!")
                 {
