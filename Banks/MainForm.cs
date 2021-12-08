@@ -151,8 +151,11 @@ namespace Banks
                     MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
                     // Найти и активировать кнопку "Вставить карту" у текущего банкомата
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_InputCard = true;
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                    CurrentMachine.BTN_OutputCard = false;
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                    CurrentMachine.BTN_TakeCheck = false;
                     CurrentMachine.TryInputPin = 0;
                     FormatCardCombobox();
                     MainPanel.Visible = false;
@@ -172,6 +175,7 @@ namespace Banks
 
                     // Деактивировать кнопку, вызвавшей событие(Вставить карту)
                     CallerButton.Enabled = false;
+                    CurrentMachine.BTN_InputCard = false;
                 }
 
             }
@@ -197,8 +201,11 @@ namespace Banks
                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
                 // Найти и активировать кнопку "Вставить карту" у текущего банкомата
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                CurrentMachine.BTN_InputCard = true;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                CurrentMachine.BTN_OutputCard = false;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                CurrentMachine.BTN_TakeCheck = false;
                 CurrentMachine.TryInputPin = 0;
 
 
@@ -211,7 +218,9 @@ namespace Banks
                 Label TakeCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                 TakeCard.Text = "До свидания!\nПожалуйста заберте вашу карту";
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = false;
+                CurrentMachine.BTN_OutputCash = false;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                CurrentMachine.BTN_OutputCard = true;
             }
 
             else if (CallerButton.Text == "Забрать чек")
@@ -220,7 +229,9 @@ namespace Banks
                 // Сменить дисплей текущего банкомата на дисплей меню
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                CurrentMachine.BTN_OutputCard = true;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                CurrentMachine.BTN_TakeCheck = false;
                 (CurrentAtm.Controls.Find("RTB_HELP", true).FirstOrDefault() as RichTextBox).Text = "";
 
             }
@@ -231,13 +242,17 @@ namespace Banks
             {
                 CurrentMachine.stateAtm = StateAtm.on; // Включить текущий банкомат
                 CallerButton.Enabled = false; // Деактивировать кнопку, вызвавшей событие(Включить)
+                CurrentMachine.BTN_On = false;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OffATM", true).FirstOrDefault() as Button).Enabled = true; // Найти кнопку "Выключить" и диактивировать ее
+                CurrentMachine.BTN_Off = true;
             }
             else if (CallerButton.Text == "Выключить")
             {
                 CurrentMachine.stateAtm = StateAtm.off;  // Выключить текущий банкомат
                 CallerButton.Enabled = false;  // Деактивировать кнопку, вызвавшей событие(Включить)
+                CurrentMachine.BTN_Off = false;
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OnATM", true).FirstOrDefault() as Button).Enabled = true; // Найти кнопку "Включить" и активировать ее
+                CurrentMachine.BTN_On = true;
             }
             else if (CallerButton.Text == "Внести наличные")
             {
@@ -265,7 +280,7 @@ namespace Banks
             {
                 CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.OutCard);
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
-
+                CurrentMachine.BTN_OutputCard = true;
             }
             else if (CallerButton.Text == "CLEAR") // Если кнопка, вызвавшая событие - CLEAR, то:
             {
@@ -313,8 +328,11 @@ namespace Banks
                                 MAIN_FUNCTIONS.ChangeEnabledATMs(MainControls, Bank, CurrentIdUser);
                                 // Найти и активировать кнопку "Вставить карту" у текущего банкомата
                                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = true;
+                                CurrentMachine.BTN_InputCard = true;
                                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = false;
+                                CurrentMachine.BTN_OutputCard = false;
                                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = false;
+                                CurrentMachine.BTN_TakeCheck = false;
                                 CurrentMachine.TryInputPin = 0;
                                 FormatCardCombobox();
                                 MainPanel.Visible = false;
@@ -347,6 +365,7 @@ namespace Banks
                         Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                         Warn_OutCard.Text = "Недопустимый номер счета\nЗаберте пожалуйста вашу карту";
                         (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                        CurrentMachine.BTN_OutputCard = true;
                     }
                 }
             }
@@ -417,6 +436,7 @@ namespace Banks
                     );
 
                 (CurrentAtm.Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = true;
+                CurrentMachine.BTN_TakeCheck = true;
 
                 RTBHELP.Text = resultRTBHELP;
             }
@@ -487,6 +507,7 @@ namespace Banks
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                     Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCash = true;
                 }
                 else if (result == "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!")
                 {
@@ -495,6 +516,7 @@ namespace Banks
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                     Warn_OutCard.Text = "Сожалеем,\nбыл превышен суточный лимит.\nПожалуйста, заберите вашу карту";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCard = true;
                 }
                 else if (result == "НЕВЕРНО ВВЕДЕНА СУММА!")
                 {
@@ -516,6 +538,7 @@ namespace Banks
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                     Warn_OutCard.Text = "Пожалуйста заберите ваши деньги";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCash = true;
                 }
                 else if (result == "ПРЕВЫШЕН СУТОЧНЫЙ ЛИМИТ!")
                 {
@@ -524,6 +547,7 @@ namespace Banks
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                     Warn_OutCard.Text = "Сожалеем,\nбыл превышен суточный лимит.\nПожалуйста, заберите вашу карту";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCard = true;
                 }
                 else if (result == "В БАНКОМАТЕ НЕДОСТАТОЧНО КУПЮР!")
                 {
@@ -532,6 +556,7 @@ namespace Banks
                     Label Warn_OutCard = CurrentAtm.Controls.Find("DISPLAY_OutCard_MainText", true).FirstOrDefault() as Label;
                     Warn_OutCard.Text = "Сожалеем,\nВ банкомате недостаточно купюр.\nПожалуйста, заберите вашу карту";
                     (CurrentAtm.Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = true;
+                    CurrentMachine.BTN_OutputCard = true;
                 }
             }
         }
@@ -651,6 +676,7 @@ namespace Banks
                     Keyboard.Enabled = true;
                 }
             }
+            MAIN_FUNCTIONS.ChangeEnabledButtonsAtm(MainControls, Bank);
         }
 
         private void SelectCardCB_SelectedIndexChanged(object sender, EventArgs e)
@@ -660,6 +686,7 @@ namespace Banks
             {
                 MainPanel.Visible = true;
                 CurrentCard = Bank.DebitCards.Find(c => c._NumberCard == SelectCardCB.Text);
+                MAIN_FUNCTIONS.ChangeEnabledButtonsAtm(MainControls, Bank);
             }
 
         }

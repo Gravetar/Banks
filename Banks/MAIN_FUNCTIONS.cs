@@ -95,6 +95,27 @@ namespace Banks
             }
         }
 
+        public static void ChangeEnabledButtonsAtm(Control.ControlCollection Controls, ServerBank Bank)
+        {
+            var ATMs = Controls.Find("ATM", true);
+
+            for (int i = 0; i<ATMs.Count(); i++)
+            {
+                if (SETTINGS.CURRENT_USER == User.Client)
+                {
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_INCARD", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_InputCard;
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_OUTCARD", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_OutputCard;
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_OUTCASH", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_OutputCash;
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_CHECK", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_TakeCheck;
+                }
+                else
+                {
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_OnATM", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_On;
+                    (ATMs[i].Controls.Find("BTN_ADDITIONAL_OffATM", true).FirstOrDefault() as Button).Enabled = Bank.AtmMachines[i].BTN_Off;
+                }
+            }
+        }
+
         /// <summary>
         /// Сменить дополнительную панель банкомата
         /// </summary>

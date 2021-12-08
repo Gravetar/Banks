@@ -39,6 +39,7 @@ namespace Banks
             this.ClientInfoStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.AtmInfoStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.AccountsInfoStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.TransactionsInfoStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.SeperatorStrip2 = new System.Windows.Forms.ToolStripSeparator();
             this.StyleStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.DebugStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@ namespace Banks
             this.label2 = new System.Windows.Forms.Label();
             this.SelectCardCB = new System.Windows.Forms.ComboBox();
             this.WIthdraw = new System.Windows.Forms.Button();
-            this.TransactionsInfoStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.CMS_Debugger.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +80,7 @@ namespace Banks
             this.StyleStrip,
             this.DebugStrip});
             this.CMS_Debugger.Name = "CMS_Debugger";
-            this.CMS_Debugger.Size = new System.Drawing.Size(230, 236);
+            this.CMS_Debugger.Size = new System.Drawing.Size(230, 214);
             // 
             // ChangeTypeStrip
             // 
@@ -129,6 +129,13 @@ namespace Banks
             this.AccountsInfoStrip.Name = "AccountsInfoStrip";
             this.AccountsInfoStrip.Size = new System.Drawing.Size(229, 22);
             this.AccountsInfoStrip.Text = "Информация о счетах";
+            // 
+            // TransactionsInfoStrip
+            // 
+            this.TransactionsInfoStrip.CheckOnClick = true;
+            this.TransactionsInfoStrip.Name = "TransactionsInfoStrip";
+            this.TransactionsInfoStrip.Size = new System.Drawing.Size(229, 22);
+            this.TransactionsInfoStrip.Text = "Информация о транзакциях";
             // 
             // SeperatorStrip2
             // 
@@ -220,13 +227,6 @@ namespace Banks
             this.WIthdraw.Text = "button1";
             this.WIthdraw.UseVisualStyleBackColor = true;
             this.WIthdraw.Click += new System.EventHandler(this.WIthdraw_Click);
-            // 
-            // TransactionsInfoStrip
-            // 
-            this.TransactionsInfoStrip.CheckOnClick = true;
-            this.TransactionsInfoStrip.Name = "TransactionsInfoStrip";
-            this.TransactionsInfoStrip.Size = new System.Drawing.Size(229, 22);
-            this.TransactionsInfoStrip.Text = "Информация о транзакциях";
             // 
             // MainForm
             // 

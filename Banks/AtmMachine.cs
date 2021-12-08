@@ -47,6 +47,15 @@ namespace Banks
         /// </summary>
         public List<Transaction> Transactions = new List<Transaction>();
 
+        // СОСТОЯНИЯ КНОПОК
+        public bool BTN_InputCard = true;
+        public bool BTN_OutputCard = false;
+        public bool BTN_OutputCash = false;
+        public bool BTN_TakeCheck = false;
+
+        public bool BTN_On = false;
+        public bool BTN_Off = true;
+
         /// <summary>
         /// Конструктор банкомата
         /// </summary>
