@@ -54,7 +54,7 @@ namespace Banks
             {
                 machines.Add(new AtmMachine(new Dictionary<string, int> // Словарь номиналов и количества денег
                 {
-                    { "100", 10 },
+                    { "100", 0 },
                     { "200", 10 },
                     { "500", 10 },
                     { "1000", 10 },

@@ -39,7 +39,7 @@ namespace Banks
 
     public enum TypeTransaction
     {
-        Transfer,
-        Withdrawal
+        Перевод,
+        Списание
     }
 }

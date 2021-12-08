@@ -186,6 +186,8 @@ namespace Banks
                 if (Warn_OutCard.Text == "Сожалеем,\nВ банкомате недостаточно купюр.\nПожалуйста, заберите вашу карту")
                 {
                     CurrentMachine.stateAtm = StateAtm.off;
+                    CurrentMachine.BTN_On = true;
+                    CurrentMachine.BTN_Off = false;
                 }
 
                 SelectCardCB.Enabled = true;
@@ -513,7 +515,7 @@ namespace Banks
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
                     Account TempAcc = Bank.Accounts.Find(a => a._Number == CurrentMachine.ActiveAccount);
-                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(TbSum.Text), TempAcc._Balance));
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Списание, Convert.ToInt32(TbSum.Text), TempAcc._Balance));
 
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
                     (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nснятия наличных";
@@ -521,10 +523,12 @@ namespace Banks
 
                     string resultRTBHELP = "";
                     resultRTBHELP = string.Format(
-                        "номер транзакции{0}\n" +
-                        "тип транзакции{1}\n"+
-                        "сумма списания{2}\n"+
-                        "баланс счета{3}",
+                        " Банк {0} сообщает\n" +
+                        " Номер транзакции: {1}\n" +
+                        " Тип транзакции: {2}\n"+
+                        " Сумма списания: {3}\n"+
+                        " Баланс счета: {4}",
+                        Bank._Name,
                         Bank.Transactions[Bank.Transactions.Count-1]._ID_Transaction,
                         Bank.Transactions[Bank.Transactions.Count - 1]._Type,
                         Bank.Transactions[Bank.Transactions.Count-1]._Sum,
@@ -560,7 +564,7 @@ namespace Banks
                 if (result == "ПРОИЗВЕДЕНА ВЫДАЧА НАЛИЧНЫХ")
                 {
                     Account TempAcc = Bank.Accounts.Find(a => a._Number == CurrentMachine.ActiveAccount);
-                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Withdrawal, Convert.ToInt32(CallerButton.Text), TempAcc._Balance));
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Списание, Convert.ToInt32(CallerButton.Text), TempAcc._Balance));
 
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
                     (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nснятия наличных";
@@ -568,10 +572,12 @@ namespace Banks
 
                     string resultRTBHELP = "";
                     resultRTBHELP = string.Format(
-                        "номер транзакции{0}\n" +
-                        "тип транзакции{1}\n" +
-                        "сумма списания{2}\n" +
-                        "баланс счета{3}",
+                        " Банк {0} сообщает\n" +
+                        " Номер транзакции: {1}\n" +
+                        " Тип транзакции: {2}\n" +
+                        " Сумма списания: {3}\n" +
+                        " Баланс счета: {4}",
+                        Bank._Name,
                         Bank.Transactions[Bank.Transactions.Count - 1]._ID_Transaction,
                         Bank.Transactions[Bank.Transactions.Count - 1]._Type,
                         Bank.Transactions[Bank.Transactions.Count - 1]._Sum,
@@ -627,7 +633,7 @@ namespace Banks
                 if (result == "Перевод успешно произведен!")
                 {
                     Account TempAcc = Bank.Accounts.Find(a => a._Number == Out.Text);
-                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Transfer, Convert.ToInt32(Value.Text), TempAcc._Balance));
+                    Bank.Transactions.Add(new Transaction(Bank.Transactions.Count + 1, TypeTransaction.Перевод, Convert.ToInt32(Value.Text), TempAcc._Balance));
 
                     CurrentMachine.Display = MAIN_FUNCTIONS.ChangeDisplay(Convert.ToInt32(CallerButton.Tag), VISUALIZER, CurrentAtm.Controls, Displays.Check);
                     (CurrentAtm.Controls.Find("DISPLAY_Check_MainText", true).FirstOrDefault() as Label).Text = "Заберите пожалуйста ваш чек\nперевода";
@@ -635,10 +641,12 @@ namespace Banks
 
                     string resultRTBHELP = "";
                     resultRTBHELP = string.Format(
-                        "номер транзакции{0}\n" +
-                        "тип транзакции{1}\n" +
-                        "сумма списания{2}\n" +
-                        "баланс счета{3}",
+                        " Банк {0} сообщает\n" +
+                        " Номер транзакции: {1}\n" +
+                        " Тип транзакции: {2}\n" +
+                        " Сумма перевода: {3}\n" +
+                        " Баланс счета: {4}",
+                        Bank._Name,
                         Bank.Transactions[Bank.Transactions.Count - 1]._ID_Transaction,
                         Bank.Transactions[Bank.Transactions.Count - 1]._Type,
                         Bank.Transactions[Bank.Transactions.Count - 1]._Sum,
